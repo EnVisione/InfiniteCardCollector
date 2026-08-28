@@ -36,10 +36,12 @@ local function resolveOnPath(name: string): string?
 	local separator = if process.os == "windows" then ";" else ":"
 	local suffix = executableSuffix()
 	for directory in (pathValue .. separator):gmatch("(.-)" .. separator) do
-		assert(directory ~= "", "P000-TOOLS-004 empty path entry")
-		local candidate = Common.join(directory, name .. suffix)
-		if fs.isFile(candidate) then
-			return candidate
+		if directory ~= "" then
+			assert(directory ~= ".", "P000-TOOLS-004 current directory path entry")
+			local candidate = Common.join(directory, name .. suffix)
+			if fs.isFile(candidate) then
+				return candidate
+			end
 		end
 	end
 	return nil

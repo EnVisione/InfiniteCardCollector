@@ -142,11 +142,12 @@ end)
 addTest("P000-TEST-005-tool-clean-path", function()
 	local root = Common.getRokitRoot()
 	local bin = Common.join(root, "bin")
+	local separator = if process.os == "windows" then ";" else ":"
 	local lunePath = ToolVerifier.actualToolPath("lune")
 	local result = Common.runBounded(lunePath, { "run", "verify-tools" }, 30, {
 		cwd = process.cwd,
 		env = {
-			PATH = bin,
+			PATH = bin .. separator,
 			ROKIT_ROOT = root,
 		},
 	})
