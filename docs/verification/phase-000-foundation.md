@@ -6,9 +6,9 @@ This rolling evidence record covers the reproducible repository foundation for `
 
 ## Current Result
 
-The reviewed Linux x86_64 foundation passes locally. The repository has exact tool resolution, a strict typed Luau boundary skeleton, deterministic formatting and linting, a deterministic Lune harness, safe environment defaults, source map validation, byte identical Rojo builds, canonical artifact metadata, SHA 256, SHA 512, documentation checks, and secret checks.
+The reviewed Linux x86_64 foundation passes locally and from a fresh clone. The complete hosted contract passes on Linux x86_64 and clean Windows x86_64. The repository has exact tool resolution, a strict typed Luau boundary skeleton, deterministic formatting and linting, a deterministic Lune harness, safe environment defaults, source map validation, byte identical Rojo builds, canonical artifact metadata, SHA 256, SHA 512, documentation checks, secret checks, and bounded CI evidence.
 
-Phase 000 remains open. Native Windows, native Roblox Studio, clean environment reproduction, hosted Linux and Windows CI, final diff audit, pull request checks, independent review capability disposition, GitHub merge commit, signed `phase-000` tag, and post merge wiki synchronization are not yet complete.
+Phase 000 remains open. Native Roblox Studio, final candidate diff audit, pull request checks, independent review capability disposition, GitHub merge commit, signed `phase-000` tag, and post merge wiki synchronization are not yet complete.
 
 ## Verified Inputs
 
@@ -49,6 +49,14 @@ The initial project source map contains four mapped inputs. The built project in
 
 Two isolated source maps and two isolated `.rbxlx` builds are byte identical. `build/artifact-manifest.json` is canonical JSON and records the source commit, project map, build input digest, mapped paths, exact tool versions, source map hashes, artifact hashes, and instance inventory hashes. It contains no generation timestamp or machine path.
 
+## Clean Environment and Hosted CI
+
+An independent Linux x86_64 reproduction cloned commit `a4adfaf14de3e074c6c062c1985dd5140bd0d191` with none of the five project tools initially available on `PATH`. Cold and warm checksum first bootstrap both passed. Direct tool verification, formatting, formatting check, lint, two deterministic test runs, source map generation, project build, artifact generation, documentation validation, secret scanning, and `lune run ci` all exited zero. The two test transcripts were byte identical with SHA 256 `d50a9d852baa9b7d9759f05a0b104ef02eaa8708c9c032519429047ce082e596`.
+
+The clean Linux artifact had SHA 256 `6e77c39b4a2640be76b8320e37a46df0b0edf499ecf0567415d162ed17608529` and SHA 512 `d17b283178cf75f3a5f1bd9a964a76e1dde9f407ef70b44374f012c9fba0da0a56a801dbe4b613973e8e32fe04347cd4e3471a49c8b24f83b6bcdc30e4b2cd04`. Its source map SHA 256 was `195644838d30163aa5bcc0636e321d1d0d6a4819d62c0191835293145e09c84d`, source input SHA 256 was `c9fbb69097d7b17e6ecc63fd588268c4afe23e5213ab1699362989500d7034f3`, and instance inventory SHA 256 was `884ecb3912559abfad45dec05982e4c1c7eabd69207b578abc3189dc791b1d8d`.
+
+GitHub Actions run `33201999116` passed the same nine gate `lune run ci` contract on `ubuntu-24.04` and `windows-2025`. Linux job `98953478817` passed with the pinned cache restored. Windows job `98953478936` began without a matching tool cache, downloaded and verified the selected native Windows artifacts, and passed all nine gates. The run used least privilege, twenty minute job timeouts, superseded run cancellation, three day evidence retention, and SHA pinned Node 24 action releases.
+
 ## Vinegar Compatibility
 
 The optional Linux Studio compatibility run passed on this exact environment. It is additional evidence only and does not replace the pending native Roblox Studio gate.
@@ -77,4 +85,4 @@ Negative snippets are inert `.txt` or JSON fixtures. The network fixture is reje
 
 A change to any tool version, artifact URL, archive hash, executable hash, source commit, license, security disposition, `rokit.toml`, `roblox.yml`, formatter or linter configuration, `default.project.json`, runtime source, Lune harness, environment schema, command, normalization rule, workflow, plugin, or Studio identity invalidates its dependent evidence. Rerun from the lowest changed layer through the final audit.
 
-Generated evidence under `build/` is intentionally untracked. Final completion evidence must be regenerated from the final phase commit and linked to successful hosted CI, native Studio, native Windows, merge, signed tag, and wiki state.
+Generated evidence under `build/` is intentionally untracked. Final completion evidence must be regenerated from the final phase commit and linked to successful hosted CI, native Studio, merge, signed tag, and wiki state.

@@ -36,7 +36,7 @@ The complete end goal expands to fifty two Deck Sets, 37,856 permanent card form
 
 Phase 000 is active. The repository now contains a reproducible foundation toolchain, a minimum strict typed Luau project, deterministic repository tests, and reproducible Rojo artifact generation. It is still not a playable game. No catalogs, economy, profiles, networking, rewards, or other gameplay systems are implemented.
 
-The pinned tools are Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. Linux x86_64 bootstrap and local verification pass. Native Windows, native Roblox Studio, Rojo plugin synchronization, clean environment, and hosted CI acceptance remain Phase 000 gates until their evidence is recorded.
+The pinned tools are Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. Linux x86_64 local and clean environment verification pass. The complete command contract also passes on clean hosted Windows x86_64 and hosted Linux. Rojo synchronization and play checks pass through the recorded Vinegar compatibility path, but native Roblox Studio on a Roblox supported operating system remains a mandatory Phase 000 gate.
 
 Start with the [development setup](docs/operations/development-setup.md). After bootstrapping the reviewed artifacts, run:
 

@@ -56,7 +56,7 @@ Rerun the job without restored tool cache. The cache key must include the operat
 
 ## Windows Path Behavior
 
-Use 64 bit Windows PowerShell and keep repository commands at the repository root. Generated manifests use forward slash repository paths even when Windows APIs use backslashes. The process supervisor quotes controlled arguments and returns child output through the same stable command interface. Native Windows acceptance is mandatory and cannot be replaced by Wine execution.
+Use 64 bit Windows PowerShell and keep repository commands at the repository root. Generated manifests use forward slash repository paths even when Windows APIs use backslashes. The process supervisor quotes controlled arguments and returns child output through the same stable command interface. The command contract passes on the recorded clean `windows-2025` runner. Wine execution cannot replace that Windows evidence or the separate native Roblox Studio gate.
 
 ## Vinegar Limitations
 

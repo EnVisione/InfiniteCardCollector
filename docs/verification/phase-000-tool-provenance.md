@@ -6,7 +6,7 @@ Review date: 2026-08-28
 Reviewer role: repository maintainer
 Result: accepted with enforced constraints for the Phase 000 command contract
 
-The review authorizes `P000-TASK-003` to bootstrap and resolve the selected artifacts. It does not complete the later native Windows, native Roblox Studio, clean environment, CI, or reproducible build acceptance gates.
+The review authorizes `P000-TASK-003` to bootstrap and resolve the selected artifacts. Clean Linux, clean Windows, hosted CI, and reproducible build acceptance are recorded separately in [Phase 000 foundation evidence](phase-000-foundation.md). Native Roblox Studio remains a separate mandatory gate.
 
 ## Selection
 
@@ -52,7 +52,7 @@ selene 0.31.0
 stylua 2.5.2
 ```
 
-The five selected Windows executables returned the same versions under Wine 11.16. That is a compatibility probe only. It is not the required native Windows acceptance packet. A clean native Windows hosted runner must later verify the same artifacts and complete command contract.
+The five selected Windows executables returned the same versions under Wine 11.16. That remains a compatibility probe only. The required command line acceptance was completed independently on a clean GitHub hosted `windows-2025` runner using the selected native Windows artifacts. Neither result replaces native Roblox Studio acceptance.
 
 ## Upstream Build Provenance
 

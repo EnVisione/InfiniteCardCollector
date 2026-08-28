@@ -45,7 +45,7 @@ StyLua covers every tracked Luau file in `src/` and `lune/`. Selene uses the com
 
 The exact setup, command, output, cleanup, and recovery contract is in [development setup](../operations/development-setup.md). Test cases and negative fixtures are in the [Phase 000 test procedure](../test/phase-000-toolchain.md). Current evidence is summarized in the [foundation evidence record](../verification/phase-000-foundation.md).
 
-Linux x86_64 local acceptance currently passes. Windows x86_64 bootstrap code exists but native Windows acceptance is not yet recorded. Native Roblox Studio and compatible Rojo plugin acceptance are also pending. Vinegar is conditional compatibility and cannot replace native Studio evidence.
+Linux x86_64 local and clean environment acceptance passes. Clean Windows x86_64 acceptance passes on the recorded GitHub hosted `windows-2025` runner. Native Roblox Studio acceptance remains pending. The exact Rojo plugin passes the recorded Vinegar compatibility workflow, but Vinegar cannot replace native Studio evidence.
 
 ## Planned Runtime
 
@@ -148,7 +148,7 @@ Update the root README when setup, supported tools, public behavior, or release 
 ## Known Limitations
 
 - The repository contains no playable implementation.
-- Phase 000 remains incomplete until native Windows, native Roblox Studio, plugin parity, clean environment, hosted CI, final audit, pull request, merge, signed tag, and wiki gates pass.
+- Phase 000 remains incomplete until native Roblox Studio, final audit, pull request checks, review disposition, merge, signed tag, and wiki gates pass.
 - InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
 - Trading and end scale inventory sharding are designed but unimplemented.

@@ -2,7 +2,7 @@
 
 ## Current Support
 
-The command line foundation targets Linux x86_64 and Windows x86_64. Linux x86_64 bootstrap, tool verification, formatting, linting, tests, source map generation, and reproducible build generation currently pass. The Windows x86_64 bootstrap is implemented, but native Windows acceptance remains pending until the clean environment packet is recorded.
+The command line foundation targets Linux x86_64 and Windows x86_64. Linux x86_64 local and clean environment verification passes. A clean GitHub hosted `windows-2025` runner also passes bootstrap, tool verification, formatting, linting, tests, source map generation, reproducible build generation, documentation checks, secret checks, and artifact inspection.
 
 Authoritative runtime acceptance requires native Roblox Studio on a platform Roblox currently supports. Linux Studio through Vinegar is conditional compatibility. The exact Vinegar 1.9.4, Wine 11.16, Studio `0.736.0.7361346`, and Rojo 7.7.0 snapshot passed clean synchronization, resynchronization, topology, and bootstrap checks. It remains additional evidence and never replaces native Roblox Studio acceptance.
 
@@ -38,7 +38,7 @@ Use 64 bit Windows PowerShell. The script relies only on PowerShell and the .NET
 .\scripts\bootstrap-tools.ps1
 ```
 
-The Windows script applies the same registry driven size, SHA 256, SHA 512, archive layout, extracted executable, trust, and path checks to the selected Windows x86_64 artifacts. Native Windows evidence remains pending until this flow and every command below pass in a clean Windows environment.
+The Windows script applies the same registry driven size, SHA 256, SHA 512, archive layout, extracted executable, trust, alias, and path checks to the selected Windows x86_64 artifacts. The clean `windows-2025` acceptance run is recorded in [Phase 000 foundation evidence](../verification/phase-000-foundation.md). This command line acceptance does not replace the separate native Roblox Studio gate.
 
 ## Managed Tool Resolution
 
