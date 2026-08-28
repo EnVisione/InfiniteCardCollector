@@ -1,4 +1,4 @@
-# Project 52: Launch Foundation and Implementation Specification
+# InfiniteCardCollector: Launch Foundation and Implementation Specification
 
 This document defines the first public version that proves the complete vision without attempting to build all fifty two Deck Sets. It is written as an implementation contract for a Roblox Studio project.
 
