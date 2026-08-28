@@ -32,7 +32,7 @@ local function pathsEqual(left: string, right: string): boolean
 end
 
 local function resolveOnPath(name: string): string?
-	local pathValue = process.env.PATH or ""
+	local pathValue = process.env.PATH or process.env.Path or ""
 	local separator = if process.os == "windows" then ";" else ":"
 	local suffix = executableSuffix()
 	for directory in (pathValue .. separator):gmatch("(.-)" .. separator) do
