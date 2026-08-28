@@ -17,7 +17,8 @@ local function runGate(gate: Gate)
 	local result = Common.runBounded(gate.program, gate.arguments, gate.timeout, {
 		cwd = process.cwd,
 	})
-	assert(result.ok, gate.id .. ", exit " .. tostring(result.code) .. ", " .. result.stderr)
+	local details = if result.stderr ~= "" then result.stderr else result.stdout
+	assert(result.ok, gate.id .. ", exit " .. tostring(result.code) .. ", " .. details)
 	print("ci gate passed, " .. gate.id)
 end
 
