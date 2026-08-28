@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "name": "InfiniteCardCollector",
+    "repository": "https://github.com/EnVisione/InfiniteCardCollector.git"
+  },
+  "master": "plan.md",
+  "plans": [
+    {
+      "id": "PLAN-MASTER",
+      "path": "plan.md",
+      "kind": "master",
+      "classification": "mandatory",
+      "requirementPrefix": "CORE",
+      "owner": "project",
+      "dependsOn": []
+    },
+    {
+      "id": "PLAN-PHASE-000",
+      "path": "phases/plan-phase-000.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE000",
+      "phaseId": "CORE-PHASE-000",
+      "owner": "repository toolchain",
+      "dependsOn": ["PLAN-MASTER"]
+    },
+    {
+      "id": "PLAN-PHASE-001",
+      "path": "phases/plan-phase-001.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE001",
+      "phaseId": "CORE-PHASE-001",
+      "owner": "shared calculation layer",
+      "dependsOn": ["PLAN-PHASE-000"]
+    },
+    {
+      "id": "PLAN-PHASE-002",
+      "path": "phases/plan-phase-002.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE002",
+      "phaseId": "CORE-PHASE-002",
+      "owner": "Profile service",
+      "dependsOn": ["PLAN-PHASE-001"]
+    },
+    {
+      "id": "PLAN-PHASE-003",
+      "path": "phases/plan-phase-003.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE003",
+      "phaseId": "CORE-PHASE-003",
+      "owner": "content asset pipeline",
+      "dependsOn": ["PLAN-PHASE-002"]
+    },
+    {
+      "id": "PLAN-PHASE-004",
+      "path": "phases/plan-phase-004.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE004",
+      "phaseId": "CORE-PHASE-004",
+      "owner": "Formation service",
+      "dependsOn": ["PLAN-PHASE-003"]
+    },
+    {
+      "id": "PLAN-PHASE-005",
+      "path": "phases/plan-phase-005.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE005",
+      "phaseId": "CORE-PHASE-005",
+      "owner": "Duel service",
+      "dependsOn": ["PLAN-PHASE-004"]
+    },
+    {
+      "id": "PLAN-PHASE-006",
+      "path": "phases/plan-phase-006.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE006",
+      "phaseId": "CORE-PHASE-006",
+      "owner": "Trade service",
+      "dependsOn": ["PLAN-PHASE-005"]
+    },
+    {
+      "id": "PLAN-PHASE-007",
+      "path": "phases/plan-phase-007.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE007",
+      "phaseId": "CORE-PHASE-007",
+      "owner": "Analytics service",
+      "dependsOn": ["PLAN-PHASE-006"]
+    },
+    {
+      "id": "PLAN-PHASE-008",
+      "path": "phases/plan-phase-008.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE008",
+      "phaseId": "CORE-PHASE-008",
+      "owner": "verification system",
+      "dependsOn": ["PLAN-PHASE-007"]
+    },
+    {
+      "id": "PLAN-PHASE-009",
+      "path": "phases/plan-phase-009.md",
+      "kind": "phase",
+      "classification": "mandatory",
+      "requirementPrefix": "PHASE009",
+      "phaseId": "CORE-PHASE-009",
+      "owner": "release operations",
+      "dependsOn": ["PLAN-PHASE-008"]
+    },
+    {
+      "id": "PLAN-FULL",
+      "path": "full_plan.md",
+      "kind": "aspect",
+      "classification": "future",
+      "requirementPrefix": "FULL",
+      "owner": "product strategy",
+      "dependsOn": ["PLAN-MASTER", "PLAN-PHASE-009"]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
-# Project 52: Final Product Vision
+# InfiniteCardCollector: Final Product Vision
 
-`Project 52` is a working codename, not a final public title. Before publication, the final name, logo, and icon should receive a trademark and Roblox search check.
+`InfiniteCardCollector` is the owner-selected public title. Before publication, the name, logo, icon, and related public assets must pass trademark, Roblox experience search, originality, and provenance review.
 
 ## Product Statement
 
-Project 52 is an active Roblox card collection game built around a permanent fifty two slot deck. Players begin with an empty deck, tear open earned packs, choose which version occupies each rank and suit slot, transform individual cards with Arcana, equip five global Jokers, and use the deck in rapid formation challenges, cooperative bosses, and friend battles.
+InfiniteCardCollector is an active Roblox card collection game built around a permanent fifty two slot deck. Players begin with an empty deck, tear open earned packs, choose which version occupies each rank and suit slot, transform individual cards with Arcana, equip five global Jokers, and use the deck in rapid formation challenges, cooperative bosses, and friend battles.
 
 The collection can eventually contain more than thirty seven thousand permanent card forms without requiring thirty seven thousand unrelated illustrations. The depth comes from fifty two original Deck Sets, fourteen Editions, eleven Grades, eleven Power Tiers, twenty four Traits, one hundred twenty Jokers, thirty six Arcana, and twelve Souls.
 
@@ -137,7 +137,7 @@ There are no chips, bets, dealers, wagers, roulette devices, or cash out languag
 | Crown Run | Ten, Jack, Queen, King, and Ace | `8.00x` |
 | Perfect Sum | Hits the round's displayed target value | `2.50x` plus accuracy bonus |
 
-These names, visuals, and reward rules must be presented as Project 52 mechanics. A formation can satisfy multiple patterns, but the server selects the highest base reward and then applies explicitly stackable bonuses. It never multiplies every detected pattern together.
+These names, visuals, and reward rules must be presented as InfiniteCardCollector mechanics. A formation can satisfy multiple patterns, but the server selects the highest base reward and then applies explicitly stackable bonuses. It never multiplies every detected pattern together.
 
 ### Scoring Model
 

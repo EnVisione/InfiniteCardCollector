@@ -2,7 +2,7 @@
 
 ## Status
 
-Project 52 is currently a documentation only Roblox game project. No runtime, Roblox place, Luau modules, dependencies, or build commands are implemented. This document separates current repository facts from the planned architecture in the launch specification.
+InfiniteCardCollector is currently a documentation only Roblox game project with a complete initial release plan. No runtime, Roblox place, Luau modules, dependencies, or build commands are implemented. This document separates current repository facts from the planned architecture and execution contracts.
 
 ## Product Boundary
 
@@ -15,14 +15,15 @@ The launch contract is limited to three Deck Sets. The complete content destinat
 Use this order when documents disagree:
 
 1. The current owner request.
-2. The active implementation plan, when one exists.
-3. The [launch foundation](../implementation/launch-foundation.md) for the intended first release.
-4. The [content catalog](content-catalog.md) for stable content names, IDs, counts, and first balance targets.
-5. The [product vision](product-vision.md) for the long term destination.
-6. Implemented source and passing tests after implementation begins.
-7. This technical overview and the root README.
+2. The [initial release plan](plan.md), its registered phase plans, manifest, and handoff.
+3. The [complete future plan](full_plan.md) for explicitly deferred scope.
+4. The [launch foundation](../implementation/launch-foundation.md) for the intended first release.
+5. The [content catalog](content-catalog.md) for stable content names, IDs, counts, and first balance targets.
+6. The [product vision](product-vision.md) for the long term destination.
+7. Implemented source and passing tests after implementation begins.
+8. This technical overview and the root README.
 
-No active implementation plan is currently stored in the repository. Repository implementation must not begin until the required plan intake is completed.
+The active release plan begins with Phase 000. No implementation phase has started, and the future plan does not authorize its deferred content for the initial release.
 
 ## Planned Runtime and Toolchain
 
@@ -33,7 +34,7 @@ No active implementation plan is currently stored in the repository. Repository 
 - Persistence: Roblox DataStore with session ownership, `UpdateAsync`, schema migrations, idempotent operations, and persistent trade journals.
 - Ephemeral coordination: MemoryStore only where temporary cross server coordination is eventually required.
 
-Exact Roblox Studio version, source synchronization workflow, package manager, formatter, linter, and test framework remain undecided. Do not add or pin them without the active implementation plan.
+The active plan selects Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5. These are planned contracts, not installed or verified repository capabilities. Phase 000 must verify upstream artifacts and integrity data, establish the source mapping and exact portable command interface, and record the compatible Roblox Studio and Rojo plugin identities before the toolchain becomes implemented fact.
 
 ## Planned Module Map
 
@@ -95,7 +96,7 @@ Launch servers target eight players. Card and particle objects should be pooled,
 
 ## Development and Verification
 
-There are no valid build or test commands yet. The first implementation milestone must establish exact setup, formatting, lint, unit test, Studio integration test, packaging, and publishing procedures. At minimum, verification must cover:
+There are no valid build or test commands yet. Phase 000 must establish exact setup, formatting, lint, unit test, Studio integration test, packaging, and publishing procedures. At minimum, verification must cover:
 
 - Catalog counts and stable ID uniqueness.
 - Formation detection and deterministic scoring.
@@ -117,8 +118,8 @@ Update the root README when setup, supported tools, public behavior, or release 
 ## Known Limitations
 
 - The repository contains no playable implementation.
-- No active implementation plan has been created.
-- The Project 52 name is a codename and has not been cleared as a final public brand.
+- Phase 000 has not started, so the selected toolchain and command contracts are not executable yet.
+- InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
 - Trading and end scale inventory sharding are designed but unimplemented.
 - Popularity cannot be guaranteed; onboarding and retention targets require soft launch evidence.

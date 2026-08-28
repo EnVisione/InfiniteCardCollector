@@ -1,6 +1,6 @@
-# Project 52
+# InfiniteCardCollector
 
-Project 52 is the working codename for an original Roblox card collection game. Players fill a permanent fifty two slot deck, unlock card forms with Arcana, equip deck wide Jokers, and use their collection in rapid formation challenges, active task stations, friend battles, and safe direct trades.
+InfiniteCardCollector is an original Roblox card collection game. Players fill a permanent fifty two slot deck, unlock card forms with Arcana, equip deck wide Jokers, and use their collection in rapid formation challenges, active task stations, friend battles, and safe direct trades.
 
 The project is currently in preimplementation design. It is not yet playable. The repository preserves the full product destination and a deliberately smaller launch foundation built around Classic, Radioactive, and Astral Deck Sets.
 
@@ -22,22 +22,24 @@ The complete end goal expands to fifty two Deck Sets, 37,856 permanent card form
 
 - [Documentation index](docs/README.md)
 - [Technical overview](docs/general/documentation.md)
+- [Initial release plan](docs/general/plan.md)
+- [Complete future plan](docs/general/full_plan.md)
 - [Final product vision](docs/general/product-vision.md)
 - [Complete content catalog](docs/general/content-catalog.md)
 - [Launch foundation and implementation specification](docs/implementation/launch-foundation.md)
-- [GitHub wiki](https://github.com/EnVisione/project-52/wiki)
+- [GitHub wiki](https://github.com/EnVisione/InfiniteCardCollector/wiki)
 
 ## Development Status
 
-No Roblox place, Luau source tree, build toolchain, or automated test harness has been committed yet. The launch specification defines the proposed source layout, services, data contracts, security boundaries, implementation milestones, and release verification. Runtime setup and commands will be documented after the implementation plan establishes the selected Roblox workflow and exact tool versions.
+No Roblox place, Luau source tree, executable build toolchain, or automated test harness has been committed yet. The initial release plan is complete, and Phase 000 is the next implementation phase. It selects Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5. Phase 000 must verify their provenance, pin their configuration, establish the exact commands, and prove Roblox Studio synchronization before product implementation begins.
 
 ## Originality and Safety
 
-Project 52 uses standard playing card ranks and suits with original art, names, interfaces, effects, sounds, and branding. It must not include Pokémon, anime, Balatro, or other protected franchise assets. The active game uses original Card Formations rather than poker, blackjack, betting, or wagering presentation.
+InfiniteCardCollector uses standard playing card ranks and suits with original art, names, interfaces, effects, sounds, and branding. It must not include Pokémon, anime, Balatro, or other protected franchise assets. The active game uses original Card Formations rather than poker, blackjack, betting, or wagering presentation.
 
 ## Support
 
-Use the [issue tracker](https://github.com/EnVisione/project-52/issues) for reproducible defects and scoped feature proposals. Remove credentials, private information, and unfiltered logs before attaching evidence.
+Use the [issue tracker](https://github.com/EnVisione/InfiniteCardCollector/issues) for reproducible defects and scoped feature proposals. Remove credentials, private information, and unfiltered logs before attaching evidence.
 
 ## License
 

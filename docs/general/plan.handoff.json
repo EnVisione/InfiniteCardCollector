@@ -1,0 +1,1613 @@
+{
+  "schemaVersion": 2,
+  "planId": "PLAN-MASTER",
+  "planSetSha256": "c83f9327d887f8befea060a75fdea8568383ced1bfbfc305ce863119add5af8b",
+  "planningSubject": {
+    "name": "InfiniteCardCollector from its documentation-only preimplementation state through a controlled first public Roblox release, with the exhaustive long-term 52 by 52 destination preserved as a registered future aspect",
+    "requestedArtifact": "authoritative_plan",
+    "planProfile": "software_product",
+    "sources": [
+      {
+        "id": "SRC-001",
+        "role": "owner_request",
+        "subject": "InfiniteCardCollector initial public release authority, exhaustive future vision disposition, and later GitHub synchronization",
+        "source": "Owner-approved planning brief",
+        "use": "Lock the planning subject, requested artifacts, public completion endpoint, trading gate, optional future disposition, and repository synchronization obligation."
+      },
+      {
+        "id": "SRC-002",
+        "role": "status",
+        "subject": "InfiniteCardCollector product identity, foundation scope, maturity, originality boundary, and repository status",
+        "source": "README.md",
+        "use": "Establish the documentation-only current state and public-facing launch summary."
+      },
+      {
+        "id": "SRC-003",
+        "role": "reference",
+        "subject": "Canonical tracked documentation topology and navigation rules",
+        "source": "docs/README.md",
+        "use": "Preserve documentation ownership, links, indexing, and GitHub wiki boundaries."
+      },
+      {
+        "id": "SRC-004",
+        "role": "requirements",
+        "subject": "Current technical state and proposed InfiniteCardCollector architecture, persistence, networking, security, and verification boundaries",
+        "source": "docs/general/documentation.md",
+        "use": "Ground the software architecture, state ownership, compatibility, and current-state evidence."
+      },
+      {
+        "id": "SRC-005",
+        "role": "requirements",
+        "subject": "Complete InfiniteCardCollector product destination and expansion lifecycle",
+        "source": "docs/general/product-vision.md",
+        "use": "Define enduring product invariants and the registered future aspect without making the full destination an initial-release blocker."
+      },
+      {
+        "id": "SRC-006",
+        "role": "requirements",
+        "subject": "Stable names, IDs, counts, content families, effects, and first balance targets",
+        "source": "docs/general/content-catalog.md",
+        "use": "Lock launch and end-state content identity contracts and provide the exhaustive future content matrix."
+      },
+      {
+        "id": "SRC-007",
+        "role": "requirements",
+        "subject": "First public release gameplay, architecture, state, security, implementation order, tests, and publication gates",
+        "source": "docs/implementation/launch-foundation.md",
+        "use": "Serve as the primary requirements source for every mandatory initial-release requirement and phase."
+      },
+      {
+        "id": "SRC-008",
+        "role": "reference",
+        "subject": "Repository-specific execution, verification, documentation, Git, and safety constraints",
+        "source": "AGENTS.md",
+        "use": "Constrain plan execution, sequential phase integration, verification depth, and repository hygiene."
+      },
+      {
+        "id": "SRC-009",
+        "role": "repository_evidence",
+        "subject": "Sanitized local and remote repository identity",
+        "source": "git status, git rev-parse, git remote, gh repo view, and git ls-remote observed at the locked intake revision",
+        "use": "Pin repository root, branch, commit, public remote identity, default branch, and matching remote commit."
+      },
+      {
+        "id": "SRC-010",
+        "role": "reference",
+        "subject": "Authoritative plan semantics and validation contract",
+        "source": "Plan Creator contract",
+        "use": "Define stable IDs, requirement contracts, phase topology, prerequisites, evidence, splitting, and handoff rules."
+      },
+      {
+        "id": "SRC-011",
+        "role": "reference",
+        "subject": "Software product profile contract",
+        "source": "Plan Creator software product profile",
+        "use": "Require complete coverage of all ten software product profile areas."
+      },
+      {
+        "id": "SRC-012",
+        "role": "reference",
+        "subject": "Locked intake schema",
+        "source": "Plan Creator intake schema",
+        "use": "Define the normalized owner decisions, scope, identity, profile matrix, and prerequisites."
+      },
+      {
+        "id": "SRC-013",
+        "role": "reference",
+        "subject": "Authoritative master plan structure",
+        "source": "Plan Creator master plan template",
+        "use": "Define the master plan section and traceability structure."
+      },
+      {
+        "id": "SRC-014",
+        "role": "reference",
+        "subject": "Registered aspect plan structure",
+        "source": "Plan Creator aspect plan template",
+        "use": "Structure full_plan.md as a registered future aspect with independent lifecycle detail."
+      },
+      {
+        "id": "SRC-015",
+        "role": "reference",
+        "subject": "Mandatory per-phase execution blueprint structure",
+        "source": "Plan Creator phase blueprint template",
+        "use": "Define the complete phase execution plans under docs/general/phases."
+      }
+    ]
+  },
+  "profileContract": [
+    {
+      "area": "component architecture",
+      "status": "covered",
+      "source": "SRC-004, SRC-007",
+      "plan_section": "Architecture and Ownership Boundaries",
+      "rationale": "The technical overview and launch foundation define shared modules, services, controllers, UI surfaces, dependency direction, state ownership, data flow, and trust boundaries."
+    },
+    {
+      "area": "determinism",
+      "status": "covered",
+      "source": "SRC-006, SRC-007",
+      "plan_section": "Deterministic Calculations and Idempotent State",
+      "rationale": "Identical normalized inputs must produce stable formation results, score traces, RNG records, migrations, operation receipts, pack recovery, and trade settlement outcomes."
+    },
+    {
+      "area": "failure taxonomy",
+      "status": "covered",
+      "source": "SRC-007",
+      "plan_section": "Failure Taxonomy and Recovery Contract",
+      "rationale": "The launch foundation defines invalid input, service failure, storage failure, authorization failure, partial completion, retryability, quarantine, safe mode, rollback, and operator evidence."
+    },
+    {
+      "area": "generalization",
+      "status": "covered",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "plan_section": "Data-Driven Generalization and Future Aspect Boundary",
+      "rationale": "The architecture must represent launch fixtures without special cases, scale through data-driven catalogs, support all required devices, and preserve the exhaustive future aspect without implementing it early."
+    },
+    {
+      "area": "inputs and outputs",
+      "status": "covered",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "plan_section": "Product Inputs, Outputs, and Observable Workflows",
+      "rationale": "The product vision, content catalog, and launch foundation define player inputs, server outputs, interfaces, actions, schemas, content, and observable first-release behavior."
+    },
+    {
+      "area": "release lifecycle",
+      "status": "external_prerequisite",
+      "source": "EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-012, EXT-013",
+      "plan_section": "Rollout, Rollback, Publication, and Production Acceptance",
+      "rationale": "Build, private soft launch, controlled public rollout, observability, rollback, documentation, and production acceptance are defined, while external Roblox identities, permissions, authorizations, cohort evidence, and commerce access remain prerequisites."
+    },
+    {
+      "area": "security",
+      "status": "covered",
+      "source": "SRC-004, SRC-007, SRC-008",
+      "plan_section": "Security, Privacy, and Abuse Boundaries",
+      "rationale": "The sources define server authority, payload validation, rate limits, ownership checks, privacy, secret handling, trade safety, policy checks, moderation evidence, and adversarial tests."
+    },
+    {
+      "area": "state and persistence",
+      "status": "covered",
+      "source": "SRC-004, SRC-007",
+      "plan_section": "State, Persistence, Transactions, and Recovery",
+      "rationale": "The sources define durable and transient state, schema versioning, session ownership, UpdateAsync writes, migrations, journals, retries, corruption handling, size budgets, and recovery."
+    },
+    {
+      "area": "test system",
+      "status": "covered",
+      "source": "SRC-007, SRC-008",
+      "plan_section": "Verification Strategy and Evidence Matrix",
+      "rationale": "Pure, integration, Studio, multiclient, migration, security, failure injection, performance, accessibility, recovery, and real-workflow verification are required."
+    },
+    {
+      "area": "versioning",
+      "status": "covered",
+      "source": "SRC-006, SRC-007, DEC-008",
+      "plan_section": "Versioning and Compatibility",
+      "rationale": "Stable IDs, catalog versions, configuration versions, profile schemas, operation receipts, migrations, tool artifacts, and public compatibility boundaries are explicitly covered."
+    }
+  ],
+  "mandatoryRequirements": [
+    {
+      "id": "CORE-REQ-001",
+      "summary": "Pin and prove the Roblox Studio, typed Luau, Rojo, tool management, formatting, linting, testing, build, synchronization, and publication workflow with exact reproducible commands.",
+      "source": "SRC-001, SRC-004, SRC-007, SRC-008",
+      "owner": "repository toolchain",
+      "contributors": "release operations and documentation operations",
+      "dependencies": [
+        "DEC-001",
+        "DEC-008",
+        "EXT-001",
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-005"
+      ],
+      "lifecycleStage": "readiness",
+      "productionVerification": "none",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-000"
+    },
+    {
+      "id": "CORE-REQ-002",
+      "summary": "Provide exact launch catalogs, stable IDs, counts, references, effect handlers, feature configuration, balance configuration, and deterministic validation for all enabled content.",
+      "source": "SRC-006, SRC-007",
+      "owner": "shared catalog layer",
+      "contributors": "shared configuration and content asset pipeline",
+      "dependencies": [
+        "CORE-REQ-001",
+        "DEC-003"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "none",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-001"
+    },
+    {
+      "id": "CORE-REQ-003",
+      "summary": "Calculate all twelve launch formations, card contributions, multipliers, affinities, Traits, Editions, and Joker stages deterministically with explainable traces and safe numeric bounds.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "owner": "shared calculation layer",
+      "contributors": "Joker service and formation service",
+      "dependencies": [
+        "CORE-REQ-001",
+        "CORE-REQ-002"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-001"
+    },
+    {
+      "id": "CORE-REQ-004",
+      "summary": "Enforce a server-authoritative typed network contract with action-specific schemas, permissions, state validation, size limits, rate limits, stable errors, privacy boundaries, and hostile-input rejection.",
+      "source": "SRC-004, SRC-007, SRC-008",
+      "owner": "network gateway",
+      "contributors": "Security service and every action-owning server service",
+      "dependencies": [
+        "CORE-REQ-001",
+        "DEC-008",
+        "EXT-004"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-002"
+    },
+    {
+      "id": "CORE-REQ-005",
+      "summary": "Persist versioned player profiles with session ownership, UpdateAsync writes, pure repeatable migrations, bounded retries, read-only safe mode, compact discovery state, size budgets, and sharding-ready storage interfaces.",
+      "source": "SRC-004, SRC-007, SRC-008",
+      "owner": "Profile service",
+      "contributors": "Inventory service, Transaction service, and release operations",
+      "dependencies": [
+        "CORE-REQ-001",
+        "DEC-008",
+        "DEC-009",
+        "EXT-006"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-002"
+    },
+    {
+      "id": "CORE-REQ-006",
+      "summary": "Route every meaningful economy mutation through idempotent operation IDs, revisions, receipts, pending states, retry-safe commits, shutdown handling, and exact recovery behavior.",
+      "source": "SRC-004, SRC-007",
+      "owner": "Transaction service",
+      "contributors": "Profile service and action-owning services",
+      "dependencies": [
+        "CORE-REQ-005",
+        "DEC-008",
+        "DEC-009"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-002"
+    },
+    {
+      "id": "CORE-REQ-007",
+      "summary": "Maintain one effective owner per collectible instance, permanent discovery, provenance, locking, flags, collection records, and a valid fifty-two-slot active deck without silent loss or regression.",
+      "source": "SRC-004, SRC-005, SRC-006, SRC-007",
+      "owner": "Inventory service",
+      "contributors": "Collection service and Deck service",
+      "dependencies": [
+        "CORE-REQ-002",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "DEC-009"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-002"
+    },
+    {
+      "id": "CORE-REQ-008",
+      "summary": "Render each card through one reusable layered, data-driven presentation system across table, pack, binder, deck, inspect, trade, and low-graphics surfaces.",
+      "source": "SRC-005, SRC-007",
+      "owner": "card rendering system",
+      "contributors": "content asset pipeline and client application",
+      "dependencies": [
+        "CORE-REQ-001",
+        "CORE-REQ-002",
+        "DEC-007",
+        "DEC-011"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-002"
+    },
+    {
+      "id": "CORE-REQ-009",
+      "summary": "Deliver complete original launch assets for Classic, Radioactive, Astral, all enabled card layers, packs, Jokers, Arcana, interfaces, sounds, and required metadata with provenance review.",
+      "source": "SRC-002, SRC-005, SRC-006, SRC-007",
+      "owner": "content asset pipeline",
+      "contributors": "card rendering system, client application, and release operations",
+      "dependencies": [
+        "CORE-REQ-002",
+        "CORE-REQ-008",
+        "DEC-007",
+        "DEC-013",
+        "EXT-007"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "none",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-003"
+    },
+    {
+      "id": "CORE-REQ-010",
+      "summary": "Open earned Deck Set, Joker, and Arcana packs with exact published odds, pity, early protection, committed contents, saved choices, skip and accessibility controls, idempotency, and disconnect recovery.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "owner": "Pack service",
+      "contributors": "Random service, Transaction service, Inventory service, and client application",
+      "dependencies": [
+        "CORE-REQ-002",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-008",
+        "CORE-REQ-013",
+        "DEC-006",
+        "DEC-009"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-003"
+    },
+    {
+      "id": "CORE-REQ-011",
+      "summary": "Support all launch Grades, Power Tiers, Traits, Editions, Arcana, Grade experience, currencies, salvage, locks, and one-card permanent transformations without destroying or regressing progress.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "owner": "Progression service",
+      "contributors": "Arcana service, Inventory service, Collection service, and Transaction service",
+      "dependencies": [
+        "CORE-REQ-002",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "DEC-009"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-003"
+    },
+    {
+      "id": "CORE-REQ-012",
+      "summary": "Collect, inspect, progress, and equip up to five of the twenty-four launch Jokers through a deterministic effect registry with explicit conflicts and calculation traces.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "owner": "Joker service",
+      "contributors": "shared calculation layer, Inventory service, and client application",
+      "dependencies": [
+        "CORE-REQ-002",
+        "CORE-REQ-003",
+        "CORE-REQ-007"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-003"
+    },
+    {
+      "id": "CORE-REQ-013",
+      "summary": "Operate versioned integer currencies, prices, reward sources, sinks, caps, pity, anti-farming rules, and analytics reason codes without trusting client-supplied amounts.",
+      "source": "SRC-005, SRC-007",
+      "owner": "shared configuration",
+      "contributors": "Transaction service, Analytics service, and gameplay services",
+      "dependencies": [
+        "CORE-REQ-001",
+        "CORE-REQ-002",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "DEC-006",
+        "DEC-010"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-001"
+    },
+    {
+      "id": "CORE-REQ-014",
+      "summary": "Provide responsive HUD, opening table, binder, deck builder, card inspect, Arcana Lab, Joker Stage, showcase, Formation Rush, task, Friend Clash, trade, and settings interfaces with authoritative state.",
+      "source": "SRC-005, SRC-007",
+      "owner": "client application",
+      "contributors": "card rendering system, network gateway, and server services",
+      "dependencies": [
+        "CORE-REQ-004",
+        "CORE-REQ-007",
+        "CORE-REQ-008",
+        "DEC-011"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-003"
+    },
+    {
+      "id": "CORE-REQ-015",
+      "summary": "Guide a blank profile through a free pack within thirty seconds, Formation Rush within two minutes, visible deck improvement, Joker and Arcana discovery, social play, and durable rejoin recovery.",
+      "source": "SRC-001, SRC-007",
+      "owner": "onboarding system",
+      "contributors": "Pack service, Deck service, Formation service, Task service, client application, and Analytics service",
+      "dependencies": [
+        "CORE-REQ-010",
+        "CORE-REQ-012",
+        "CORE-REQ-014",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "EXT-006",
+        "EXT-012"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-004"
+    },
+    {
+      "id": "CORE-REQ-016",
+      "summary": "Run the complete sixty-second Formation Rush loop with authoritative hands, draws, redraws, submissions, all twelve formations, streaks, scoring, rewards, stale-state rejection, and recovery.",
+      "source": "SRC-005, SRC-007",
+      "owner": "Formation service",
+      "contributors": "shared calculation layer, Deck service, Joker service, Transaction service, and client application",
+      "dependencies": [
+        "CORE-REQ-003",
+        "CORE-REQ-004",
+        "CORE-REQ-007",
+        "CORE-REQ-012",
+        "CORE-REQ-013"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-004"
+    },
+    {
+      "id": "CORE-REQ-017",
+      "summary": "Run Suit Sorter, Sequence Bench, Arcana Trace, and Grade Press with server-generated state, discrete validated actions, useful minimum rewards, accessible alternatives, and capped timed boosts.",
+      "source": "SRC-005, SRC-007",
+      "owner": "Task service",
+      "contributors": "Boost service, Transaction service, client application, and Security service",
+      "dependencies": [
+        "CORE-REQ-004",
+        "CORE-REQ-006",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "DEC-011"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-004"
+    },
+    {
+      "id": "CORE-REQ-018",
+      "summary": "Provide passive, offline, daily, collection, affinity, mastery, and return progression that is transparent, capped, durable, and at least five times less efficient than ordinary active play.",
+      "source": "SRC-005, SRC-007",
+      "owner": "retention system",
+      "contributors": "Boost service, Collection service, Transaction service, and Analytics service",
+      "dependencies": [
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "DEC-010"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-004"
+    },
+    {
+      "id": "CORE-REQ-019",
+      "summary": "Run same-server Power and Fair Friend Clash invitations, best-of-five rounds, loadout snapshots, disconnect handling, anti-farming caps, and no-stake rewards without transferring inventory.",
+      "source": "SRC-005, SRC-007",
+      "owner": "Duel service",
+      "contributors": "Formation service, Transaction service, client application, and Analytics service",
+      "dependencies": [
+        "CORE-REQ-003",
+        "CORE-REQ-004",
+        "CORE-REQ-007",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "CORE-REQ-016",
+        "EXT-012"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-005"
+    },
+    {
+      "id": "CORE-REQ-020",
+      "summary": "Implement feature-flagged direct trading with eligibility, item locks, offer revisions, readiness reset, countdown, persistent journals, idempotent settlement, receipts, reconciliation, and a visibly disabled safe fallback.",
+      "source": "SRC-001, SRC-004, SRC-005, SRC-007",
+      "owner": "Trade service",
+      "contributors": "Profile service, Transaction service, Inventory service, client application, and Security service",
+      "dependencies": [
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-014",
+        "DEC-005"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "mvp",
+      "canonicalPhase": "CORE-PHASE-006"
+    },
+    {
+      "id": "CORE-REQ-021",
+      "summary": "Grant guaranteed cosmetic and declared convenience purchases exactly once, restore them correctly, enforce policy information, expose exact contents, and exclude paid random gameplay power.",
+      "source": "SRC-001, SRC-005, SRC-007",
+      "owner": "purchase boundary",
+      "contributors": "Policy service, Transaction service, Profile service, client application, and Analytics service",
+      "dependencies": [
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-014",
+        "DEC-006",
+        "EXT-010",
+        "EXT-013"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "destructive",
+      "destructiveApprovalPrerequisite": "EXT-010",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-007"
+    },
+    {
+      "id": "CORE-REQ-022",
+      "summary": "Emit sanitized onboarding, economy, progression, gameplay, social, trade, purchase, error, and security evidence and operate dashboards, leaderboards, feature flags, moderation controls, and rollback settings.",
+      "source": "SRC-004, SRC-005, SRC-007",
+      "owner": "Analytics service",
+      "contributors": "Security service, release operations, and every emitting service",
+      "dependencies": [
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-013"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-007"
+    },
+    {
+      "id": "CORE-REQ-023",
+      "summary": "Make every required activity usable with touch, mouse, keyboard, and controller, including reduced motion, reduced flash, color assistance, low graphics, small-screen layouts, and acceptable eight-player performance.",
+      "source": "SRC-005, SRC-007, SRC-008",
+      "owner": "client application",
+      "contributors": "card rendering system, server services, verification system, and content asset pipeline",
+      "dependencies": [
+        "CORE-REQ-008",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "DEC-011",
+        "EXT-012"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-008"
+    },
+    {
+      "id": "CORE-REQ-024",
+      "summary": "Pass deterministic, integration, Studio, multiclient, migration, hostile-input, persistence, trade failure-injection, performance, accessibility, rollback, and release-candidate verification without known mandatory defects.",
+      "source": "SRC-007, SRC-008",
+      "owner": "verification system",
+      "contributors": "all product components and release operations",
+      "dependencies": [
+        "CORE-REQ-001",
+        "CORE-REQ-002",
+        "CORE-REQ-003",
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-008",
+        "CORE-REQ-009",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-012",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-021",
+        "CORE-REQ-022",
+        "CORE-REQ-023",
+        "EXT-012"
+      ],
+      "lifecycleStage": "change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-008"
+    },
+    {
+      "id": "CORE-REQ-025",
+      "summary": "Clear an original public identity, complete private soft launch evidence, satisfy every public launch gate, execute controlled Roblox publication, prove production acceptance, and retain rollback readiness.",
+      "source": "SRC-001, SRC-002, SRC-005, SRC-007",
+      "owner": "release operations",
+      "contributors": "product owner, verification system, Analytics service, and documentation operations",
+      "dependencies": [
+        "CORE-REQ-020",
+        "CORE-REQ-021",
+        "CORE-REQ-022",
+        "CORE-REQ-023",
+        "CORE-REQ-024",
+        "DEC-004",
+        "DEC-005",
+        "DEC-013",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-012",
+        "EXT-013"
+      ],
+      "lifecycleStage": "post_change",
+      "productionVerification": "nondestructive",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-009"
+    },
+    {
+      "id": "CORE-REQ-026",
+      "summary": "Keep tracked documentation, release evidence, GitHub Issues, Project, milestones, wiki, sequential phase branches, pull requests, signed tags, and repository state synchronized without modifying the protected plan set during execution.",
+      "source": "SRC-001, SRC-003, SRC-004, SRC-008",
+      "owner": "documentation operations",
+      "contributors": "repository operations and every phase owner",
+      "dependencies": [
+        "DEC-014",
+        "EXT-014"
+      ],
+      "lifecycleStage": "continuous",
+      "productionVerification": "none",
+      "releaseImpact": "stable release",
+      "canonicalPhase": "CORE-PHASE-009"
+    }
+  ],
+  "optionalFutureScope": [
+    {
+      "id": "FUT-001",
+      "summary": "Add the remaining forty-nine original Deck Sets in small health-gated themed waves until all fifty-two sets and 2,704 base identities exist.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-002",
+      "summary": "Add Diamond through Unknown Editions and scale permanent form tracking from 624 launch forms to all 37,856 forms.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-003",
+      "summary": "Add the remaining twelve Traits and validate all twenty-four Trait interactions at end-state scale.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-004",
+      "summary": "Add the remaining ninety-six Jokers and complete all six rarity groups and endgame interactions.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-005",
+      "summary": "Add the remaining twenty-four Arcana and complete Edition, suit, rank, Grade, Power Tier, and Trait transformation families.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-006",
+      "summary": "Introduce all twelve Souls, Soul Packs, Soul Fragments, and one equipped endgame global build rule.",
+      "source": "SRC-005, SRC-006, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-007",
+      "summary": "Add the cooperative Boss Table, rotating boss mechanics, contribution rewards, endgame bosses, and cooperative seasons.",
+      "source": "SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-008",
+      "summary": "Add cross-server matchmaking and population-supported competitive ratings after same-server Friend Clash is healthy.",
+      "source": "SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-009",
+      "summary": "Add an escrowed cross-server listing market only after direct trade ledgers, moderation, price history, expiration, taxes, recovery, and abuse controls are proven.",
+      "source": "SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-010",
+      "summary": "Expand spectator presentation, wishlists, social showcases, clubs or crews, cooperative events, and seasonal live operations.",
+      "source": "SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-011",
+      "summary": "Consider story chapters, dialogue quests, or a larger navigable world only through a later explicit product-contract promotion.",
+      "source": "SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-012",
+      "summary": "Migrate large inventories to journaled shards and adopt deterministic mantissa-and-exponent numbers before platform storage or integer precision limits are approached.",
+      "source": "SRC-004, SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-013",
+      "summary": "Add multiple saved loadouts, complete Edition-grid rewards, expanded mastery, endgame album views, and final collection leaderboards.",
+      "source": "SRC-005, SRC-006",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-014",
+      "summary": "Expand daily and weekly rotations, cosmetic season tracks, Packstorms, events, and measured retention systems after foundation health is proven.",
+      "source": "SRC-005, SRC-007",
+      "disposition": "excluded"
+    },
+    {
+      "id": "FUT-015",
+      "summary": "Finish and enable direct trading in a later release if the initial public release uses the approved visibly disabled fallback.",
+      "source": "SRC-001, SRC-005, SRC-007",
+      "disposition": "excluded"
+    }
+  ],
+  "nonGoals": [
+    {
+      "id": "NG-001",
+      "summary": "Do not use protected franchise characters, art, names, sounds, logos, interfaces, pack designs, screenshots, or imitation branding.",
+      "source": "SRC-001, SRC-002, SRC-005, SRC-006, SRC-007"
+    },
+    {
+      "id": "NG-002",
+      "summary": "Do not present poker, blackjack, casino, betting, wagering, stakes, chips, dealers, jackpots, or cash-out mechanics.",
+      "source": "SRC-002, SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-003",
+      "summary": "Do not sell paid random gameplay packs, hidden luck, purchasable odds advantages, leaderboard power, or random power requirements.",
+      "source": "SRC-001, SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-004",
+      "summary": "Do not support real-money trading, Robux value display, player-to-player currency transfer, or wagering inventory.",
+      "source": "SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-005",
+      "summary": "Do not grant clients authority over inventory, RNG, scores, rewards, progression, prices, purchases, timestamps, trade ownership, or persistent state.",
+      "source": "SRC-004, SRC-005, SRC-007, SRC-008"
+    },
+    {
+      "id": "NG-006",
+      "summary": "Do not make passive, offline, unattended, or held-input play the strongest progression path.",
+      "source": "SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-007",
+      "summary": "Do not use additional catalog volume to compensate for an unhealthy opening, collection, transformation, or Formation Rush loop.",
+      "source": "SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-008",
+      "summary": "Do not treat popularity, discovery rank, retention, spending, or audience size as guaranteed outcomes.",
+      "source": "SRC-004, SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-009",
+      "summary": "Do not require completion of the full fifty-two Deck Set and 37,856-form destination for the initial public release endpoint.",
+      "source": "SRC-001, SRC-002, SRC-005, SRC-007"
+    },
+    {
+      "id": "NG-010",
+      "summary": "Do not change the GitHub repository's current public visibility as part of publishing the Roblox experience.",
+      "source": "SRC-001, SRC-009"
+    }
+  ],
+  "ownerDecisions": [
+    {
+      "id": "DEC-001",
+      "question": "Which artifact owns initial-release completion authority?",
+      "selectedChoice": "docs/general/plan.md is the authoritative initial public release plan and completion authority.",
+      "rationale": "The launch requires one clear endpoint and one global phase sequence.",
+      "affectedRequirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-002",
+        "CORE-REQ-003",
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-008",
+        "CORE-REQ-009",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-012",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-021",
+        "CORE-REQ-022",
+        "CORE-REQ-023",
+        "CORE-REQ-024",
+        "CORE-REQ-025",
+        "CORE-REQ-026"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-002",
+      "question": "How is the exhaustive long-term destination represented?",
+      "selectedChoice": "docs/general/full_plan.md is mandatory to author and register as a future aspect, but its execution remains excluded from initial-release completion.",
+      "rationale": "The 52 by 52 destination has an independent lifecycle and substantial content matrix.",
+      "affectedRequirements": [],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-003",
+      "question": "What exact content belongs to the initial public release?",
+      "selectedChoice": "The launch contains three Deck Sets, 156 base identities, four Editions, 624 forms, eleven Grades, eleven Power Tiers, twelve Traits, twenty-four Jokers, twelve Arcana, twelve formations, and four active tasks.",
+      "rationale": "This is the smallest foundation that exercises every essential collection and active-play axis.",
+      "affectedRequirements": [
+        "CORE-REQ-002",
+        "CORE-REQ-009",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-012",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-004",
+      "question": "What observable endpoint closes the master plan?",
+      "selectedChoice": "A controlled public Roblox release closes the plan only after private soft launch and every mandatory initial-release gate pass.",
+      "rationale": "Code completion without real release evidence does not prove the product endpoint.",
+      "affectedRequirements": [
+        "CORE-REQ-024",
+        "CORE-REQ-025",
+        "CORE-REQ-026"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-005",
+      "question": "Does direct trading block publication?",
+      "selectedChoice": "Trading is enabled only after every safety and production authorization gate passes; otherwise the public release proceeds with trading visibly disabled.",
+      "rationale": "Public inventory safety is stronger than feature completeness.",
+      "affectedRequirements": [
+        "CORE-REQ-020",
+        "CORE-REQ-024",
+        "CORE-REQ-025"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-006",
+      "question": "What randomness and monetization model is allowed?",
+      "selectedChoice": "Gameplay packs are earned with visible odds and persistent pity; monetization is limited to guaranteed cosmetics and declared convenience without paid random power.",
+      "rationale": "The model preserves transparent progression and avoids paid randomized gameplay power.",
+      "affectedRequirements": [
+        "CORE-REQ-010",
+        "CORE-REQ-013",
+        "CORE-REQ-021"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-007",
+      "question": "What originality and presentation boundary applies?",
+      "selectedChoice": "All branding, art, audio, interfaces, effects, and writing are original, and the game uses Card Formations without casino, poker, betting, or wagering presentation.",
+      "rationale": "Standard ranks and suits are generic building blocks, while every expressive product layer must be original and policy-safe.",
+      "affectedRequirements": [
+        "CORE-REQ-008",
+        "CORE-REQ-009",
+        "CORE-REQ-014",
+        "CORE-REQ-025"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-008",
+      "question": "Where does gameplay and persistent authority reside?",
+      "selectedChoice": "The server owns inventory, RNG, scoring, rewards, progression, transactions, trades, purchases, policy decisions, and durable state; clients submit narrow intent and render results.",
+      "rationale": "Every valuable or persistent outcome crosses an untrusted client boundary.",
+      "affectedRequirements": [
+        "CORE-REQ-003",
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-012",
+        "CORE-REQ-013",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-021",
+        "CORE-REQ-022"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-009",
+      "question": "Which progress invariants are permanent?",
+      "selectedChoice": "Edition unlocks, discovery, Grade progress, pity rewards, instance identity, and ownership cannot silently regress or be destroyed by ordinary progression or balance changes.",
+      "rationale": "Permanent collection progress is a core product promise.",
+      "affectedRequirements": [
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-020"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-010",
+      "question": "How does active progress compare with passive progress?",
+      "selectedChoice": "Active play remains the primary path and must be at least five times as efficient as the passive baseline in verification fixtures.",
+      "rationale": "Pack opening, deck decisions, tasks, and formations are the game; waiting is supplementary.",
+      "affectedRequirements": [
+        "CORE-REQ-013",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-011",
+      "question": "Which devices and accessibility modes are mandatory?",
+      "selectedChoice": "Every required activity supports touch, mouse, keyboard, controller, reduced motion, reduced flash, low graphics, readable rarity cues, and small-screen layouts.",
+      "rationale": "The public Roblox experience must not make one input device or intense visual effects mandatory.",
+      "affectedRequirements": [
+        "CORE-REQ-008",
+        "CORE-REQ-014",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-023",
+        "CORE-REQ-024"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-012",
+      "question": "When may postlaunch content expansion begin?",
+      "selectedChoice": "Expansion begins only after onboarding, retention, storage, exploit, trade, and device metrics demonstrate a healthy foundation.",
+      "rationale": "Additional content cannot repair a weak or unsafe core loop.",
+      "affectedRequirements": [
+        "CORE-REQ-022",
+        "CORE-REQ-025"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-013",
+      "question": "What is the final selected public name and which clearance gates remain?",
+      "selectedChoice": "InfiniteCardCollector is the owner-selected public name. The name, logo, icon, thumbnails, and related public assets must still pass trademark, Roblox experience search, originality, provenance, policy, and owner acceptance gates before publication.",
+      "rationale": "The owner has resolved the public name while preserving the independent clearance and asset-quality gates required for a safe release.",
+      "affectedRequirements": [
+        "CORE-REQ-009",
+        "CORE-REQ-025",
+        "EXT-007"
+      ],
+      "supersedes": []
+    },
+    {
+      "id": "DEC-014",
+      "question": "How are documentation and GitHub state synchronized?",
+      "selectedChoice": "Tracked documentation remains canonical, the wiki remains a navigation surface, and GitHub Issues, Project, milestones, pull requests, tags, and documentation are synchronized later without changing protected plan artifacts during execution.",
+      "rationale": "Execution evidence belongs in ordinary project and GitHub records, not in the pinned plan set.",
+      "affectedRequirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-024",
+        "CORE-REQ-025",
+        "CORE-REQ-026"
+      ],
+      "supersedes": []
+    }
+  ],
+  "externalPrerequisites": [
+    {
+      "id": "EXT-001",
+      "name": "Rojo v7.7.0 artifact contract",
+      "affected_requirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-008",
+        "CORE-REQ-009",
+        "CORE-REQ-014",
+        "CORE-REQ-024"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "artifact",
+      "availability": "available",
+      "authorization": "not_required",
+      "blocked_plan_approved": false,
+      "artifact_evidence": [
+        "exact_version",
+        "authoritative_source",
+        "sha256",
+        "sha512",
+        "compatibility",
+        "license_provenance",
+        "security_review"
+      ],
+      "required_evidence": [
+        "Exact version output proving Rojo v7.7.0.",
+        "Authoritative release source recorded as https://github.com/rojo-rbx/rojo/releases/tag/v7.7.0 with the selected platform artifact identity.",
+        "SHA-256 digest of the exact selected Rojo artifact.",
+        "SHA-512 digest of the exact selected Rojo artifact.",
+        "Compatibility proof that Rojo v7.7.0 synchronizes the pinned InfiniteCardCollector project model with the selected Roblox Studio release and repository layout.",
+        "Rojo license and upstream provenance record for the selected artifact.",
+        "Security review of the release notes, artifact source, dependencies, executable provenance, and repository integration surface."
+      ]
+    },
+    {
+      "id": "EXT-002",
+      "name": "Rokit v1.2.0 artifact contract",
+      "affected_requirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-024"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "artifact",
+      "availability": "available",
+      "authorization": "not_required",
+      "blocked_plan_approved": false,
+      "artifact_evidence": [
+        "exact_version",
+        "authoritative_source",
+        "sha256",
+        "sha512",
+        "compatibility",
+        "license_provenance",
+        "security_review"
+      ],
+      "required_evidence": [
+        "Exact version output proving Rokit v1.2.0.",
+        "Authoritative release source recorded as https://github.com/rojo-rbx/rokit/releases/tag/v1.2.0 with the selected platform artifact identity.",
+        "SHA-256 digest of the exact selected Rokit artifact.",
+        "SHA-512 digest of the exact selected Rokit artifact.",
+        "Compatibility proof that Rokit v1.2.0 installs and resolves the pinned InfiniteCardCollector tool manifest reproducibly on the supported development environment.",
+        "Rokit license and upstream provenance record for the selected artifact.",
+        "Security review of the release notes, download source, managed-tool execution model, and lock or manifest behavior."
+      ]
+    },
+    {
+      "id": "EXT-003",
+      "name": "StyLua v2.5.2 artifact contract",
+      "affected_requirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-024"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "artifact",
+      "availability": "available",
+      "authorization": "not_required",
+      "blocked_plan_approved": false,
+      "artifact_evidence": [
+        "exact_version",
+        "authoritative_source",
+        "sha256",
+        "sha512",
+        "compatibility",
+        "license_provenance",
+        "security_review"
+      ],
+      "required_evidence": [
+        "Exact version output proving StyLua v2.5.2.",
+        "Authoritative release source recorded as https://github.com/JohnnyMorganz/StyLua/releases/tag/v2.5.2 with the selected platform artifact identity.",
+        "SHA-256 digest of the exact selected StyLua artifact.",
+        "SHA-512 digest of the exact selected StyLua artifact.",
+        "Compatibility proof that StyLua v2.5.2 formats every InfiniteCardCollector Luau source set deterministically and passes the repository formatting check.",
+        "StyLua license and upstream provenance record for the selected artifact.",
+        "Security review of the release notes, parser and formatter changes, artifact source, and repository file access."
+      ]
+    },
+    {
+      "id": "EXT-004",
+      "name": "Selene 0.31.0 artifact contract",
+      "affected_requirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-004",
+        "CORE-REQ-024"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "artifact",
+      "availability": "available",
+      "authorization": "not_required",
+      "blocked_plan_approved": false,
+      "artifact_evidence": [
+        "exact_version",
+        "authoritative_source",
+        "sha256",
+        "sha512",
+        "compatibility",
+        "license_provenance",
+        "security_review"
+      ],
+      "required_evidence": [
+        "Exact version output proving Selene 0.31.0.",
+        "Authoritative release source recorded as https://github.com/Kampfkarren/selene/releases/tag/0.31.0 with the selected platform artifact identity.",
+        "SHA-256 digest of the exact selected Selene artifact.",
+        "SHA-512 digest of the exact selected Selene artifact.",
+        "Compatibility proof that Selene 0.31.0 analyzes the selected Luau and Roblox standard library contract and passes the full InfiniteCardCollector source tree.",
+        "Selene license and upstream provenance record for the selected artifact.",
+        "Security review of the release notes, standard-library definitions, configuration, artifact source, and repository file access."
+      ]
+    },
+    {
+      "id": "EXT-005",
+      "name": "Lune v0.10.5 artifact contract",
+      "affected_requirements": [
+        "CORE-REQ-001",
+        "CORE-REQ-002",
+        "CORE-REQ-003",
+        "CORE-REQ-024"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "artifact",
+      "availability": "available",
+      "authorization": "not_required",
+      "blocked_plan_approved": false,
+      "artifact_evidence": [
+        "exact_version",
+        "authoritative_source",
+        "sha256",
+        "sha512",
+        "compatibility",
+        "license_provenance",
+        "security_review"
+      ],
+      "required_evidence": [
+        "Exact version output proving Lune v0.10.5.",
+        "Authoritative release source recorded as https://github.com/lune-org/lune/releases/tag/v0.10.5 with the selected platform artifact identity.",
+        "SHA-256 digest of the exact selected Lune artifact.",
+        "SHA-512 digest of the exact selected Lune artifact.",
+        "Compatibility proof that Lune v0.10.5 executes catalog, formation, scoring, migration, and property test entrypoints deterministically on the supported development environment.",
+        "Lune license and upstream provenance record for the selected artifact.",
+        "Security review of the release notes, runtime capabilities, filesystem and process access, artifact source, and test execution boundary."
+      ]
+    },
+    {
+      "id": "EXT-006",
+      "name": "Roblox universe, place, publisher permissions, and service access",
+      "affected_requirements": [
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-010",
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-021",
+        "CORE-REQ-022",
+        "CORE-REQ-023",
+        "CORE-REQ-024",
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "environment",
+      "availability": "unknown",
+      "authorization": "unknown",
+      "blocked_plan_approved": true,
+      "required_evidence": [
+        "Exact Roblox universe ID, private test place ID, release place ID, owner identity, and publisher role.",
+        "Permission proof for private publishing, public publishing, version rollback, DataStore, MemoryStore, PolicyService, MarketplaceService, analytics, and configuration access.",
+        "Successful isolated service-access smoke results that do not expose credentials or raw profiles."
+      ]
+    },
+    {
+      "id": "EXT-007",
+      "name": "Final public brand and trademark clearance",
+      "affected_requirements": [
+        "CORE-REQ-009",
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "owner_action",
+      "availability": "unavailable",
+      "authorization": "not_required",
+      "blocked_plan_approved": true,
+      "required_evidence": [
+        "Final owner-selected public name, logo, icon, and associated asset identities.",
+        "Recorded trademark search and Roblox experience search results for the final name and confusingly similar marks.",
+        "Originality and provenance review for the final logo, icon, thumbnail family, launch art, and launch audio.",
+        "Owner acceptance of the cleared public identity before the release artifact is frozen."
+      ]
+    },
+    {
+      "id": "EXT-008",
+      "name": "Private soft launch authorization",
+      "affected_requirements": [
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "authorization",
+      "availability": "unavailable",
+      "authorization": "not_authorized",
+      "blocked_plan_approved": true,
+      "scope_binding": [
+        "runbook_digest",
+        "artifact_identities",
+        "systems",
+        "operations",
+        "operators",
+        "time_window",
+        "rollback"
+      ],
+      "required_evidence": [
+        "SHA-256 digest of the frozen private soft launch runbook.",
+        "Exact source commit, built place artifact, configuration version, catalog version, Roblox universe ID, and private place ID.",
+        "Bound systems consisting of the private Roblox release environment, production-format persistence, analytics, feature configuration, and rollback controls.",
+        "Allowed operations limited to publishing the frozen build, restricting the audience, applying the frozen configuration, running approved smoke paths, and collecting sanitized evidence.",
+        "Named authorized Roblox publisher and release operators.",
+        "Explicit soft launch start and end timestamps.",
+        "Rollback contract that restores the prior place version or closes access, disables new economy actions, preserves committed state, and retains diagnostic evidence."
+      ]
+    },
+    {
+      "id": "EXT-009",
+      "name": "Public rollout authorization",
+      "affected_requirements": [
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "authorization",
+      "availability": "unavailable",
+      "authorization": "not_authorized",
+      "blocked_plan_approved": true,
+      "scope_binding": [
+        "runbook_digest",
+        "artifact_identities",
+        "systems",
+        "operations",
+        "operators",
+        "time_window",
+        "rollback"
+      ],
+      "required_evidence": [
+        "SHA-256 digest of the frozen public rollout runbook.",
+        "Exact approved source commit, built place artifact, catalog and configuration versions, universe and place IDs, public metadata, icon, thumbnails, and feature-flag state.",
+        "Bound systems consisting of Roblox audience controls, release place, production persistence, analytics, commerce, moderation, feature configuration, and rollback controls.",
+        "Allowed operations limited to widening access, applying approved metadata and configuration, observing launch gates, and executing the defined rollback thresholds.",
+        "Named authorized Roblox publisher and release operators.",
+        "Explicit public rollout and observation timestamps.",
+        "Rollback contract that restricts access or restores the prior place version, disables unsafe features, preserves committed player state, posts the approved maintenance state, and retains release evidence."
+      ]
+    },
+    {
+      "id": "EXT-010",
+      "name": "Production purchase smoke authorization",
+      "affected_requirements": [
+        "CORE-REQ-021"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "authorization",
+      "availability": "unavailable",
+      "authorization": "not_authorized",
+      "blocked_plan_approved": true,
+      "scope_binding": [
+        "runbook_digest",
+        "artifact_identities",
+        "systems",
+        "operations",
+        "operators",
+        "time_window",
+        "rollback"
+      ],
+      "required_evidence": [
+        "SHA-256 digest of the frozen production purchase smoke runbook.",
+        "Exact release commit, place version, product IDs, guaranteed grant definitions, receipt schema, test account IDs, and expected receipt identities.",
+        "Bound systems consisting of MarketplaceService, receipt processing, production profile storage, transaction receipts, product feature flags, and commerce diagnostics.",
+        "Allowed operations limited to approved test purchases, duplicate receipt delivery, rejoin restore verification, and exact-once grant inspection for the named products and accounts.",
+        "Named authorized purchaser, Roblox publisher, and evidence reviewer.",
+        "Explicit purchase smoke start and end timestamps with transaction limits.",
+        "Rollback contract that disables affected products, prevents new grants, preserves receipt evidence, reconciles any incomplete operation, and performs approved player remediation."
+      ]
+    },
+    {
+      "id": "EXT-011",
+      "name": "Production trade smoke authorization",
+      "affected_requirements": [
+        "CORE-REQ-020"
+      ],
+      "mandatory_for_endpoint": false,
+      "kind": "authorization",
+      "availability": "unavailable",
+      "authorization": "not_authorized",
+      "blocked_plan_approved": true,
+      "scope_binding": [
+        "runbook_digest",
+        "artifact_identities",
+        "systems",
+        "operations",
+        "operators",
+        "time_window",
+        "rollback"
+      ],
+      "required_evidence": [
+        "SHA-256 digest of the frozen production trade smoke runbook.",
+        "Exact release commit, place version, TradeEnabled configuration version, test account IDs, disposable test instance IDs, and expected journal and receipt identities.",
+        "Bound systems consisting of TradeService, production-format profiles, trade journals, reconciliation, feature flags, and trade diagnostics.",
+        "Allowed operations limited to the approved same-server test offer, settlement, duplicate request replay, disconnect or recovery exercise, ownership inspection, and receipt comparison.",
+        "Named authorized trade participants, Roblox publisher, and evidence reviewer.",
+        "Explicit trade smoke start and end timestamps with one bounded test inventory set.",
+        "Rollback contract that disables new trade requests, preserves and reconciles any prepared journal, restores the exact approved test ownership if permitted by the runbook, and retains evidence."
+      ]
+    },
+    {
+      "id": "EXT-012",
+      "name": "Soft launch cohort, test accounts, and representative device coverage",
+      "affected_requirements": [
+        "CORE-REQ-015",
+        "CORE-REQ-019",
+        "CORE-REQ-020",
+        "CORE-REQ-023",
+        "CORE-REQ-024",
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "group",
+      "availability": "unknown",
+      "authorization": "not_required",
+      "blocked_plan_approved": true,
+      "required_evidence": [
+        "Sanitized cohort manifest with participation consent and no private credentials.",
+        "Dedicated blank, migrated, purchase, duel, and trade test account roles with account-age and eligibility states documented without exposing secrets.",
+        "Device matrix covering representative phone, tablet, desktop, keyboard, mouse, controller, reduced-motion, reduced-flash, color-assistance, and low-graphics paths.",
+        "Completed private soft launch session, funnel, performance, crash, persistence, trade, and recovery evidence tied to the frozen release candidate."
+      ]
+    },
+    {
+      "id": "EXT-013",
+      "name": "Roblox product IDs, receipt testing, policy information, and commerce access",
+      "affected_requirements": [
+        "CORE-REQ-021",
+        "CORE-REQ-022",
+        "CORE-REQ-025"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "service",
+      "availability": "unknown",
+      "authorization": "unknown",
+      "blocked_plan_approved": true,
+      "required_evidence": [
+        "Exact Roblox product IDs, guaranteed contents, prices, enabled regions, configuration version, and public display copy.",
+        "Permission proof for creating or managing the selected products and reading the resulting receipt and analytics evidence.",
+        "PolicyService evidence for all relevant test states and confirmation that no launch product grants random gameplay power.",
+        "Successful isolated receipt, duplicate-delivery, rejoin restore, disabled-product, and failure-recovery tests before production authorization."
+      ]
+    },
+    {
+      "id": "EXT-014",
+      "name": "GitHub write, Project, wiki, and repository settings permissions",
+      "affected_requirements": [
+        "CORE-REQ-026"
+      ],
+      "mandatory_for_endpoint": true,
+      "kind": "credential",
+      "availability": "available",
+      "authorization": "authorized",
+      "blocked_plan_approved": false,
+      "required_evidence": [
+        "Authenticated GitHub identity is EnVisione.",
+        "GitHub token scopes include repository and Project mutation capability required by the locked synchronization contract.",
+        "Read and write access is proven for EnVisione/InfiniteCardCollector, its Issues, pull requests, milestones, roadmap Project, Actions, repository settings, releases, and wiki without exposing token material."
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": "CORE-PHASE-000",
+      "owner": "repository toolchain",
+      "dependencies": [
+        "DEC-001",
+        "DEC-008",
+        "EXT-001",
+        "EXT-002",
+        "EXT-003",
+        "EXT-004",
+        "EXT-005"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-001"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-001",
+      "owner": "shared calculation layer",
+      "dependencies": [
+        "CORE-PHASE-000",
+        "DEC-003",
+        "DEC-006",
+        "DEC-010"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-002",
+        "CORE-REQ-003",
+        "CORE-REQ-013"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-002",
+      "owner": "Profile service",
+      "dependencies": [
+        "CORE-PHASE-001",
+        "DEC-008",
+        "DEC-009",
+        "EXT-006"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-004",
+        "CORE-REQ-005",
+        "CORE-REQ-006",
+        "CORE-REQ-007",
+        "CORE-REQ-008"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-003",
+      "owner": "content asset pipeline",
+      "dependencies": [
+        "CORE-PHASE-002",
+        "DEC-003",
+        "DEC-007",
+        "DEC-009"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-009",
+        "CORE-REQ-010",
+        "CORE-REQ-011",
+        "CORE-REQ-012",
+        "CORE-REQ-014"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-004",
+      "owner": "Formation service",
+      "dependencies": [
+        "CORE-PHASE-003",
+        "DEC-010",
+        "DEC-011",
+        "EXT-006"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-015",
+        "CORE-REQ-016",
+        "CORE-REQ-017",
+        "CORE-REQ-018"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-005",
+      "owner": "Duel service",
+      "dependencies": [
+        "CORE-PHASE-004",
+        "EXT-012"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-019"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-006",
+      "owner": "Trade service",
+      "dependencies": [
+        "CORE-PHASE-005",
+        "DEC-005"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-020"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-007",
+      "owner": "Analytics service",
+      "dependencies": [
+        "CORE-PHASE-006",
+        "DEC-006",
+        "EXT-010",
+        "EXT-013"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-021",
+        "CORE-REQ-022"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-008",
+      "owner": "verification system",
+      "dependencies": [
+        "CORE-PHASE-007",
+        "EXT-012"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-023",
+        "CORE-REQ-024"
+      ]
+    },
+    {
+      "id": "CORE-PHASE-009",
+      "owner": "release operations",
+      "dependencies": [
+        "CORE-PHASE-008",
+        "DEC-004",
+        "DEC-005",
+        "DEC-013",
+        "DEC-014",
+        "EXT-006",
+        "EXT-007",
+        "EXT-008",
+        "EXT-009",
+        "EXT-010",
+        "EXT-012",
+        "EXT-013",
+        "EXT-014"
+      ],
+      "canonicalRequirements": [
+        "CORE-REQ-025",
+        "CORE-REQ-026"
+      ]
+    }
+  ],
+  "completionEndpoint": "A controlled public Roblox release of the three Deck Set InfiniteCardCollector foundation passes every mandatory initial release gate, with direct trading enabled only if its separate safety and production authorization gates pass and otherwise visibly disabled.",
+  "goalCreator": {
+    "mandatoryBoundary": "CORE-REQ-001 through CORE-REQ-026 and CORE-PHASE-000 through CORE-PHASE-009.",
+    "optionalFutureDisposition": "excluded",
+    "lockedOwnerDecisions": "DEC-001 through DEC-014.",
+    "activePhase": "CORE-PHASE-000",
+    "nextExecutableAction": "After Goal Creator validates the complete pinned plan set, execute P000-TASK-001 from phases/plan-phase-000.md on the sequential phase branch.",
+    "knownFailingChecks": "No runtime checks exist because the repository has no implementation. Missing runtime evidence is not treated as passing.",
+    "knownExternalBlockers": "EXT-006, Roblox universe, place, publisher permissions, and service access. EXT-007, Final public brand and trademark clearance. EXT-008, Private soft launch authorization. EXT-009, Public rollout authorization. EXT-010, Production purchase smoke authorization. EXT-012, Soft launch cohort, test accounts, and representative device coverage. EXT-013, Roblox product IDs, receipt testing, policy information, and commerce access. EXT-011 is conditional and does not block a visibly disabled trading release. EXT-001 through EXT-005 and EXT-014 are available.",
+    "requiredEvidenceGates": "Pinned tools and commands, exact catalogs, deterministic tests, profile and transaction recovery, complete launch assets, full Studio and multiclient workflows, trade conservation or disabled fallback, authorized purchase smoke, device and performance evidence, private soft launch, controlled public rollout, production acceptance, documentation, and GitHub synchronization."
+  }
+}
