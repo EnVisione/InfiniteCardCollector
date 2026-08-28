@@ -1,0 +1,23 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "README.md"
+          - "docs/**"
+          - ".github/**/*.md"
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/gradle.properties"
+          - "**/gradle/libs.versions.toml"
+          - "**/package.json"
+          - "**/package-lock.json"
+          - "**/pom.xml"
+          - "**/pyproject.toml"
+          - ".github/dependabot.yml"
+          - ".github/dependabot.yaml"
+
+github actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"

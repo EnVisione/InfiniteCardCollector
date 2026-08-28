@@ -1,0 +1,22 @@
+# local repository instructions and indexes
+AGENTS.md
+.codegraph/
+
+# editor and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# temporary files and logs
+*.log
+*.tmp
+*.bak
+*.swp
+*.rbxl.lock
+*.rbxlx.lock
+
+# generated output
+build/
+dist/
+coverage/
