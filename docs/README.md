@@ -29,6 +29,23 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 
 - [Launch foundation and implementation specification](implementation/launch-foundation.md)
 
+## Operations
+
+- [Development setup and command contract](operations/development-setup.md)
+
+## Testing
+
+- [Phase 000 toolchain test procedure](test/phase-000-toolchain.md)
+
+## Verification
+
+- [Phase 000 foundation evidence](verification/phase-000-foundation.md)
+- [Phase 000 tool provenance](verification/phase-000-tool-provenance.md)
+
+## Troubleshooting
+
+- [Toolchain and synchronization troubleshooting](troubleshooting/toolchain.md)
+
 ## External Navigation
 
 - [Repository README](../README.md)

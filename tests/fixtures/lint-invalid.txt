@@ -1,0 +1,3 @@
+--!strict
+
+phase_fixture_value = 1

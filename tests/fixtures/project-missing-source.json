@@ -1,0 +1,11 @@
+{
+  "name": "Invalid",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Missing": {
+        "$path": "tests/fixtures/does-not-exist"
+      }
+    }
+  }
+}

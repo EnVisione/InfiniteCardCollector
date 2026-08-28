@@ -1,0 +1,618 @@
+{
+  "schema_version": 1,
+  "phase_id": "CORE-PHASE-000",
+  "requirement_id": "CORE-REQ-001",
+  "reviewed_at": "2026-08-28T02:13:23-05:00",
+  "reviewer_role": "repository maintainer",
+  "supported_artifact_targets": [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc"
+  ],
+  "integrity_policy": {
+    "download_protocol": "https with tls 1.2 or newer",
+    "archive_format": "zip",
+    "required_hashes": [
+      "sha256",
+      "sha512"
+    ],
+    "archive_rules": [
+      "The filename, byte length, SHA-256, and SHA-512 must match this registry before extraction.",
+      "An archive must contain exactly one expected executable basename and no path components.",
+      "The extracted executable hashes must match this registry before execution.",
+      "The Selene Linux archive stores its executable with mode 0644. Bootstrap may add only the owner executable bit after hash verification.",
+      "Executable archives are never committed to the repository."
+    ],
+    "execution_rules": [
+      "Only the command surfaces listed for each tool are approved for Phase 000.",
+      "Network downloads use authoritative GitHub release URLs, bounded timeouts, and post-download integrity verification.",
+      "Rojo serve binds only to 127.0.0.1 during Phase 000 acceptance.",
+      "Only reviewed tracked Lune scripts may execute. They may not load remote code or access secrets.",
+      "A new artifact digest, dependency advisory, release provenance change, or command surface invalidates the affected review."
+    ]
+  },
+  "security_review": {
+    "result": "accepted_with_enforced_constraints",
+    "residual_risk": "low for the constrained Phase 000 command contract, not approved for unrestricted network, archive, or script execution",
+    "rustsec_database_commit": "6420e39260b3d771b049954cf5d52b57e2118da4",
+    "rustsec_database_date": "2026-08-27T14:01:44+02:00",
+    "cargo_audit_version": "0.22.2",
+    "audit_command": "cargo audit --deny warnings --file Cargo.lock",
+    "common_dispositions": [
+      {
+        "ids": [
+          "RUSTSEC-2021-0145",
+          "RUSTSEC-2026-0190",
+          "RUSTSEC-2026-0097",
+          "RUSTSEC-2026-0204"
+        ],
+        "disposition": "accepted_precondition_absent",
+        "basis": "Selected builds use the system allocator, do not call anyhow Error downcast_mut, do not install a custom logger that obtains random data, and do not format invalid crossbeam pointers."
+      },
+      {
+        "ids": [
+          "RUSTSEC-2026-0007",
+          "RUSTSEC-2026-0258"
+        ],
+        "disposition": "accepted_bounded_input",
+        "basis": "Phase inputs and downloads are size bounded. Rojo serve is loopback only. No approved path requests an allocation near usize maximum, and network operations have external timeouts."
+      },
+      {
+        "ids": [
+          "RUSTSEC-2026-0049",
+          "RUSTSEC-2026-0098",
+          "RUSTSEC-2026-0099",
+          "RUSTSEC-2026-0104"
+        ],
+        "disposition": "accepted_fixed_origin_and_integrity",
+        "basis": "Approved network paths use fixed ASCII GitHub hostnames. Artifact content is accepted only after matching both recorded hashes. CRL parsing is not configured."
+      },
+      {
+        "ids": [
+          "RUSTSEC-2020-0016",
+          "RUSTSEC-2020-0056",
+          "RUSTSEC-2021-0127",
+          "RUSTSEC-2021-0139",
+          "RUSTSEC-2022-0104",
+          "RUSTSEC-2023-0089",
+          "RUSTSEC-2024-0320",
+          "RUSTSEC-2024-0370",
+          "RUSTSEC-2024-0375",
+          "RUSTSEC-2024-0384",
+          "RUSTSEC-2024-0436",
+          "RUSTSEC-2025-0056",
+          "RUSTSEC-2025-0134",
+          "RUSTSEC-2025-0141"
+        ],
+        "disposition": "accepted_maintenance_debt",
+        "basis": "These are informational maintenance advisories without a reported vulnerability on the approved Phase 000 paths. Any pinned tool change requires a new review."
+      }
+    ]
+  },
+  "tools": [
+    {
+      "id": "rojo",
+      "version": "7.7.0",
+      "rokit_alias": "rojo",
+      "rokit_spec": "rojo-rbx/rojo@7.7.0",
+      "source_repository": "https://github.com/rojo-rbx/rojo",
+      "release_url": "https://github.com/rojo-rbx/rojo/releases/tag/v7.7.0",
+      "tag": "v7.7.0",
+      "tag_type": "lightweight",
+      "source_commit": "bcadc97de27ab3800e915abcb72c6c7a3c30f363",
+      "source_commit_verification": "github verified",
+      "release_build_run": "https://github.com/rojo-rbx/rojo/actions/runs/28558454740",
+      "release_build_disposition": "Selected Linux and Windows build jobs succeeded. The workflow failed later because a separate Open Cloud plugin upload lacked a required scope. The Rojo.rbxm release asset had already been built and attached.",
+      "license": {
+        "spdx": "MPL-2.0",
+        "url": "https://github.com/rojo-rbx/rojo/blob/v7.7.0/LICENSE.txt",
+        "sha256": "86cf9656479f1edb82245b985f4a2cc0d503b945766ebeda4269c60b307699ae",
+        "sha512": "dcf0e06c9c31aa8dab430ef8f0df7a20a2f71f3f84209cadc244c26eaa2e82b58712d0c77fdc21f8cbf5c75d5b4b0235a3004be496d28807ff571c70980aabc3"
+      },
+      "release_note_review": "Release 7.7.0 adds syncback, WebSocket and MessagePack synchronization, Host and Origin validation, and Windows source map path fixes.",
+      "approved_command_surface": [
+        "--version",
+        "build",
+        "sourcemap",
+        "serve on 127.0.0.1"
+      ],
+      "prohibited_command_surface": [
+        "upload",
+        "syncback",
+        "network reachable serve binds",
+        "unreviewed plugin installation"
+      ],
+      "security_findings": [
+        {
+          "ids": [
+            "RUSTSEC-2026-0007",
+            "RUSTSEC-2026-0258"
+          ],
+          "disposition": "accepted_bounded_loopback_only"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0098",
+            "RUSTSEC-2026-0099",
+            "RUSTSEC-2026-0104"
+          ],
+          "disposition": "not_reached_by_approved_commands"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0190",
+            "RUSTSEC-2026-0204",
+            "RUSTSEC-2026-0097",
+            "RUSTSEC-2021-0145"
+          ],
+          "disposition": "accepted_precondition_absent"
+        }
+      ],
+      "informational_findings": [
+        "RUSTSEC-2020-0016",
+        "RUSTSEC-2021-0127",
+        "RUSTSEC-2024-0320",
+        "RUSTSEC-2024-0370",
+        "RUSTSEC-2024-0375",
+        "RUSTSEC-2024-0436",
+        "RUSTSEC-2025-0134",
+        "RUSTSEC-2025-0141"
+      ],
+      "artifacts": [
+        {
+          "platform": "linux-x86_64",
+          "target": "x86_64-unknown-linux-gnu",
+          "filename": "rojo-7.7.0-linux-x86_64.zip",
+          "url": "https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-linux-x86_64.zip",
+          "size": 5902658,
+          "sha256": "22503e5839864f9d7c2171c48b536fc229f2cc4d8774c9cc149f60941d864073",
+          "sha512": "1afdc696864b86acd5db65f37a6a8533fec04ebd8b44f35ce91d285db5fbdfcb5268dbb8cce0a65e99e528221996ca9239ae5b8ac4fbff838f09eac6a4d596c7",
+          "executable": "rojo",
+          "executable_size": 19669960,
+          "executable_sha256": "7ff204d777e2b8a93f2b587c7e09b5e827af94411f84574e97dcfee4d647152e",
+          "executable_sha512": "2931911f883374cf714eb7c886e8537dcb29f958ada4924fe4956b21671ab67c97652e79c1b8a518226c9c7b37810cb8a45606fb163ecb981f0229caf6dd05fb",
+          "format": "ELF 64 bit x86-64 PIE",
+          "version_output": "Rojo 7.7.0",
+          "version_probe": "native Linux"
+        },
+        {
+          "platform": "windows-x86_64",
+          "target": "x86_64-pc-windows-msvc",
+          "filename": "rojo-7.7.0-windows-x86_64.zip",
+          "url": "https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-windows-x86_64.zip",
+          "size": 4556842,
+          "sha256": "2179c44862a10ecbd725bdfeb4abc64e16dc4aad9b6c8f3e1a7c46a87280b949",
+          "sha512": "b04625bf6f28157606cfb9f3ea7d438626f9acfa9723a5197b2effdf084eb4e0c1864332562aa204f5bde30c78360c98a5513af9c42cb3b36a1651ec2145710b",
+          "executable": "rojo.exe",
+          "executable_size": 15140864,
+          "executable_sha256": "d9154aa9b1d5997967565679d107bf719e273f5881c3c9e263fd6fd223d5e81e",
+          "executable_sha512": "d74572f211a63f18c520f8d1b9142d4869ab595dac5d404797182c78a6005bf114d2fbf012abd7cb4620683c7f451926fba8d86667e51145c6719374de78bd68",
+          "format": "PE32+ x86-64",
+          "version_output": "Rojo 7.7.0",
+          "version_probe": "Windows executable under Wine 11.16, compatibility only. Native Windows acceptance remains mandatory."
+        },
+        {
+          "platform": "roblox-studio-plugin",
+          "filename": "Rojo.rbxm",
+          "url": "https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/Rojo.rbxm",
+          "size": 567993,
+          "sha256": "214e5ad84ccdc88f873e0467b6724e4ea9ada8ea340fcb9d4397cb899a67c83f",
+          "sha512": "54190faed08c336888bfff26086336717b25a007f4710b60442f1b138f1b1c54541dc1d2e9cac2d1534a75d126fed6e7719984140983f22b4c4e1c6ebcdf1463",
+          "format": "Roblox binary model",
+          "version_probe": "Pending native Studio identity and synchronization acceptance in P000-TASK-010."
+        }
+      ]
+    },
+    {
+      "id": "rokit",
+      "version": "1.2.0",
+      "rokit_alias": null,
+      "rokit_spec": null,
+      "source_repository": "https://github.com/rojo-rbx/rokit",
+      "release_url": "https://github.com/rojo-rbx/rokit/releases/tag/v1.2.0",
+      "tag": "v1.2.0",
+      "tag_type": "lightweight",
+      "source_commit": "3b803035635c29c752f6ea1d2befc1473b96c51a",
+      "source_commit_verification": "github verified",
+      "release_build_run": "https://github.com/rojo-rbx/rokit/actions/runs/18141117857",
+      "release_build_disposition": "Release and selected platform build jobs succeeded.",
+      "license": {
+        "spdx": "MIT",
+        "url": "https://github.com/rojo-rbx/rokit/blob/v1.2.0/LICENSE.txt",
+        "sha256": "1a9a29cbf3567cd60f55899375593648cf851914a552edb1ed871642103312b3",
+        "sha512": "ec9ce3ee692a151874ffa5f9e8509a74160374ab0c951800488c8fadd4638062bac45285e46bd3b36a134d3d63a9a6529bec098c9b9c50f553667b995fd72688"
+      },
+      "release_note_review": "Release 1.2.0 adds tar.xz support and fixes tar extraction. Phase 000 selects ZIP artifacts only.",
+      "approved_command_surface": [
+        "--version",
+        "install from the tracked manifest"
+      ],
+      "prohibited_command_surface": [
+        "self-update",
+        "self-uninstall",
+        "untracked tool add",
+        "tar artifact extraction"
+      ],
+      "security_findings": [
+        {
+          "ids": [
+            "RUSTSEC-2026-0037",
+            "RUSTSEC-2026-0185"
+          ],
+          "disposition": "absent_from_selected_linux_and_windows_target_graphs"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0067",
+            "RUSTSEC-2026-0068"
+          ],
+          "disposition": "not_reached_zip_only_allowlist"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0194",
+            "RUSTSEC-2026-0195"
+          ],
+          "disposition": "not_reached_self_update_markdown_path_prohibited"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0009"
+          ],
+          "disposition": "not_reached_no_rfc2822_parser_on_approved_path"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0221"
+          ],
+          "disposition": "accepted_precondition_absent_event_tag_is_send"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0007",
+            "RUSTSEC-2026-0258",
+            "RUSTSEC-2026-0049",
+            "RUSTSEC-2026-0098",
+            "RUSTSEC-2026-0099",
+            "RUSTSEC-2026-0104"
+          ],
+          "disposition": "accepted_fixed_github_origins_timeout_and_post_download_hashes"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0190",
+            "RUSTSEC-2026-0097"
+          ],
+          "disposition": "accepted_precondition_absent"
+        }
+      ],
+      "informational_findings": [
+        "RUSTSEC-2023-0089",
+        "RUSTSEC-2024-0320",
+        "RUSTSEC-2024-0384",
+        "RUSTSEC-2025-0141",
+        "yanked pulldown-cmark-mdcat 2.6.1",
+        "yanked spin 0.9.8"
+      ],
+      "artifacts": [
+        {
+          "platform": "linux-x86_64",
+          "target": "x86_64-unknown-linux-gnu",
+          "filename": "rokit-1.2.0-linux-x86_64.zip",
+          "url": "https://github.com/rojo-rbx/rokit/releases/download/v1.2.0/rokit-1.2.0-linux-x86_64.zip",
+          "size": 3837151,
+          "sha256": "951a7f3ec3d2a5e021fd1867d32f69f010ee4c2927f644b759578afc59c65fc0",
+          "sha512": "bf88c03c13c4b63b8d9a641182c885cb5ca0aae60e62eade02d994e48ca52d6c6c81a17b4c334b32a958facf555a7ef6fcf83a7b421aaa6bde576fcde8c54915",
+          "executable": "rokit",
+          "executable_size": 8424768,
+          "executable_sha256": "1866140fc5fbf9078ebe209cd990676c27e49949ffd8f233431c73245b8bd9c8",
+          "executable_sha512": "be1fcb72918cb2cd1d204172418a249739c421af5b7f6c3bcef1bf286d8f31829ab5efebc8aa23d58197b39d384d5c72b3bacb991363386c0ba2553af75e2b84",
+          "format": "ELF 64 bit x86-64 PIE",
+          "version_output": "rokit 1.2.0",
+          "version_probe": "native Linux"
+        },
+        {
+          "platform": "windows-x86_64",
+          "target": "x86_64-pc-windows-msvc",
+          "filename": "rokit-1.2.0-windows-x86_64.zip",
+          "url": "https://github.com/rojo-rbx/rokit/releases/download/v1.2.0/rokit-1.2.0-windows-x86_64.zip",
+          "size": 3638436,
+          "sha256": "f9ba1704014ff67d51e8005f605955c7c26d2429a5312a9419dc477fc310e96d",
+          "sha512": "0db3c12eb1c7160d51fbf6c240788de179a6087366a09a04301eafe0ca16f7a85b3657258ab16fd9638cddd271160cae6c3c5371a565a3d7b945d9cb5888b208",
+          "executable": "rokit.exe",
+          "executable_size": 8572416,
+          "executable_sha256": "925f50de46771529dd1064c867c7679aad0c80e99c688fd906d0e83ae16ef917",
+          "executable_sha512": "f53b9b700056238ee99835bbcf9c0f76c2034364765c40bc6c943566a65e28916d3444ad10d8aaef3abf2418905aca75b445b17f55dfdf660b0d3fcaf2196b4d",
+          "format": "PE32+ x86-64",
+          "version_output": "rokit 1.2.0",
+          "version_probe": "Windows executable under Wine 11.16, compatibility only. Native Windows acceptance remains mandatory."
+        }
+      ]
+    },
+    {
+      "id": "stylua",
+      "version": "2.5.2",
+      "rokit_alias": "stylua",
+      "rokit_spec": "JohnnyMorganz/StyLua@2.5.2",
+      "source_repository": "https://github.com/JohnnyMorganz/StyLua",
+      "release_url": "https://github.com/JohnnyMorganz/StyLua/releases/tag/v2.5.2",
+      "tag": "v2.5.2",
+      "tag_type": "annotated",
+      "tag_object": "a6433cd8ed974a1dd769d41a46b5008858e58e94",
+      "tag_verification": "unsigned",
+      "source_commit": "5ae6e7a55748414b4be30a832afd895014c65352",
+      "source_commit_verification": "unsigned",
+      "release_build_run": "https://github.com/JohnnyMorganz/StyLua/actions/runs/25966086979",
+      "release_build_disposition": "Selected Linux and Windows build jobs succeeded. The workflow failed later while publishing the binary package to npm.",
+      "license": {
+        "spdx": "MPL-2.0",
+        "url": "https://github.com/JohnnyMorganz/StyLua/blob/v2.5.2/LICENSE.md",
+        "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1",
+        "sha512": "75e77d3b0ea76296483fe50f695aae6c581508b527fabcd82858854d24a2ed4649d5edb359a4d437787e3b2f17a75340c6c53088d4dc871164d8f00bfd137d54"
+      },
+      "release_note_review": "Release 2.5.2 contains no formatter code changes and fixes npm provenance publishing metadata.",
+      "approved_command_surface": [
+        "--version",
+        "format tracked Luau",
+        "check tracked Luau"
+      ],
+      "prohibited_command_surface": [
+        "language server",
+        "formatting untrusted filesystem trees"
+      ],
+      "security_findings": [
+        {
+          "ids": [
+            "RUSTSEC-2026-0204",
+            "RUSTSEC-2026-0190",
+            "RUSTSEC-2021-0145"
+          ],
+          "disposition": "accepted_precondition_absent"
+        }
+      ],
+      "informational_findings": [
+        "RUSTSEC-2024-0320",
+        "RUSTSEC-2024-0370",
+        "RUSTSEC-2024-0375",
+        "RUSTSEC-2024-0436"
+      ],
+      "artifacts": [
+        {
+          "platform": "linux-x86_64",
+          "target": "x86_64-unknown-linux-gnu",
+          "filename": "stylua-linux-x86_64.zip",
+          "url": "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.5.2/stylua-linux-x86_64.zip",
+          "size": 3303824,
+          "sha256": "bcb0d855e91f102f28a370e850f8566b3b44b79e6274d806ea5246837c0fd5ab",
+          "sha512": "36f21827e596d69b38665174530cb004035a8942b0a6e740b59da2b8f62e882c19009da604c33c2160d879dbfdd30c725204e9a3cfb55de642fbb201ff2d525f",
+          "executable": "stylua",
+          "executable_size": 9831880,
+          "executable_sha256": "81d7a816a52f89a4e5b39709c4597b47e184916a2c86037bfecfb6c5b21a6fc7",
+          "executable_sha512": "893a282258b8bdb888c33be49623da6d5aab42ce069fb93efb0ba5f16daa453890b48764469ad82ee9180a1e6caece283915c3a34ee8278e2756552e4a1de995",
+          "format": "ELF 64 bit x86-64 PIE",
+          "version_output": "stylua 2.5.2",
+          "version_probe": "native Linux"
+        },
+        {
+          "platform": "windows-x86_64",
+          "target": "x86_64-pc-windows-msvc",
+          "filename": "stylua-windows-x86_64.zip",
+          "url": "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.5.2/stylua-windows-x86_64.zip",
+          "size": 2859281,
+          "sha256": "e77d0ea1226b8b389b43f702240091249a96eea25857281f90ea24d0eb9eb969",
+          "sha512": "051c3ff6b9ce16a74f8895aebbe5e5b54b9bccdaaf3b2197e884385049a13a20d0968fd00ea733fb8ed40ed533952e54d6417243e302a94505f05deeb070867d",
+          "executable": "stylua.exe",
+          "executable_size": 8734208,
+          "executable_sha256": "b125543e4312c9b6b1a113040f2d217cc24e25c0b31d7445d9697fa7ad7e056d",
+          "executable_sha512": "78ade4a59569b56bbac1e23ac0c101e364bc15d72a4261ea52e78fe0de3fd25592caf092fdf68c712616b59455b53055f7b751eca9cf7a80ffb74851bc0a073a",
+          "format": "PE32+ x86-64",
+          "version_output": "stylua 2.5.2",
+          "version_probe": "Windows executable under Wine 11.16, compatibility only. Native Windows acceptance remains mandatory."
+        }
+      ]
+    },
+    {
+      "id": "selene",
+      "version": "0.31.0",
+      "rokit_alias": "selene",
+      "rokit_spec": "Kampfkarren/selene@0.31.0",
+      "source_repository": "https://github.com/Kampfkarren/selene",
+      "release_url": "https://github.com/Kampfkarren/selene/releases/tag/0.31.0",
+      "tag": "0.31.0",
+      "tag_type": "lightweight",
+      "source_commit": "9d531b8d3755e139b26c534914e252239014bb3d",
+      "source_commit_verification": "unsigned",
+      "release_build_run": "https://github.com/Kampfkarren/selene/actions/runs/26202270693",
+      "release_build_disposition": "The full Selene build workflow succeeded. Unit and exhaustive tests succeeded in the test workflow. A separate lint job failed with unavailable retained logs.",
+      "license": {
+        "spdx": "MPL-2.0",
+        "url": "https://github.com/Kampfkarren/selene/blob/0.31.0/LICENSE.md",
+        "sha256": "ef79ed2bcecca826ac160ad24ceadf6babfa10a19ad42b2102808816a1af68bc",
+        "sha512": "3056ebb4d85da4cf49e7661334ba5e6206fbf3b5f59ea5d555615e139b1c6e66acf0143af58bd3350868d8a7f55d65a976eac2c167118c7450cc317505b16452"
+      },
+      "release_note_review": "Release 0.31.0 updates the parser and adds Roblox Enum APIs.",
+      "roblox_standard_library_policy": "Generate one tracked Roblox standard library snapshot under a bounded, single threaded, fixed origin command. Configure roblox-std-source as pinned. Ordinary lint runs remain offline.",
+      "approved_command_surface": [
+        "--version",
+        "validate-config",
+        "lint tracked Luau",
+        "one bounded generate-roblox-std invocation"
+      ],
+      "prohibited_command_surface": [
+        "floating Roblox standard library",
+        "update-roblox-std during ordinary validation",
+        "linting paths with control characters"
+      ],
+      "security_findings": [
+        {
+          "ids": [
+            "RUSTSEC-2024-0421",
+            "RUSTSEC-2024-0336",
+            "RUSTSEC-2025-0009",
+            "RUSTSEC-2026-0098",
+            "RUSTSEC-2026-0099",
+            "RUSTSEC-2026-0104"
+          ],
+          "disposition": "accepted_only_for_bounded_hardcoded_roblox_std_generation_then_offline"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2020-0071"
+          ],
+          "disposition": "accepted_single_thread_generation_only_and_not_reached_by_pinned_lint"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2025-0055"
+          ],
+          "disposition": "accepted_with_tracked_path_control_character_rejection"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2023-0075"
+          ],
+          "disposition": "not_affected_selected_targets_are_64_bit"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0202"
+          ],
+          "disposition": "absent_from_selected_linux_and_windows_target_graphs"
+        }
+      ],
+      "informational_findings": [
+        "RUSTSEC-2021-0139",
+        "RUSTSEC-2021-0145",
+        "RUSTSEC-2022-0104",
+        "RUSTSEC-2024-0370",
+        "RUSTSEC-2024-0375",
+        "RUSTSEC-2024-0436",
+        "RUSTSEC-2025-0056",
+        "yanked smol_str 0.3.1",
+        "yanked spin 0.9.8"
+      ],
+      "artifacts": [
+        {
+          "platform": "linux-x86_64",
+          "target": "x86_64-unknown-linux-gnu",
+          "filename": "selene-0.31.0-linux.zip",
+          "url": "https://github.com/Kampfkarren/selene/releases/download/0.31.0/selene-0.31.0-linux.zip",
+          "size": 3651372,
+          "sha256": "dac452422747999ec4919bbb8bb52992b66aae533b60022bf005669de8616671",
+          "sha512": "00d68b4cee61385bb044f1c0b84ba2d4d4c234328b14740bf92afef01b2cc4e65d57f9cf165b41877ca03204bcb01f5a41d4f90ca36183f83661e1926f059213",
+          "executable": "selene",
+          "executable_size": 10118064,
+          "executable_sha256": "30887c8f10ab901fe5883ef655f7b9fe47e628b83c709c3d7548b02e966e67a4",
+          "executable_sha512": "7bd5e7dd38baf1dc4699c334a0187337f61406cfac4771c70e083519d0cfe013e5467e8e33cce5f75429e7f0d7bd30bacae883f43aafb8a8fdebaf413ad2b198",
+          "format": "ELF 64 bit x86-64 PIE",
+          "archive_mode_note": "The archive stores selene with mode 0644. Add the owner executable bit only after integrity verification.",
+          "version_output": "selene 0.31.0",
+          "version_probe": "native Linux after restoring the owner executable bit"
+        },
+        {
+          "platform": "windows-x86_64",
+          "target": "x86_64-pc-windows-msvc",
+          "filename": "selene-0.31.0-windows.zip",
+          "url": "https://github.com/Kampfkarren/selene/releases/download/0.31.0/selene-0.31.0-windows.zip",
+          "size": 3041479,
+          "sha256": "c5d5d087daa8e38bd71680b2202a407e5d4bc00fd584a648dec17ef9b29a2b73",
+          "sha512": "4cc82b0a1945efb43b5ca415324159e7d9075c4f168d30480a4015b1e0e41364456c973b929f887a9795bce3e5b732834a304d2589da602a15647853bfcb36df",
+          "executable": "selene.exe",
+          "executable_size": 8102912,
+          "executable_sha256": "d23624daddb3cde848e2bd99aa257cd694eb027c04171d17fec232b3784d3b21",
+          "executable_sha512": "5af95839e1b7c33e8859cfdcbb81bef012ae25c2603f52da4c92be0ce9e79b9bd04ae3bfc3fe27edcd130c6251c7a07828532808059acc468a9b117fa1daf5e7",
+          "format": "PE32+ x86-64",
+          "version_output": "selene 0.31.0",
+          "version_probe": "Windows executable under Wine 11.16, compatibility only. Native Windows acceptance remains mandatory."
+        }
+      ]
+    },
+    {
+      "id": "lune",
+      "version": "0.10.5",
+      "rokit_alias": "lune",
+      "rokit_spec": "lune-org/lune@0.10.5",
+      "source_repository": "https://github.com/lune-org/lune",
+      "release_url": "https://github.com/lune-org/lune/releases/tag/v0.10.5",
+      "tag": "v0.10.5",
+      "tag_type": "lightweight",
+      "source_commit": "e173211a3b529eb53624137931fc11f0a02ff867",
+      "source_commit_verification": "github verified",
+      "release_build_source_commit": "35d7ebe19c8bc5ff62cbb7d36843fab35be2af33",
+      "release_build_source_commit_verification": "github verified",
+      "tag_delta": "The tag commit changes only two changelog heading lines from the release build source commit.",
+      "release_build_run": "https://github.com/lune-org/lune/actions/runs/28605406108",
+      "release_build_disposition": "Release and all platform build jobs succeeded. CI on the later changelog-only tag commit built and linted successfully but failed network socket tests across platforms.",
+      "license": {
+        "spdx": "MPL-2.0",
+        "url": "https://github.com/lune-org/lune/blob/v0.10.5/LICENSE.txt",
+        "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+        "sha512": "239dbc27d68e0a03e92c68fb746602d8183084c9624a533fe92a991b8a4658d5154c901ff64826992eabcf89a5b52cb32f9cf29fd25a42bef2b5d3932010d806"
+      },
+      "release_note_review": "Release 0.10.5 updates Luau and rbx-dom, improves Roblox instance handling, and fixes child process and path behavior.",
+      "approved_command_surface": [
+        "--version",
+        "run reviewed tracked repository scripts"
+      ],
+      "prohibited_command_surface": [
+        "remote code loading",
+        "unreviewed scripts",
+        "network access from the Phase 000 harness",
+        "filesystem access outside validated repository and output roots",
+        "unbounded child processes"
+      ],
+      "security_findings": [
+        {
+          "ids": [
+            "RUSTSEC-2026-0194",
+            "RUSTSEC-2026-0195"
+          ],
+          "disposition": "absent_from_selected_linux_and_windows_target_graphs"
+        },
+        {
+          "ids": [
+            "RUSTSEC-2026-0221"
+          ],
+          "disposition": "accepted_precondition_absent_all_observed_consumers_use_send_event_tags_and_no_with_tag_call"
+        }
+      ],
+      "informational_findings": [
+        "RUSTSEC-2020-0056",
+        "yanked chacha20 0.10.1"
+      ],
+      "artifacts": [
+        {
+          "platform": "linux-x86_64",
+          "target": "x86_64-unknown-linux-gnu",
+          "filename": "lune-0.10.5-linux-x86_64.zip",
+          "url": "https://github.com/lune-org/lune/releases/download/v0.10.5/lune-0.10.5-linux-x86_64.zip",
+          "size": 5373877,
+          "sha256": "1fb5dee6a1afa1d300092805c6e660fe06144d29dd68c45cf6956f040667f791",
+          "sha512": "781b5e16e33e95f9a578e80ad226b4e014cd9cbc306c9fc8a0777d69738d03f4fd6ccd837ecdfdbbe3e2fb6d71af3900215302d1b9e8cdd7dc48475565e5b93b",
+          "executable": "lune",
+          "executable_size": 13312616,
+          "executable_sha256": "4de91e1e22f377aa3dc70219c7eb2dd9584dee8aa97369b02797d037067c759f",
+          "executable_sha512": "21cc5405715ed8e81150fbd2f5c9f638969f2357987c4afe143a05241742e9a078b1387e5360ddbcf48e616fc8a0cce14d3253be55d537d06236b9ae1ebc7278",
+          "format": "ELF 64 bit x86-64 PIE",
+          "version_output": "lune 0.10.5",
+          "version_probe": "native Linux"
+        },
+        {
+          "platform": "windows-x86_64",
+          "target": "x86_64-pc-windows-msvc",
+          "filename": "lune-0.10.5-windows-x86_64.zip",
+          "url": "https://github.com/lune-org/lune/releases/download/v0.10.5/lune-0.10.5-windows-x86_64.zip",
+          "size": 5178086,
+          "sha256": "ad0305f5cc6d7ff20996644b40bf7de0de613812f431ca241456e16f9fc89cda",
+          "sha512": "098b5a29b567350f52f1de610b84d2554130e8c62ca4f1759d941b6cb53c16d78bd0c6badd6dc585ff969dfe315392756333c9effd5f39028f6cceeef4b8e2cc",
+          "executable": "lune.exe",
+          "executable_size": 14080512,
+          "executable_sha256": "43ec01e74923e8145e599237d6af573064748c0307716e9b125b12e0969e5057",
+          "executable_sha512": "25eaee32b343d63d9b8938469f37cfe9d7f4a400d2adfc4ab1e977f22e97183e533b946293522df8cab870a41ee5c5e80bb3f169ac988f61dad20b2bc6637439",
+          "format": "PE32+ x86-64",
+          "version_output": "lune 0.10.5",
+          "version_probe": "Windows executable under Wine 11.16, compatibility only. Native Windows acceptance remains mandatory."
+        }
+      ]
+    }
+  ]
+}

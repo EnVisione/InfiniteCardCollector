@@ -2,7 +2,7 @@
 
 ## Status
 
-InfiniteCardCollector is currently a documentation only Roblox game project with a complete initial release plan. No runtime, Roblox place, Luau modules, dependencies, or build commands are implemented. This document separates current repository facts from the planned architecture and execution contracts.
+InfiniteCardCollector is a Roblox game project with an active Phase 000 foundation. The repository contains a minimum strict typed Luau runtime skeleton, deterministic development commands, a verified Linux tool bootstrap, repository tests, and reproducible Rojo project generation. No gameplay system is implemented yet. This document separates implemented foundation behavior from the planned product architecture.
 
 ## Product Boundary
 
@@ -23,9 +23,31 @@ Use this order when documents disagree:
 7. Implemented source and passing tests after implementation begins.
 8. This technical overview and the root README.
 
-The active release plan begins with Phase 000. No implementation phase has started, and the future plan does not authorize its deferred content for the initial release.
+Phase 000 foundation implementation is active. Gameplay implementation has not started, and the future plan does not authorize its deferred content for the initial release.
 
-## Planned Runtime and Toolchain
+## Implemented Foundation
+
+The repository pins Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. `rokit.toml` is the managed tool resolution contract. `config/tool-artifacts.json` records the selected Linux and Windows artifacts, archive and executable hashes, licenses, provenance, reviewed command surfaces, and security dispositions.
+
+The platform bootstrap scripts download archives to temporary storage, verify size, SHA 256, SHA 512, and archive layout before extraction, then seed Rokit with the verified binaries. `lune run verify-tools` independently checks the resolved path, exact executable bytes, version output, platform artifact, and provenance fields. It rejects a missing, changed, or PATH shadowed executable.
+
+`default.project.json` currently maps only the minimum foundation:
+
+- `src/shared/` becomes `ReplicatedStorage/Shared`.
+- `src/server/` becomes `ServerScriptService/Server`.
+- `src/client/` becomes `StarterPlayer/StarterPlayerScripts/Client`.
+- Declarative folders reserve `ServerStorage/Assets` without placing tool or test content in the runtime.
+- `StarterGui/App/AppRoot` is a scale based transparent GUI root.
+
+The shared contract contains immutable bootstrap metadata. The server bootstrap is authoritative and records local readiness only. The client bootstrap reads the shared contract and records presentation readiness only. No remote, persistent state, catalog, reward, currency, purchase, pack, formation, or trade behavior exists.
+
+StyLua covers every tracked Luau file in `src/` and `lune/`. Selene uses the committed, normalized `roblox.yml` standard library with `roblox-std-source = "pinned"`, so ordinary linting performs no standard library update. The Lune harness provides deterministic test IDs and ordering, repository bounded paths, supervised child process timeouts, isolated generated fixtures, stable error IDs, and nonzero failure exits.
+
+The exact setup, command, output, cleanup, and recovery contract is in [development setup](../operations/development-setup.md). Test cases and negative fixtures are in the [Phase 000 test procedure](../test/phase-000-toolchain.md). Current evidence is summarized in the [foundation evidence record](../verification/phase-000-foundation.md).
+
+Linux x86_64 local acceptance currently passes. Windows x86_64 bootstrap code exists but native Windows acceptance is not yet recorded. Native Roblox Studio and compatible Rojo plugin acceptance are also pending. Vinegar is conditional compatibility and cannot replace native Studio evidence.
+
+## Planned Runtime
 
 - Platform: Roblox.
 - Language: typed Luau with strict mode for shared domain modules, server services, and client controllers.
@@ -34,9 +56,9 @@ The active release plan begins with Phase 000. No implementation phase has start
 - Persistence: Roblox DataStore with session ownership, `UpdateAsync`, schema migrations, idempotent operations, and persistent trade journals.
 - Ephemeral coordination: MemoryStore only where temporary cross server coordination is eventually required.
 
-The active plan selects Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5. These are planned contracts, not installed or verified repository capabilities. Phase 000 must verify upstream artifacts and integrity data, establish the source mapping and exact portable command interface, and record the compatible Roblox Studio and Rojo plugin identities before the toolchain becomes implemented fact.
+Later phases add the planned catalogs, services, controllers, persistence, networking, and gameplay behind the implemented foundation boundaries. Native Studio and Windows acceptance must close before Phase 000 completes.
 
-## Planned Module Map
+## Planned Product Module Map
 
 The intended source layout is fully specified in the launch foundation. Its primary boundaries are:
 
@@ -96,7 +118,15 @@ Launch servers target eight players. Card and particle objects should be pooled,
 
 ## Development and Verification
 
-There are no valid build or test commands yet. Phase 000 must establish exact setup, formatting, lint, unit test, Studio integration test, packaging, and publishing procedures. At minimum, verification must cover:
+The foundation command interface is implemented. From a bootstrapped repository root, use:
+
+```console
+lune run ci
+```
+
+That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
+
+Later gameplay phases must extend verification to cover:
 
 - Catalog counts and stable ID uniqueness.
 - Formation detection and deterministic scoring.
@@ -118,7 +148,7 @@ Update the root README when setup, supported tools, public behavior, or release 
 ## Known Limitations
 
 - The repository contains no playable implementation.
-- Phase 000 has not started, so the selected toolchain and command contracts are not executable yet.
+- Phase 000 remains incomplete until native Windows, native Roblox Studio, plugin parity, clean environment, hosted CI, final audit, pull request, merge, signed tag, and wiki gates pass.
 - InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
 - Trading and end scale inventory sharding are designed but unimplemented.

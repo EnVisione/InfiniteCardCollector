@@ -1,0 +1,140 @@
+name: foundation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/foundation.yml"
+      - ".gitignore"
+      - ".styluaignore"
+      - "README.md"
+      - "build/.gitkeep"
+      - "config/**"
+      - "default.project.json"
+      - "docs/**"
+      - "lune/**"
+      - "roblox.yml"
+      - "rokit.toml"
+      - "scripts/**"
+      - "selene.toml"
+      - "src/**"
+      - "stylua.toml"
+      - "tests/**"
+  push:
+    branches:
+      - main
+      - "envy/core-phase-*"
+    paths:
+      - ".github/workflows/foundation.yml"
+      - ".gitignore"
+      - ".styluaignore"
+      - "README.md"
+      - "build/.gitkeep"
+      - "config/**"
+      - "default.project.json"
+      - "docs/**"
+      - "lune/**"
+      - "roblox.yml"
+      - "rokit.toml"
+      - "scripts/**"
+      - "selene.toml"
+      - "src/**"
+      - "stylua.toml"
+      - "tests/**"
+  workflow_dispatch:
+
+concurrency:
+  group: foundation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: foundation linux
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      ICC_CI: "true"
+      ROKIT_ROOT: ${{ runner.temp }}/infinite-card-collector-rokit
+    steps:
+      - name: checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: restore pinned tools
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ env.ROKIT_ROOT }}
+          key: foundation-tools-${{ runner.os }}-${{ hashFiles('rokit.toml', 'config/tool-artifacts.json') }}
+
+      - name: bootstrap pinned tools
+        shell: bash
+        run: |
+          bash scripts/bootstrap-tools.sh
+          echo "$ROKIT_ROOT/bin" >> "$GITHUB_PATH"
+
+      - name: verify foundation
+        shell: bash
+        run: |
+          lune run ci 2>&1 | tee build/ci-transcript.txt
+
+      - name: upload bounded evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: foundation-linux-${{ github.sha }}
+          path: |
+            build/artifact-manifest.json
+            build/ci-transcript.txt
+            build/infinite-card-collector.rbxlx
+            build/infinite-card-collector.rbxlx.sha256
+            build/infinite-card-collector.rbxlx.sha512
+            build/infinite-card-collector.sourcemap.json
+          if-no-files-found: ignore
+          retention-days: 3
+
+  windows:
+    name: foundation windows
+    runs-on: windows-2025
+    timeout-minutes: 20
+    env:
+      ICC_CI: "true"
+      ROKIT_ROOT: ${{ runner.temp }}\infinite-card-collector-rokit
+    steps:
+      - name: checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: restore pinned tools
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ env.ROKIT_ROOT }}
+          key: foundation-tools-${{ runner.os }}-${{ hashFiles('rokit.toml', 'config/tool-artifacts.json') }}
+
+      - name: bootstrap pinned tools
+        shell: pwsh
+        run: |
+          .\scripts\bootstrap-tools.ps1
+          $env:ROKIT_ROOT + "\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: verify foundation
+        shell: pwsh
+        run: |
+          lune run ci 2>&1 | Tee-Object -FilePath build/ci-transcript.txt
+          if ($LASTEXITCODE -ne 0) {
+              exit $LASTEXITCODE
+          }
+
+      - name: upload bounded evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: foundation-windows-${{ github.sha }}
+          path: |
+            build/artifact-manifest.json
+            build/ci-transcript.txt
+            build/infinite-card-collector.rbxlx
+            build/infinite-card-collector.rbxlx.sha256
+            build/infinite-card-collector.rbxlx.sha512
+            build/infinite-card-collector.sourcemap.json
+          if-no-files-found: ignore
+          retention-days: 3

@@ -27,11 +27,22 @@ The complete end goal expands to fifty two Deck Sets, 37,856 permanent card form
 - [Final product vision](docs/general/product-vision.md)
 - [Complete content catalog](docs/general/content-catalog.md)
 - [Launch foundation and implementation specification](docs/implementation/launch-foundation.md)
+- [Development setup](docs/operations/development-setup.md)
+- [Phase 000 test procedure](docs/test/phase-000-toolchain.md)
+- [Toolchain troubleshooting](docs/troubleshooting/toolchain.md)
 - [GitHub wiki](https://github.com/EnVisione/InfiniteCardCollector/wiki)
 
 ## Development Status
 
-No Roblox place, Luau source tree, executable build toolchain, or automated test harness has been committed yet. The initial release plan is complete, and Phase 000 is the next implementation phase. It selects Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5. Phase 000 must verify their provenance, pin their configuration, establish the exact commands, and prove Roblox Studio synchronization before product implementation begins.
+Phase 000 is active. The repository now contains a reproducible foundation toolchain, a minimum strict typed Luau project, deterministic repository tests, and reproducible Rojo artifact generation. It is still not a playable game. No catalogs, economy, profiles, networking, rewards, or other gameplay systems are implemented.
+
+The pinned tools are Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. Linux x86_64 bootstrap and local verification pass. Native Windows, native Roblox Studio, Rojo plugin synchronization, clean environment, and hosted CI acceptance remain Phase 000 gates until their evidence is recorded.
+
+Start with the [development setup](docs/operations/development-setup.md). After bootstrapping the reviewed artifacts, run:
+
+```console
+lune run ci
+```
 
 ## Originality and Safety
 

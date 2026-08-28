@@ -1,0 +1,2 @@
+local StarterGui = game:GetService("StarterGui")
+return StarterGui

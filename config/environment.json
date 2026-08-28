@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "ci": {
+    "enabled_environment_key": "ICC_CI"
+  },
+  "generated_output": {
+    "root": "build"
+  },
+  "local_override": "config/environment.local.json",
+  "rojo": {
+    "address": "127.0.0.1",
+    "port": 34872
+  },
+  "studio": {
+    "authoritative_environment": "native-supported-platform",
+    "connection": "loopback",
+    "vinegar_classification": "conditional-compatibility"
+  }
+}
