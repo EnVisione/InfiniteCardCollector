@@ -1,0 +1,2 @@
+local net = require("@lune/net")
+return net

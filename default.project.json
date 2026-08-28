@@ -1,0 +1,89 @@
+{
+  "name": "InfiniteCardCollector",
+  "serveAddress": "127.0.0.1",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "ServerStorage": {
+      "$className": "ServerStorage",
+      "Assets": {
+        "$className": "Folder",
+        "CardFrames": {
+          "$className": "Folder"
+        },
+        "JokerProps": {
+          "$className": "Folder"
+        },
+        "PackModels": {
+          "$className": "Folder"
+        }
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "App": {
+        "$className": "ScreenGui",
+        "$properties": {
+          "DisplayOrder": 0,
+          "IgnoreGuiInset": false,
+          "ResetOnSpawn": false,
+          "ZIndexBehavior": "Sibling"
+        },
+        "AppRoot": {
+          "$className": "Frame",
+          "$properties": {
+            "AnchorPoint": [
+              0.5,
+              0.5
+            ],
+            "BackgroundTransparency": 1,
+            "Position": {
+              "UDim2": [
+                [
+                  0.5,
+                  0
+                ],
+                [
+                  0.5,
+                  0
+                ]
+              ]
+            },
+            "Size": {
+              "UDim2": [
+                [
+                  1,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ]
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

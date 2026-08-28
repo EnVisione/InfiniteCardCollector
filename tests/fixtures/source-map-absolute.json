@@ -1,0 +1,7 @@
+{
+  "name": "Invalid",
+  "className": "DataModel",
+  "filePaths": [
+    "/machine/path/default.project.json"
+  ]
+}

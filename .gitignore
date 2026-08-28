@@ -17,6 +17,12 @@ Thumbs.db
 *.rbxlx.lock
 
 # generated output
-build/
+build/*
+!build/.gitkeep
 dist/
 coverage/
+
+# local environment overrides
+.env
+.env.*
+config/environment.local.json

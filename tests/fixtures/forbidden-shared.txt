@@ -1,0 +1,2 @@
+local ServerStorage = game:GetService("ServerStorage")
+return ServerStorage

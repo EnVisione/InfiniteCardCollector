@@ -1,0 +1,9 @@
+std = "roblox"
+roblox-std-source = "pinned"
+exclude = ["build/**", "coverage/**", "dist/**"]
+
+[lints]
+shadowing = "deny"
+undefined_variable = "deny"
+unscoped_variables = "deny"
+unused_variable = "deny"

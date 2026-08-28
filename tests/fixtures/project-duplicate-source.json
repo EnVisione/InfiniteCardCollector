@@ -1,0 +1,40 @@
+{
+  "name": "InfiniteCardCollector",
+  "serveAddress": "127.0.0.1",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      },
+      "SharedCopy": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+    "ServerStorage": {
+      "Assets": {
+        "$className": "Folder"
+      }
+    },
+    "StarterGui": {
+      "App": {
+        "$className": "ScreenGui",
+        "AppRoot": {
+          "$className": "Frame"
+        }
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}

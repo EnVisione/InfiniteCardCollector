@@ -13,19 +13,19 @@
 Project: InfiniteCardCollector
 Requested artifact: authoritative_plan
 Repository root: /home/envy/Projects/InfiniteCardCollector
-Starting branch: envy/initial-release-plan
-Starting commit: 8b16f8e3678a25d13d9bb811447c0c3f321e6b5b
+Starting branch: envy/core-phase-000
+Starting commit: ef6b0ed648f66ab3035cce5245cd0ab3b9679059
 Authoritative remote:
 origin
 https://github.com/EnVisione/InfiniteCardCollector.git
-Remote ref: origin/main
-Remote commit: 8b16f8e3678a25d13d9bb811447c0c3f321e6b5b
+Remote ref: origin/envy/core-phase-000
+Remote commit: ef6b0ed648f66ab3035cce5245cd0ab3b9679059
 Repository visibility: public
 Package metadata: absent
 Project maturity: documentation-only preimplementation design
 ```
 
-The repository identity is matched. At the locked starting revision, the local branch begins at the same commit as `origin/main`, the working tree is clean, and the public remote resolves to `EnVisione/InfiniteCardCollector`. The repository contains product and implementation specifications but no Roblox place, Luau source tree, runtime manifest, build manifest, package manifest, or executable test harness.
+The repository identity is matched. At the locked update revision, local branch `envy/core-phase-000` and remote branch `origin/envy/core-phase-000` resolve to commit `ef6b0ed648f66ab3035cce5245cd0ab3b9679059`, and the public remote resolves to `EnVisione/InfiniteCardCollector`. The repository began as documentation-only preimplementation design; the locked update revision contains the Phase 000 toolchain, typed Luau bootstrap, manifests, executable harness, and verification evidence, while gameplay remains preimplementation.
 
 Public release in this plan means publication of the Roblox experience. It does not authorize changing the GitHub repository's current public visibility.
 
@@ -50,6 +50,10 @@ The planning subject is the InfiniteCardCollector software product through its f
 | SRC-013 | reference | Authoritative master plan structure | Plan Creator master plan template | Define the master plan section and traceability structure. |
 | SRC-014 | reference | Registered aspect plan structure | Plan Creator aspect plan template | Structure full_plan.md as a registered future aspect with independent lifecycle detail. |
 | SRC-015 | reference | Mandatory per-phase execution blueprint structure | Plan Creator phase blueprint template | Define the complete phase execution plans under docs/general/phases. |
+| SRC-016 | owner_request | Qualified Phase 000 Roblox Studio acceptance through Vinegar and Wine on Linux | Current direct owner Plan Creator invocation | Authorize the actual Windows Roblox Studio binary under Vinegar and Wine to satisfy Phase 000 Studio acceptance when every locked evidence gate passes. |
+| SRC-017 | existing_plan | Current authoritative InfiniteCardCollector product contract and contiguous phase topology | docs/general/plan.md, docs/general/plan.index.json, docs/general/plan.handoff.json, and all registered phase plans | Preserve existing stable IDs, canonical ownership, unrelated scope, phase sequence, and completion endpoint. |
+| SRC-018 | audit_evidence | Verified Phase 000 Vinegar Studio synchronization and bootstrap evidence | docs/verification/phase-000-foundation.md, docs/test/phase-000-toolchain.md, config/environment.json, and revision ef6b0ed648f66ab3035cce5245cd0ab3b9679059 | Ground the exact Vinegar, Wine, Studio, plugin, loopback, synchronization, resynchronization, bootstrap, console, and topology acceptance fields. |
+| SRC-019 | status | Live Studio MCP reachability and active immutable goal state | Live Roblox Studio MCP discovery and docs/plan/goal.md | Require MCP connection evidence while preserving the saved goal unchanged and keeping CORE-PHASE-000 active. |
 
 ## 3. Purpose, Users, Workflows, and Intended Outcome
 
@@ -75,15 +79,17 @@ The public build must make opening, choosing, improving, using, and showing card
 |---|---|---|---|
 | Repository identity | VERIFIED | Local root, public remote, default branch, and starting commits match the locked identity | `git rev-parse`, `git remote`, `gh repo view`, and `git ls-remote` at the intake revision |
 | Product definition | OBSERVED | Product, launch boundary, content identities, architecture, and verification expectations are documented | SRC-002 through SRC-007 |
-| Runtime | OBSERVED | No Roblox place or playable implementation exists | SRC-002, SRC-004, repository inventory |
-| Toolchain | OBSERVED | Exact versions are locked by prerequisites, but no project manifest or executable commands exist in the repository | SRC-004, SRC-007, EXT-001 through EXT-005 |
+| Runtime at original intake | OBSERVED | No Roblox place or playable implementation existed at the locked starting revision | SRC-002, SRC-004, repository inventory at the locked starting revision |
+| Toolchain at original intake | OBSERVED | Exact versions were locked by prerequisites, but no project manifest or executable commands existed at the locked starting revision | SRC-004, SRC-007, EXT-001 through EXT-005 |
 | Persistence and networking | PROPOSED | Service boundaries, schemas, state machines, security rules, and recovery contracts are specified but unimplemented | SRC-004, SRC-007 |
-| Tests | OBSERVED | Required test classes are specified, but no automated or Studio test harness exists | SRC-004, SRC-007, SRC-008 |
+| Tests at original intake | OBSERVED | Required test classes were specified, but no automated or Studio test harness existed at the locked starting revision | SRC-004, SRC-007, SRC-008 |
 | Assets | OBSERVED | Originality requirements and content families are specified, but launch art, audio, UI, and place assets are absent | SRC-002, SRC-005 through SRC-007 |
 | Roblox release environment | UNKNOWN | Universe, place, publisher, service, commerce, and cohort evidence is not yet available | EXT-006 through EXT-013 |
 | GitHub access | OBSERVED | Authenticated repository and Project mutation capability is available for later synchronization | EXT-014 |
+| Phase 000 candidate | VERIFIED | The current phase branch implements the pinned toolchain, strict source boundaries, deterministic harness, reproducible artifact, Linux and Windows command-line verification, and hosted Linux and Windows CI | SRC-018; revision `ef6b0ed648f66ab3035cce5245cd0ab3b9679059` |
+| Qualified Vinegar Studio route | VERIFIED | The actual Windows Roblox Studio binary under the recorded Vinegar and Wine environment passes MCP reachability, loopback synchronization, controlled resynchronization and revert, client and server bootstrap, clean project console, and built-versus-synchronized topology parity | SRC-016, SRC-018, SRC-019, DEC-015; revision `ef6b0ed648f66ab3035cce5245cd0ab3b9679059` |
 
-No runtime behavior is `VERIFIED`. A document, proposed schema, or target value is evidence of intent, not proof that the game behaves that way.
+No gameplay behavior is `VERIFIED`. The Phase 000 minimum bootstrap proves only the repository toolchain and Studio synchronization contract. A document, proposed schema, or target value is evidence of intent, not proof that the game behaves that way.
 
 ## 5. Software Product Contract and Profile Coverage
 
@@ -93,9 +99,9 @@ No runtime behavior is `VERIFIED`. A document, proposed schema, or target value 
 | component architecture | covered | SRC-004, SRC-007 | Architecture and Ownership Boundaries | The technical overview and launch foundation define shared modules, services, controllers, UI surfaces, dependency direction, state ownership, data flow, and trust boundaries. |
 | state and persistence | covered | SRC-004, SRC-007 | State, Persistence, Transactions, and Recovery | The sources define durable and transient state, schema versioning, session ownership, UpdateAsync writes, migrations, journals, retries, corruption handling, size budgets, and recovery. |
 | failure taxonomy | covered | SRC-007 | Failure Taxonomy and Recovery Contract | The launch foundation defines invalid input, service failure, storage failure, authorization failure, partial completion, retryability, quarantine, safe mode, rollback, and operator evidence. |
-| versioning | covered | SRC-006, SRC-007, DEC-008 | Versioning and Compatibility | Stable IDs, catalog versions, configuration versions, profile schemas, operation receipts, migrations, tool artifacts, and public compatibility boundaries are explicitly covered. |
+| versioning | covered | SRC-006, SRC-007, SRC-018, DEC-008, DEC-015 | Versioning and Compatibility | Stable IDs, catalog versions, configuration versions, profile schemas, operation receipts, migrations, tool artifacts, and public compatibility boundaries are explicitly covered. Qualified Vinegar acceptance is bound to exact Vinegar, Wine, Studio, Rojo CLI, plugin, mapping, candidate, and MCP identities. |
 | security | covered | SRC-004, SRC-007, SRC-008 | Security, Privacy, and Abuse Boundaries | The sources define server authority, payload validation, rate limits, ownership checks, privacy, secret handling, trade safety, policy checks, moderation evidence, and adversarial tests. |
-| test system | covered | SRC-007, SRC-008 | Verification Strategy and Evidence Matrix | Pure, integration, Studio, multiclient, migration, security, failure injection, performance, accessibility, recovery, and real-workflow verification are required. |
+| test system | covered | SRC-007, SRC-008, SRC-016, SRC-018, SRC-019, DEC-015 | Verification Strategy and Evidence Matrix | Pure, integration, Studio, multiclient, migration, security, failure injection, performance, accessibility, recovery, and real-workflow verification are required. Phase 000 Studio acceptance has two explicit highest-fidelity routes, and the Vinegar route requires exact environment identity and complete real Studio behavior evidence. |
 | release lifecycle | external prerequisite | EXT-006, EXT-007, EXT-008, EXT-009, EXT-010, EXT-012, EXT-013 | Rollout, Rollback, Publication, and Production Acceptance | Build, private soft launch, controlled public rollout, observability, rollback, documentation, and production acceptance are defined, while external Roblox identities, permissions, authorizations, cohort evidence, and commerce access remain prerequisites. |
 | generalization | covered | SRC-005, SRC-006, SRC-007 | Data-Driven Generalization and Future Aspect Boundary | The architecture must represent launch fixtures without special cases, scale through data-driven catalogs, support all required devices, and preserve the exhaustive future aspect without implementing it early. |
 | determinism | covered | SRC-006, SRC-007 | Deterministic Calculations and Idempotent State | Identical normalized inputs must produce stable formation results, score traces, RNG records, migrations, operation receipts, pack recovery, and trade settlement outcomes. |
@@ -394,6 +400,14 @@ All items are `excluded` from the initial-release endpoint and are detailed with
 **Affected requirements:** CORE-REQ-001, CORE-REQ-024, CORE-REQ-025, CORE-REQ-026
 **Supersedes:** none
 
+### DEC-015 — Qualified Phase 000 Vinegar Studio acceptance
+
+**Status:** RESOLVED
+**Selected choice:** Yes. The qualified Vinegar route independently satisfies the Phase 000 Studio gate when exact Vinegar, Wine, Studio, Rojo CLI and plugin, MCP connection, loopback synchronization, controlled resynchronization, client and server bootstrap, clean project console, and built-versus-synchronized topology parity evidence all pass. This does not claim official native Linux Studio support.
+**Rationale:** The tested Vinegar path executes the actual Windows Studio binary and exercises the same project mapping, plugin protocol, client and server bootstraps, and synchronized DataModel. Exact evidence protects the acceptance boundary without requiring an unrelated workstation solely to repeat the already exercised Phase 000 runtime path.
+**Affected requirements:** CORE-REQ-001
+**Supersedes:** The Phase 000 native-only Studio acceptance restriction. It does not change later production, device, multiclient, or public release gates.
+
 ## 10. External Prerequisites
 
 | ID | Prerequisite | Affected requirements | Availability | Authorization | Required external action |
@@ -508,18 +522,20 @@ A required initialization failure closes economy actions and gives the player a 
 
 ### CORE-REQ-001 — Reproducible Roblox Development and Release Toolchain
 
-**Behavior:** The repository pins and documents an executable Roblox Studio and typed Luau workflow using Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5, with exact setup, synchronization, formatting, linting, testing, build, Studio, packaging, and publication commands.
+**Behavior:** The repository pins and documents an executable Roblox Studio and typed Luau workflow using Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene 0.31.0, and Lune v0.10.5, with exact setup, synchronization, formatting, linting, testing, build, Studio, packaging, and publication commands. Phase 000 Studio acceptance may use either native Roblox Studio on a platform currently supported by Roblox or the actual Windows Roblox Studio binary running through a qualified Vinegar and Wine environment on Linux under DEC-015.
 **Owner:** repository toolchain
 **Contributors:** release operations and documentation operations
-**Dependencies:** DEC-001, DEC-008, EXT-001, EXT-002, EXT-003, EXT-004, EXT-005
+**Dependencies:** DEC-001, DEC-008, DEC-015, EXT-001, EXT-002, EXT-003, EXT-004, EXT-005
 **Lifecycle stage:** readiness
 **Production verification:** none
 **Release impact:** MVP
 
 **Acceptance criteria**
 
-- A clean supported workstation can install the exact tools from the locked manifest and reproduce the documented version output.
+- Clean Linux and Windows command-line environments can install the exact tools from the locked manifest and reproduce the documented version output. Windows command-line portability remains mandatory regardless of the Studio acceptance route.
 - Formatting, linting, deterministic tests, project build, Studio synchronization, and release artifact creation each have one exact noninteractive command and defined expected output.
+- A real Studio instance passes the Phase 000 runtime gate through either native Roblox Studio on a platform currently supported by Roblox or the qualified actual Windows Studio binary under Vinegar and Wine. The qualified route passes only when exact Vinegar, Wine, Studio deployment and client, Rojo CLI and plugin, MCP connection, loopback address, clean synchronization, controlled resynchronization and revert, client and server bootstrap, clean project console, built-versus-synchronized topology parity, and candidate-revision binding all match the accepted packet.
+- The qualified Vinegar route makes no claim that Roblox Studio is natively or officially supported on Linux. A missing, mismatched, stale, or failed required field leaves the Studio gate open rather than falling back to a lower-fidelity substitute.
 - The source layout enforces shared, server, client, asset, test, and tooling boundaries without requiring manual untracked edits.
 - CI invokes the same pinned commands and rejects formatting, lint, test, build, documentation, secret, or artifact-integrity failures.
 
@@ -527,6 +543,7 @@ A required initialization failure closes economy actions and gives the player a 
 
 - Version output, authoritative sources, SHA-256, SHA-512, compatibility, license provenance, and security review for EXT-001 through EXT-005.
 - A clean-environment command transcript and generated release-candidate artifact manifest tied to one commit.
+- A Studio acceptance packet identifying the selected route and exact Studio channel, deployment and client; Rojo CLI and reviewed plugin; loopback address; clean synchronization; controlled source update, resynchronization, and revert; minimum client and server bootstrap; clean project console; built model, source map, and synchronized DataModel topology parity; and binding to the candidate revision. The qualified Vinegar route additionally records exact Vinegar and Wine identities and live MCP connection evidence.
 - CI results proving all repository gates use the pinned workflow.
 
 ### CORE-REQ-002 — Exact Launch Catalogs and Configuration
@@ -1102,7 +1119,7 @@ A required initialization failure closes economy actions and gives the player a 
 
 ### CORE-REQ-026 — Continuous Documentation and GitHub Synchronization
 
-**Behavior:** Tracked documentation remains accurate and canonical, execution evidence is recorded outside the protected plan set, and GitHub Issues, roadmap Project, milestones, phase branches, pull requests, checks, reviews, merge commits, signed tags, releases, and wiki navigation remain synchronized with actual verified state.
+**Behavior:** Tracked documentation remains accurate and canonical, execution evidence is recorded outside the protected plan set, protected plan changes occur only through a current direct owner-authorized Plan Creator pass, and GitHub Issues, roadmap Project, milestones, phase branches, pull requests, checks, reviews, merge commits, signed tags, releases, and wiki navigation remain synchronized with actual verified state. The saved goal remains immutable, and execution under it rereads the current authoritative plan set after an authorized plan revision.
 **Owner:** documentation operations
 **Contributors:** repository operations and every phase owner
 **Dependencies:** DEC-014, EXT-014
@@ -1116,13 +1133,13 @@ A required initialization failure closes economy actions and gives the player a 
 - Each phase starts from the latest approved `origin/main`, integrates through a merge-commit pull request, waits for required checks and review, and receives a signed annotated phase tag after merge.
 - The next phase never starts before the previous merge is present on `origin/main` and its tag is pushed.
 - Issues, Project status, milestones, pull requests, documentation, releases, and wiki navigation agree with the merged repository state.
-- `plan.md`, `full_plan.md`, registered phase plans, `plan.index.json`, `plan.handoff.json`, and a later saved goal remain pinned execution inputs rather than status diaries.
+- `plan.md`, `full_plan.md`, registered phase plans, `plan.index.json`, and `plan.handoff.json` remain authoritative product-contract inputs rather than status diaries and may change only during a current direct owner-authorized Plan Creator pass. A saved goal remains immutable; its recorded plan and plan-set digests are creation-time provenance rather than runtime locks.
 
 **Required evidence**
 
 - Documentation diff and link-check results for every phase completion packet.
 - GitHub identity, scope, issue, Project, milestone, pull request, check, review, merge, tag, release, and wiki verification under EXT-014.
-- Final synchronization audit proving no protected plan artifact changed during execution.
+- Final synchronization audit proving no protected plan artifact changed outside a current direct owner-authorized Plan Creator pass, every authorized plan revision is represented by the current validated plan set and deterministic handoff, and the saved goal itself retained its original digest.
 
 ## 13. Phased Roadmap
 
@@ -1130,7 +1147,7 @@ The master owns the global sequence, canonical requirement ownership, and concis
 
 | Phase ID | Objective | Owner | Dependencies | Canonical requirements | Entry summary | Exit summary | Next transition | Execution blueprint |
 |---|---|---|---|---|---|---|---|---|
-| CORE-PHASE-000 | Establish the reproducible toolchain, source boundaries, exact commands, local harness, and CI foundation | repository toolchain | DEC-001, DEC-008, EXT-001, EXT-002, EXT-003, EXT-004, EXT-005 | CORE-REQ-001 | Validated plan set and saved goal pin the locked repository identity and phase scope | Clean setup reproduces all tool versions and formatting, lint, test, build, Studio sync, artifact, and CI commands without a mandatory defect | CORE-PHASE-001 | [Phase 000](phases/plan-phase-000.md) |
+| CORE-PHASE-000 | Establish the reproducible toolchain, source boundaries, exact commands, local harness, and CI foundation | repository toolchain | DEC-001, DEC-008, DEC-015, EXT-001, EXT-002, EXT-003, EXT-004, EXT-005 | CORE-REQ-001 | The current validated plan set and immutable saved goal describe the same project, active phase, and endpoint; goal-recorded plan digests remain creation-time provenance | Clean Linux and Windows command-line setup reproduces all tool versions and formatting, lint, test, build, artifact, and CI commands, and either native supported-platform Studio or the qualified actual Windows Studio binary under Vinegar and Wine passes the complete Studio acceptance packet without a mandatory defect | CORE-PHASE-001 | [Phase 000](phases/plan-phase-000.md) |
 | CORE-PHASE-001 | Implement exact catalogs, configuration, deterministic formations, scores, effects, traces, and economy contracts | shared calculation layer | CORE-PHASE-000, DEC-003, DEC-006, DEC-010 | CORE-REQ-002, CORE-REQ-003, CORE-REQ-013 | Phase 000 is merged and tagged; exact tool and source contracts pass | Catalog counts and references are exact, all pure tests and property tests pass, and the showcase card uses ordinary data | CORE-PHASE-002 | [Phase 001](phases/plan-phase-001.md) |
 | CORE-PHASE-002 | Build the server-authoritative network, durable profile and transaction kernel, inventory and deck boundaries, renderer foundation, and recoverable vertical slice | Profile service | CORE-PHASE-001, DEC-008, DEC-009, EXT-006 | CORE-REQ-004, CORE-REQ-005, CORE-REQ-006, CORE-REQ-007, CORE-REQ-008 | Phase 001 is merged and tagged; pure contracts and service interfaces are frozen | A blank account opens, equips, scores, disconnects at each step, rejoins, and recovers exact state; storage, network, security, and renderer gates pass | CORE-PHASE-003 | [Phase 002](phases/plan-phase-002.md) |
 | CORE-PHASE-003 | Complete all launch assets, packs, progression, Jokers, and responsive collection surfaces | content asset pipeline | CORE-PHASE-002, DEC-003, DEC-007, DEC-009 | CORE-REQ-009, CORE-REQ-010, CORE-REQ-011, CORE-REQ-012, CORE-REQ-014 | Phase 002 is merged and tagged; vertical-slice persistence and rendering are proven | All 624 forms are reachable, every launch content count and asset resolves, pity and choices recover, progression never regresses, and all collection surfaces pass | CORE-PHASE-004 | [Phase 003](phases/plan-phase-003.md) |
@@ -1147,7 +1164,7 @@ Global phase numbers are contiguous and cannot be skipped, reordered, reserved, 
 
 | Requirement family | Static or unit | Integration | Real behavior | Security and recovery | Evidence artifact |
 |---|---|---|---|---|---|
-| CORE-REQ-001 | Version, config, command, and documentation checks | Clean-environment setup and artifact build | Studio synchronization | Tool provenance and secret boundaries | Tool manifest, hashes, command transcript, CI results |
+| CORE-REQ-001 | Version, config, command, route-selection, identity-binding, and documentation checks | Clean Linux and Windows setup, artifact build, MCP discovery, loopback sync, and controlled resync | Native supported-platform Studio or qualified actual Windows Studio under Vinegar and Wine, with client and server bootstrap, clean project console, and topology parity | Tool and plugin provenance, exact Vinegar and Wine identity for the qualified route, loopback-only connection, stale-evidence rejection, and secret boundaries | Tool manifest, hashes, command transcripts, Studio acceptance packet bound to the candidate revision, and CI results |
 | CORE-REQ-002, CORE-REQ-003, CORE-REQ-013 | Catalog, math, property, cap, and configuration tests | Service consumers use one normalized contract | Frozen score and economy fixtures in Studio | Invalid data and overflow rejection | Catalog snapshot, validator report, calculation traces |
 | CORE-REQ-004 through CORE-REQ-007 | Schema, migration, receipt, and ownership tests | Network, profile, transaction, inventory, and deck services | Blank account, rejoin, collision, safe mode | Hostile input, throttle, replay, shutdown, conservation | Profile hashes, receipts, recovery packet |
 | CORE-REQ-008, CORE-REQ-009, CORE-REQ-014 | Asset, reference, renderer, and controller tests | Every UI consumes authoritative state | Device and accessibility workflows | Stale, pending, disabled, and maintenance behavior | Asset manifest, screenshots, performance report |
@@ -1168,6 +1185,9 @@ Required evidence is invalidated by a relevant source change, catalog or configu
 - Display labels, balance values, and presentation may change only through versioned configuration and cannot reinterpret existing ownership.
 - New content uses data and handler registrations through existing interfaces rather than copied services.
 - Clients with unknown or incompatible action versions fail safely and receive a supported update path.
+- Phase 000 Studio acceptance has two independent real-Studio routes: native Roblox Studio on a platform currently supported by Roblox, or the actual Windows Roblox Studio binary running through a qualified Vinegar and Wine environment on Linux. The qualified route is accepted only for the exact recorded environment and complete DEC-015 evidence packet. It does not claim official native Linux Studio support.
+- The qualified route records exact Vinegar, Wine, Studio deployment and client, Rojo CLI and plugin, live MCP connection, loopback address, clean synchronization, controlled resynchronization and revert, client and server bootstrap, clean project console, built-versus-synchronized topology parity, and candidate revision. A relevant change invalidates the packet and requires reacceptance through either route.
+- Windows command-line portability remains an independent mandatory requirement and cannot be replaced by Wine execution or the Studio packet.
 
 ### Migration
 
@@ -1216,6 +1236,7 @@ Rollback restricts audience or restores the prior place version, disables unsafe
 | Device overload | Poor mobile experience | Pooling, virtualization, bounded preload and server work | Frame, memory, payload, and eight-player tests | Reduce effects, disable costly content, optimize and rerun |
 | Inaccessible confirmation | Accidental or blocked action | Text and symbols, scale, controller focus, reduced settings | Device and accessibility review | Block release and correct the surface |
 | Brand or policy conflict | Publication delay or removal | Originality boundary and clearance prerequisite | Trademark, Roblox search, metadata, Standards review | Replace conflicting assets before artifact freeze |
+| Qualified Vinegar Studio evidence drifts or is mistaken for official Linux support | Phase 000 closes on stale runtime evidence or documentation overstates platform support | Bind every required DEC-015 field to one candidate revision, retain the native supported-platform route, and state the qualified support boundary explicitly | Vinegar, Wine, Studio, plugin, MCP, loopback, synchronization, resynchronization, bootstrap, console, topology, or candidate identity mismatch | Invalidate the packet and rerun the complete qualified route, or complete the native supported-platform Studio route; never waive a missing field |
 | External authorization absent | Endpoint cannot be exercised | Typed EXT contracts and approved blocker status | Preflight reports missing evidence | Remain externally blocked without weakening scope |
 | Release regression | Public player harm | Private soft launch, staged rollout, thresholds, feature controls | Production dashboards and smoke checks | Restrict access, restore place, disable features, preserve state |
 
@@ -1232,7 +1253,7 @@ The plan is complete only when all of the following are true:
 - No known profile-loss, duplication, infinite reward, currency underflow, unsafe receipt, remote exploit, inaccessible required flow, or other mandatory in-scope defect remains.
 - Documentation, release evidence, GitHub state, and wiki navigation match the merged and published state.
 - Optional FUT-001 through FUT-015 remain excluded and PLAN-FULL remains nonblocking.
-- The protected plan set and saved goal remain unchanged during execution.
+- The protected plan set changes only through a current direct owner-authorized Plan Creator pass and otherwise remains unchanged during execution. The saved goal remains unchanged in every case; its recorded plan digests remain creation-time provenance while execution rereads the current validated plan set.
 - The known external blockers named Roblox universe, place, publisher permissions, and service access; Final public brand and trademark clearance; Private soft launch authorization; Public rollout authorization; Production purchase smoke authorization; Soft launch cohort, test accounts, and representative device coverage; and Roblox product IDs, receipt testing, policy information, and commerce access are satisfied with their exact required evidence before endpoint closure.
 - Until every mandatory external blocker is satisfied, the terminal state is `NOT COMPLETE — EXTERNALLY BLOCKED`.
 - A genuine unavailable external prerequisite leaves the plan externally blocked and never permits mocked evidence or a false completion claim.
@@ -1242,13 +1263,13 @@ The plan is complete only when all of the following are true:
 ```text
 Mandatory boundary: CORE-REQ-001 through CORE-REQ-026 and CORE-PHASE-000 through CORE-PHASE-009.
 Optional/future disposition: excluded
-Locked owner decisions: DEC-001 through DEC-014.
+Locked owner decisions: DEC-001 through DEC-015.
 Active phase: CORE-PHASE-000
-Next executable action: After Goal Creator validates the complete pinned plan set, execute P000-TASK-001 from phases/plan-phase-000.md on the sequential phase branch.
-Known failing checks: No runtime checks exist because the repository has no implementation. Missing runtime evidence is not treated as passing.
+Next executable action: Reread the updated Phase 000 blueprint, verify the unchanged saved goal and current live plan identity, bind the complete DEC-015 Studio packet to the final candidate revision, rerun every invalidated plan, documentation, artifact, and CI gate from the lowest affected layer, and complete P000-TASK-014 before integration.
+Known failing checks: None currently identified in the implemented toolchain or qualified Vinegar Studio path. Phase 000 remains incomplete until the updated candidate audit, pull request integration, merged-main verification, signed phase tag, and post-merge synchronization pass.
 Known external blockers: EXT-006, Roblox universe, place, publisher permissions, and service access. EXT-007, Final public brand and trademark clearance. EXT-008, Private soft launch authorization. EXT-009, Public rollout authorization. EXT-010, Production purchase smoke authorization. EXT-012, Soft launch cohort, test accounts, and representative device coverage. EXT-013, Roblox product IDs, receipt testing, policy information, and commerce access. EXT-011 is conditional and does not block a visibly disabled trading release. EXT-001 through EXT-005 and EXT-014 are available.
 Completion endpoint: A controlled public Roblox release of the three Deck Set InfiniteCardCollector foundation passes every mandatory initial release gate, with direct trading enabled only if its separate safety and production authorization gates pass and otherwise visibly disabled.
-Required evidence gates: Pinned tools and commands, exact catalogs, deterministic tests, profile and transaction recovery, complete launch assets, full Studio and multiclient workflows, trade conservation or disabled fallback, authorized purchase smoke, device and performance evidence, private soft launch, controlled public rollout, production acceptance, documentation, and GitHub synchronization.
+Required evidence gates: Pinned tools and commands; clean Linux and Windows command-line portability; Phase 000 acceptance through native supported-platform Studio or the qualified actual Windows Studio binary under Vinegar and Wine with exact environment, MCP, loopback, synchronization, resynchronization, bootstrap, console, topology, and candidate-revision evidence; exact catalogs; deterministic tests; profile and transaction recovery; complete launch assets; full later Studio and multiclient workflows; trade conservation or disabled fallback; authorized purchase smoke; device and performance evidence; private soft launch; controlled public rollout; production acceptance; documentation; and GitHub synchronization.
 ```
 
-Goal Creator must consume the final validated `plan.handoff.json` and matching plan-set digest. It must not infer around a missing, stale, or mismatched handoff, modify this plan set, or promote future scope.
+This authorized plan update does not invoke Goal Creator and does not refresh, rebind, or modify the existing saved goal. Execution under the saved goal rereads the current validated plan set and deterministic `plan.handoff.json`; its recorded plan and plan-set digests remain creation-time provenance, and plan digest drift alone is not a goal conflict. Only a changed saved-goal digest is a goal revision conflict. Goal Creator must consume the final validated handoff and matching current plan-set digest only when creating a goal where none exists, and it must not infer around missing authority, modify this plan set, or promote future scope.
