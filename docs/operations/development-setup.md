@@ -4,7 +4,7 @@
 
 The command line foundation targets Linux x86_64 and Windows x86_64. Linux x86_64 local and clean environment verification passes. A clean GitHub hosted `windows-2025` runner also passes bootstrap, tool verification, formatting, linting, tests, source map generation, reproducible build generation, documentation checks, secret checks, and artifact inspection.
 
-Authoritative runtime acceptance requires native Roblox Studio on a platform Roblox currently supports. Linux Studio through Vinegar is conditional compatibility. The exact Vinegar 1.9.4, Wine 11.16, Studio `0.736.0.7361346`, and Rojo 7.7.0 snapshot passed clean synchronization, resynchronization, topology, and bootstrap checks. It remains additional evidence and never replaces native Roblox Studio acceptance.
+Phase 000 runtime acceptance has two independent real Studio routes. One uses native Roblox Studio on a platform Roblox currently supports. The selected qualified Vinegar Studio route runs the actual Windows Roblox Studio binary under Vinegar and Wine on Linux. The exact Vinegar 1.9.4, Wine 11.16, Studio `0.736.0.7361346`, Rojo 7.7.0, reviewed plugin, live MCP connection, loopback synchronization, controlled resynchronization and revert, topology, bootstrap, and clean project console checks pass. This qualified route satisfies the Phase 000 Studio gate but makes no official native Linux Studio support claim.
 
 The protected product contract is `docs/general/plan.md`. The immutable saved execution goal is `docs/plan/goal.md`. Ordinary implementation evidence belongs in the repository, tests, this documentation, and `docs/verification/`, never in those protected contracts.
 
@@ -38,7 +38,7 @@ Use 64 bit Windows PowerShell. The script relies only on PowerShell and the .NET
 .\scripts\bootstrap-tools.ps1
 ```
 
-The Windows script applies the same registry driven size, SHA 256, SHA 512, archive layout, extracted executable, trust, alias, and path checks to the selected Windows x86_64 artifacts. The clean `windows-2025` acceptance run is recorded in [Phase 000 foundation evidence](../verification/phase-000-foundation.md). This command line acceptance does not replace the separate native Roblox Studio gate.
+The Windows script applies the same registry driven size, SHA 256, SHA 512, archive layout, extracted executable, trust, alias, and path checks to the selected Windows x86_64 artifacts. The clean `windows-2025` acceptance run is recorded in [Phase 000 foundation evidence](../verification/phase-000-foundation.md). Clean Windows command line portability remains mandatory and independent of the selected Studio route.
 
 ## Managed Tool Resolution
 
@@ -139,7 +139,7 @@ The manifest contains no generation timestamp, random identifier, locale depende
 
 ## Environment and Secrets
 
-`config/environment.json` contains only safe defaults. Rojo binds to `127.0.0.1:34872`, output stays under `build/`, and Studio synchronization is loopback only. `config/environment.local.json` is the ignored local override path. It must never contain a credential or enter a candidate artifact.
+`config/environment.json` schema 2 contains only safe defaults. It registers native supported platform Studio and qualified Vinegar as the two accepted routes, selects qualified Vinegar for this Linux workstation, requires MCP for that route, and explicitly records that the runtime is Windows Studio under Wine rather than native Linux Studio. Rojo binds to `127.0.0.1:34872`, output stays under `build/`, and Studio synchronization is loopback only. `config/environment.local.json` is the ignored local override path. It must never contain a credential or enter a candidate artifact.
 
 Phase 000 requires no Roblox publishing credential and no repository secret. Do not add Roblox cookies, GitHub tokens, passwords, private logs, raw player profiles, or machine specific Studio paths. Diagnostics must use repository relative paths or the stable `$REPOSITORY`, `$ROKIT_ROOT`, and `$USER_HOME` labels.
 

@@ -8,15 +8,15 @@ This rolling evidence record covers the reproducible repository foundation for `
 
 The reviewed Linux x86_64 foundation passes locally and from a fresh clone. The complete hosted contract passes on Linux x86_64 and clean Windows x86_64. The repository has exact tool resolution, a strict typed Luau boundary skeleton, deterministic formatting and linting, a deterministic Lune harness, safe environment defaults, source map validation, byte identical Rojo builds, canonical artifact metadata, SHA 256, SHA 512, documentation checks, secret checks, and bounded CI evidence.
 
-Phase 000 remains open. Native Roblox Studio, final candidate diff audit, pull request checks, independent review capability disposition, GitHub merge commit, signed `phase-000` tag, and post merge wiki synchronization are not yet complete.
+Phase 000 remains open. The selected qualified Vinegar Studio route passes. Final candidate reconciliation, final diff audit, pull request checks, independent review capability disposition, GitHub merge commit, signed `phase-000` tag, and post merge wiki synchronization are not yet complete.
 
 ## Verified Inputs
 
 | Contract | Result |
 | --- | --- |
 | Saved goal SHA 256 | `fbe125681fc52b42131aa7aa1f4f61902d33c7912adc982ebcb7dbd87cff2f69` matched before implementation. |
-| Master plan SHA 256 | `6171fe53ca75fe6d1df7cf9fbfc0fd224af0dadbaa99380dcce4300a5ce7d880` matched before implementation. |
-| Plan set SHA 256 | `c83f9327d887f8befea060a75fdea8568383ced1bfbfc305ce863119add5af8b` matched before implementation. |
+| Master plan SHA 256 | Current authorized plan `55e38a51c424446cb10f2b52482eb44b3bbec1c70570b0cb4d2d3395b640c3a8` was reread through EOF. |
+| Plan set SHA 256 | Current authorized plan set `4b7b03e8d70b5f5650e265f115d15878329742409825b07cd515079882556b3c` validated after the owner authorized `DEC-015` revision. |
 | Approved base | `311f6d1a3342b53aa280dda53d13e33cb269284f` on `origin/main`. |
 | Phase branch | `envy/core-phase-000`. |
 | Tool artifacts | Five tools, ten platform executables, and the reviewed Rojo plugin are recorded in `config/tool-artifacts.json`. |
@@ -57,9 +57,9 @@ The clean Linux artifact had SHA 256 `6e77c39b4a2640be76b8320e37a46df0b0edf499ec
 
 GitHub Actions run `33201999116` passed the same nine gate `lune run ci` contract on `ubuntu-24.04` and `windows-2025`. Linux job `98953478817` passed with the pinned cache restored. Windows job `98953478936` began without a matching tool cache, downloaded and verified the selected native Windows artifacts, and passed all nine gates. The run used least privilege, twenty minute job timeouts, superseded run cancellation, three day evidence retention, and SHA pinned Node 24 action releases.
 
-## Vinegar Compatibility
+## Qualified Vinegar Studio Acceptance
 
-The optional Linux Studio compatibility run passed on this exact environment. It is additional evidence only and does not replace the pending native Roblox Studio gate.
+The selected qualified Vinegar route passed on this exact environment and independently satisfies the Phase 000 Studio gate. It runs the actual Windows Roblox Studio binary under Vinegar and Wine and requires every identity and behavior field below.
 
 | Component | Verified identity |
 | --- | --- |
@@ -73,7 +73,23 @@ The run began from a generated empty DataModel. Before synchronization, the five
 
 A controlled source change moved `BootstrapContract.contractVersion` from 1 to 2. Studio received the update without a manual copy. Reverting the tracked source to 1 removed version 2 from the synchronized ModuleScript. In play mode, the server and client bootstrap scripts were enabled and each reported `BootstrapState` as `ready` and `BootstrapContractVersion` as 1. The Studio console returned no project message or error during the bootstrap run.
 
-The same artifact also opened successfully as a local `.rbxlx`. Vinegar and Wine emitted compatibility warnings outside the project console, including graphics and built in asset warnings. These did not change the synchronized project tree or bootstrap result. This packet supports only the exact tested compatibility snapshot and makes no native Linux Studio support claim.
+The same artifact also opened successfully as a local `.rbxlx`. Vinegar and Wine emitted compatibility warnings outside the project console, including graphics and built in asset warnings. These did not change the synchronized project tree or bootstrap result. This packet supports only the exact tested qualified snapshot and makes no official native Linux Studio support claim.
+
+## Candidate Continuity
+
+The complete Studio workflow was exercised at revision `ef6b0ed648f66ab3035cce5245cd0ab3b9679059`. Candidate reconciliation found no byte change from that revision in `default.project.json`, `rokit.toml`, or any file under `src/`. Their SHA 256 identities are:
+
+| Studio affecting input | SHA 256 |
+| --- | --- |
+| `default.project.json` | `245b28857ab6abf2e77139a89224b2437f5ebd251a7f205dfe433abfe75b1e8f` |
+| `rokit.toml` | `9d6b91cf94aa7aea2ef7ab957047441cc07229e517223c43a0161455d5b2e504` |
+| `src/shared/BootstrapContract.luau` | `b7347b6c4a9e1f382ba1517c87d399fd3afda64690c971daaba6a372cc6cae24` |
+| `src/server/Bootstrap.server.luau` | `ddf3f4170791f4919ce1816c6be73d709d9005a3d971fffdddb897ef399a5d29` |
+| `src/client/ClientBootstrap.client.luau` | `a05fce4b1e6bfe50ea7ecfaa50c0e10da34911b1a625a54b484d00ebdff56a4c` |
+
+The canonical Rojo address and Studio connection subset has SHA 256 `652c6d021d6046ccaf9a2787c817362c6035c131bba4b1fe782e9b06726f31e5` at both revisions. The selected Rojo CLI and plugin identity subset has SHA 256 `1cd5daa71bf33466175825adb2cd457e91ecca7bc5a550c8b56e3f7ab8cdab16` at both revisions. The environment schema change only reclassifies the accepted Studio routes and selects the already exercised qualified route. It does not change the loopback connection, project mapping, runtime source, Rojo executable, or reviewed plugin bytes.
+
+Live MCP reconciliation listed one connected Studio instance named `infinite-card-collector.rbxlx` in Edit mode. The synchronized project roots and descendants remained present, the reviewed Rojo 7.7.0 plugin was loaded, and the project console remained empty. The final pull request packet must name the final branch head and transfer this content addressed Studio packet to it before merge.
 
 ## Negative Verification
 
@@ -85,4 +101,4 @@ Negative snippets are inert `.txt` or JSON fixtures. The network fixture is reje
 
 A change to any tool version, artifact URL, archive hash, executable hash, source commit, license, security disposition, `rokit.toml`, `roblox.yml`, formatter or linter configuration, `default.project.json`, runtime source, Lune harness, environment schema, command, normalization rule, workflow, plugin, or Studio identity invalidates its dependent evidence. Rerun from the lowest changed layer through the final audit.
 
-Generated evidence under `build/` is intentionally untracked. Final completion evidence must be regenerated from the final phase commit and linked to successful hosted CI, native Studio, merge, signed tag, and wiki state.
+Generated evidence under `build/` is intentionally untracked. Final completion evidence must be regenerated from the final phase candidate and linked to successful hosted CI, the selected Studio route, merge, signed tag, and wiki state.

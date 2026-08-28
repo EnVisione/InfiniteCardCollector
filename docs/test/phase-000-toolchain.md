@@ -15,8 +15,8 @@ This procedure verifies only the reproducible repository foundation. It does not
 7. Run `lune run artifact` twice from clean output and compare the project, source map, canonical manifest, SHA 256, SHA 512, source input digest, and instance inventory digest.
 8. Run `lune run docs` and `lune run secrets`.
 9. Run `lune run ci` from a cold tool cache and from a warm tool cache.
-10. Complete native Roblox Studio synchronization, controlled resynchronization, bootstrap play test, and topology parity.
-11. Record Vinegar as present or absent. If present, run it as a separately labeled compatibility check.
+10. Complete one accepted real Studio route with exact Studio and plugin identities, loopback synchronization, controlled resynchronization and revert, bootstrap play test, clean project console, topology parity, and candidate binding.
+11. When the qualified Vinegar route is selected, also record exact Vinegar and Wine identities and prove live MCP reachability.
 
 ## Automated Test IDs
 
@@ -46,11 +46,11 @@ Fixtures contain no real credential, user path, network endpoint, profile, or pr
 
 Any assertion failure or harness exception reports the owning stable test ID and exits nonzero. A timeout is terminated by the platform process supervisor. A failed run keeps its isolated diagnostics under `build/test-work/` until the next deliberate test rerun.
 
-## Manual Studio Procedure
+## Real Studio Procedure
 
-The native Studio procedure remains pending. Its acceptance packet must record the exact Studio build and channel, reviewed Rojo plugin identity, loopback server address, clean synchronization, controlled source edit and resynchronization, server and client bootstrap attributes, built versus synchronized topology, and sanitized logs.
+The selected qualified Vinegar route passed with Vinegar 1.9.4, Wine 11.16, the actual Windows Roblox Studio binary at client `0.736.0.7361346` on the LIVE channel, the reviewed Rojo 7.7.0 plugin, and a live MCP connection. It proved an empty DataModel before synchronization, the complete synchronized topology, a controlled contract version update and revert, both ready bootstrap attributes in play mode, and an empty project console.
 
-The separate Vinegar compatibility procedure passed for Vinegar 1.9.4, Wine 11.16, Studio `0.736.0.7361346` on the LIVE channel, and the reviewed Rojo 7.7.0 plugin. It proved an empty DataModel before synchronization, the complete synchronized topology, a controlled contract version update and revert, both ready bootstrap attributes in play mode, and an empty project console. This conditional result never substitutes for the native Studio gate.
+This packet independently satisfies the Phase 000 Studio gate when its Studio affecting inputs remain identical to the final candidate. It does not claim official native Linux Studio support. The alternative native supported platform route remains available but is not required when the complete qualified route passes.
 
 ## Rerun Order
 
@@ -62,7 +62,7 @@ After a change, rerun from the lowest affected layer:
 4. Source map and build commands.
 5. `lune run artifact`.
 6. `lune run docs` and `lune run secrets`.
-7. Native Studio parity when mapping, source, Rojo, plugin, or Studio inputs changed.
+7. Selected route Studio parity when mapping, runtime source, Rojo, plugin, Studio, or route specific inputs changed.
 8. Clean Linux and Windows acceptance.
 9. Hosted CI.
 10. Final diff and evidence audit.

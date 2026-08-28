@@ -36,7 +36,7 @@ The first stable `P000` identifier names the failed contract. Test output is det
 
 Confirm every `$path` in `default.project.json` is repository relative, unique, and present. Runtime paths may point only to `src/shared`, `src/server`, and `src/client`. Tests, Lune scripts, tool registries, local environment files, caches, and build output must never be mapped.
 
-After a mapping change, rerun source map validation, two build reproducibility, artifact inventory, native Studio synchronization, and topology parity.
+After a mapping change, rerun source map validation, two build reproducibility, artifact inventory, selected route Studio synchronization, and topology parity.
 
 ## Occupied Synchronization Port
 
@@ -56,8 +56,10 @@ Rerun the job without restored tool cache. The cache key must include the operat
 
 ## Windows Path Behavior
 
-Use 64 bit Windows PowerShell and keep repository commands at the repository root. Generated manifests use forward slash repository paths even when Windows APIs use backslashes. The process supervisor quotes controlled arguments and returns child output through the same stable command interface. The command contract passes on the recorded clean `windows-2025` runner. Wine execution cannot replace that Windows evidence or the separate native Roblox Studio gate.
+Use 64 bit Windows PowerShell and keep repository commands at the repository root. Generated manifests use forward slash repository paths even when Windows APIs use backslashes. The process supervisor quotes controlled arguments and returns child output through the same stable command interface. The command contract passes on the recorded clean `windows-2025` runner. Wine execution of command line tools cannot replace that independent clean Windows evidence.
 
-## Vinegar Limitations
+## Qualified Vinegar Studio Route
 
-Vinegar is conditional Linux compatibility. Record its version, Wine version, Studio identity, plugin identity, synchronization, resynchronization, bootstrap, and topology evidence when it is present. A missing or failing Vinegar path is nonblocking, but it cannot weaken the independent native Roblox Studio gate or create an official Linux Studio support claim.
+The qualified route runs the actual Windows Roblox Studio binary under Vinegar and Wine. Record exact Vinegar, Wine, Studio deployment and client, Rojo CLI and plugin, MCP connection, loopback synchronization, controlled resynchronization and revert, client and server bootstrap, project console, topology, and candidate binding evidence. A complete packet satisfies the Phase 000 Studio gate. It creates no official native Linux Studio support claim.
+
+If MCP disconnects, the Studio deployment changes, the plugin changes, or the loopback server no longer maps the selected project, reject the route packet. Restore the exact environment and repeat the complete qualified route. Do not retain only the previously passing subchecks.

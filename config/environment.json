@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "ci": {
     "enabled_environment_key": "ICC_CI"
   },
@@ -12,8 +12,16 @@
     "port": 34872
   },
   "studio": {
-    "authoritative_environment": "native-supported-platform",
+    "accepted_routes": [
+      "native-supported-platform",
+      "qualified-vinegar"
+    ],
     "connection": "loopback",
-    "vinegar_classification": "conditional-compatibility"
+    "selected_route": "qualified-vinegar",
+    "vinegar": {
+      "mcp_required": true,
+      "native_linux_support": false,
+      "runtime": "actual-windows-studio-under-wine"
+    }
   }
 }

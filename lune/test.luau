@@ -102,7 +102,7 @@ addTest("P000-TEST-002-strict-boundaries", function()
 end)
 
 addTest("P000-TEST-003-environment", function()
-	Environment.loadAndValidate()
+	local environment = Environment.loadAndValidate()
 	local unsafe = serde.decode("json", fs.readFile("tests/fixtures/environment-unsafe.json"))
 	expectFailure(function()
 		Environment.validateFixture(unsafe)
@@ -114,6 +114,11 @@ addTest("P000-TEST-003-environment", function()
 			["to" .. "ken"] = "fixture-value",
 		})
 	end, "P000-ENV-001")
+
+	environment.studio.selected_route = "unsupported"
+	expectFailure(function()
+		Environment.validateFixture(environment)
+	end, "P000-ENV-010")
 end)
 
 addTest("P000-TEST-004-source-map", function()

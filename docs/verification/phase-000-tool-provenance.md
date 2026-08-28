@@ -52,7 +52,7 @@ selene 0.31.0
 stylua 2.5.2
 ```
 
-The five selected Windows executables returned the same versions under Wine 11.16. That remains a compatibility probe only. The required command line acceptance was completed independently on a clean GitHub hosted `windows-2025` runner using the selected native Windows artifacts. Neither result replaces native Roblox Studio acceptance.
+The five selected Windows command line executables returned the same versions under Wine 11.16. That remains a compatibility probe only. Required command line acceptance was completed independently on a clean GitHub hosted `windows-2025` runner using the selected native Windows artifacts. The separate qualified Vinegar Studio packet is the accepted real Studio route and does not replace clean Windows command line portability.
 
 ## Upstream Build Provenance
 

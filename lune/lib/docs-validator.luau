@@ -109,7 +109,9 @@ function DocsValidator.validate()
 			"Linux x86_64",
 			"Windows x86_64",
 			"native Roblox Studio",
-			"conditional compatibility",
+			"qualified Vinegar Studio route",
+			"actual Windows Roblox Studio binary",
+			"no official native Linux Studio support",
 			"build/infinite-card-collector.rbxlx",
 			"config/environment.local.json",
 			"docs/general/plan.md",
@@ -141,6 +143,24 @@ function DocsValidator.validate()
 		overview:find("There are no valid build or test commands yet", 1, true) == nil,
 		"P000-DOCS-010 obsolete overview claim"
 	)
+
+	local staleStudioClaims = {
+		"native Roblox Studio on a Roblox supported operating system remains a mandatory Phase 000 gate",
+		"Vinegar cannot replace native Studio evidence",
+		"never replaces native Roblox Studio acceptance",
+		"The native Studio procedure remains pending",
+		"never substitutes for the native Studio gate",
+		"Vinegar is conditional Linux compatibility",
+	}
+	for _, path in requiredDocuments do
+		local contents = fs.readFile(path):lower()
+		for _, claim in staleStudioClaims do
+			assert(
+				contents:find(claim:lower(), 1, true) == nil,
+				"P000-DOCS-011 obsolete studio claim, " .. path
+			)
+		end
+	end
 
 	local paths = markdownPaths()
 	for _, path in paths do

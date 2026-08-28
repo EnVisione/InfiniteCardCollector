@@ -45,7 +45,7 @@ StyLua covers every tracked Luau file in `src/` and `lune/`. Selene uses the com
 
 The exact setup, command, output, cleanup, and recovery contract is in [development setup](../operations/development-setup.md). Test cases and negative fixtures are in the [Phase 000 test procedure](../test/phase-000-toolchain.md). Current evidence is summarized in the [foundation evidence record](../verification/phase-000-foundation.md).
 
-Linux x86_64 local and clean environment acceptance passes. Clean Windows x86_64 acceptance passes on the recorded GitHub hosted `windows-2025` runner. Native Roblox Studio acceptance remains pending. The exact Rojo plugin passes the recorded Vinegar compatibility workflow, but Vinegar cannot replace native Studio evidence.
+Linux x86_64 local and clean environment acceptance passes. Clean Windows x86_64 acceptance passes on the recorded GitHub hosted `windows-2025` runner. Phase 000 Studio acceptance is satisfied by the selected qualified Vinegar route. It runs the actual Windows Roblox Studio binary under Vinegar and Wine with the exact reviewed Rojo plugin, live MCP connection, loopback synchronization, controlled resynchronization and revert, client and server bootstrap, clean project console, and topology parity. This result makes no official native Linux Studio support claim.
 
 ## Planned Runtime
 
@@ -56,7 +56,7 @@ Linux x86_64 local and clean environment acceptance passes. Clean Windows x86_64
 - Persistence: Roblox DataStore with session ownership, `UpdateAsync`, schema migrations, idempotent operations, and persistent trade journals.
 - Ephemeral coordination: MemoryStore only where temporary cross server coordination is eventually required.
 
-Later phases add the planned catalogs, services, controllers, persistence, networking, and gameplay behind the implemented foundation boundaries. Native Studio and Windows acceptance must close before Phase 000 completes.
+Later phases add the planned catalogs, services, controllers, persistence, networking, and gameplay behind the implemented foundation boundaries. Final candidate reconciliation, independent clean Windows command line evidence, repository integration, and the signed phase tag must close before Phase 000 completes.
 
 ## Planned Product Module Map
 
