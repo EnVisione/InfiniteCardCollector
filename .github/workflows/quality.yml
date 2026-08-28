@@ -20,3 +20,4 @@ jobs:
     uses: MCEnvision/.github/.github/workflows/quality.yml@52eb01f2a9d378693156c88e03e41dcb9f5e25bb
     with:
       shared-ref: "52eb01f2a9d378693156c88e03e41dcb9f5e25bb"
+      enforce-docs-layout: false
