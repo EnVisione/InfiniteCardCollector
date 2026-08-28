@@ -38,6 +38,9 @@ mkdir -p "${ROKIT_ROOT}/bin" "${ROKIT_ROOT}/tool-storage"
 
 task_trusted_ids=()
 task_installed_specs=()
+task_alias_names=()
+task_alias_sources=()
+task_alias_hashes=()
 
 while IFS=$'\t' read -r task_id task_version task_alias task_spec task_filename task_url task_size task_sha256 task_sha512 task_executable task_executable_size task_executable_sha256 task_executable_sha512; do
     [[ "${task_filename}" != */* && "${task_executable}" != */* ]] || task_fail "artifact names must be basenames"
@@ -46,7 +49,7 @@ while IFS=$'\t' read -r task_id task_version task_alias task_spec task_filename 
     task_archive="${task_bootstrap_dir}/${task_filename}"
     task_extracted="${task_bootstrap_dir}/${task_id}"
 
-    curl --proto '=https' --tlsv1.2 --fail --location --retry 3 --connect-timeout 15 --max-time 300 --output "${task_archive}" "${task_url}"
+    curl --silent --show-error --proto '=https' --tlsv1.2 --fail --location --retry 3 --connect-timeout 15 --max-time 300 --output "${task_archive}" "${task_url}"
 
     [[ "$(stat -c '%s' "${task_archive}")" == "${task_size}" ]] || task_fail "${task_filename} size mismatch"
     [[ "$(sha256sum "${task_archive}" | cut -d ' ' -f 1)" == "${task_sha256}" ]] || task_fail "${task_filename} sha256 mismatch"
@@ -63,6 +66,7 @@ while IFS=$'\t' read -r task_id task_version task_alias task_spec task_filename 
     if [[ "${task_id}" == "rokit" ]]; then
         task_target="${ROKIT_ROOT}/bin/rokit"
     else
+        [[ "${task_alias}" =~ ^[a-z0-9]+$ ]] || task_fail "${task_id} alias is invalid"
         task_spec_id="${task_spec%@*}"
         task_spec_version="${task_spec##*@}"
         task_author="${task_spec_id%%/*}"
@@ -70,6 +74,9 @@ while IFS=$'\t' read -r task_id task_version task_alias task_spec task_filename 
         task_target="${ROKIT_ROOT}/tool-storage/${task_author,,}/${task_name,,}/${task_spec_version}/${task_name,,}"
         task_trusted_ids+=("${task_spec_id}")
         task_installed_specs+=("${task_spec}")
+        task_alias_names+=("${task_alias}")
+        task_alias_sources+=("${task_target}")
+        task_alias_hashes+=("${task_executable_sha256}")
     fi
 
     mkdir -p "$(dirname -- "${task_target}")"
@@ -100,22 +107,16 @@ done < <(jq -r '
     | @tsv
 ' "${task_registry}")
 
-task_cache="${ROKIT_ROOT}/tool-storage/cache.json"
-if [[ ! -s "${task_cache}" ]]; then
-    printf '{"trusted":[],"installed":[]}\n' > "${task_cache}"
-fi
-jq -e '.trusted | type == "array"' "${task_cache}" >/dev/null || task_fail "rokit trust cache is invalid"
-jq -e '.installed | type == "array"' "${task_cache}" >/dev/null || task_fail "rokit install cache is invalid"
-
 task_trusted_json="$(printf '%s\n' "${task_trusted_ids[@]}" | jq -Rsc 'split("\n")[:-1]')"
 task_installed_json="$(printf '%s\n' "${task_installed_specs[@]}" | jq -Rsc 'split("\n")[:-1]')"
+task_cache="${ROKIT_ROOT}/tool-storage/cache.json"
 task_cache_next="$(mktemp "${ROKIT_ROOT}/tool-storage/cache.json.XXXXXXXX")"
-jq --argjson trusted "${task_trusted_json}" --argjson installed "${task_installed_json}" '
+jq -n --argjson trusted "${task_trusted_json}" --argjson installed "${task_installed_json}" '
     {
-        trusted: ((.trusted + $trusted) | unique),
-        installed: ((.installed + $installed) | unique)
+        trusted: ($trusted | unique),
+        installed: ($installed | unique)
     }
-' "${task_cache}" > "${task_cache_next}"
+' > "${task_cache_next}"
 mv "${task_cache_next}" "${task_cache}"
 
 export PATH="${ROKIT_ROOT}/bin:${PATH}"
@@ -125,5 +126,11 @@ hash -r
 
 cd -- "${task_repo_root}"
 rokit install
+
+for task_alias_index in "${!task_alias_names[@]}"; do
+    task_alias_target="${ROKIT_ROOT}/bin/${task_alias_names[${task_alias_index}]}"
+    install -m 0755 "${task_alias_sources[${task_alias_index}]}" "${task_alias_target}"
+    [[ "$(sha256sum "${task_alias_target}" | cut -d ' ' -f 1)" == "${task_alias_hashes[${task_alias_index}]}" ]] || task_fail "${task_alias_target} sha256 mismatch"
+done
 
 printf 'bootstrap complete, rokit root %s\n' "${ROKIT_ROOT}"

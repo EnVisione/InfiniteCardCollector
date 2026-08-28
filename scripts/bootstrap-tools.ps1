@@ -35,6 +35,7 @@ try {
 
     $TaskTrustedIds = [System.Collections.Generic.List[string]]::new()
     $TaskInstalledSpecs = [System.Collections.Generic.List[string]]::new()
+    $TaskAliases = [System.Collections.Generic.List[object]]::new()
 
     foreach ($TaskTool in $TaskRegistry.tools) {
         $TaskArtifact = @($TaskTool.artifacts | Where-Object { $_.platform -eq "windows-x86_64" })
@@ -89,6 +90,9 @@ try {
             $TaskTarget = Join-Path $TaskRokitBin "rokit.exe"
         }
         else {
+            if ($TaskTool.rokit_alias -notmatch '^[a-z0-9]+$') {
+                Stop-TaskBootstrap "$($TaskTool.id) alias is invalid"
+            }
             if ($TaskTool.rokit_spec -notmatch '^([^/]+)/([^@]+)@(.+)$') {
                 Stop-TaskBootstrap "$($TaskTool.id) rokit specification is invalid"
             }
@@ -98,6 +102,11 @@ try {
             $TaskTarget = Join-Path $TaskToolStorage "$TaskAuthor/$TaskName/$TaskVersion/$TaskName.exe"
             $TaskTrustedIds.Add("$($Matches[1])/$($Matches[2])")
             $TaskInstalledSpecs.Add($TaskTool.rokit_spec)
+            $TaskAliases.Add([pscustomobject]@{
+                name = $TaskTool.rokit_alias
+                source = $TaskTarget
+                sha256 = $TaskArtifact.executable_sha256
+            })
         }
 
         [System.IO.Directory]::CreateDirectory((Split-Path -Parent $TaskTarget)) | Out-Null
@@ -112,18 +121,9 @@ try {
     }
 
     $TaskCachePath = Join-Path $TaskToolStorage "cache.json"
-    if (Test-Path -LiteralPath $TaskCachePath) {
-        $TaskCache = Get-Content -LiteralPath $TaskCachePath -Raw | ConvertFrom-Json
-    }
-    else {
-        $TaskCache = [pscustomobject]@{ trusted = @(); installed = @() }
-    }
-    if ($null -eq $TaskCache.trusted -or $null -eq $TaskCache.installed) {
-        Stop-TaskBootstrap "rokit cache is invalid"
-    }
     $TaskCacheNext = [ordered]@{
-        trusted = @($TaskCache.trusted + $TaskTrustedIds | Sort-Object -Unique)
-        installed = @($TaskCache.installed + $TaskInstalledSpecs | Sort-Object -Unique)
+        trusted = @($TaskTrustedIds | Sort-Object -Unique)
+        installed = @($TaskInstalledSpecs | Sort-Object -Unique)
     }
     $TaskCacheNext | ConvertTo-Json -Depth 4 -Compress | Set-Content -LiteralPath $TaskCachePath -Encoding utf8NoBOM
 
@@ -141,6 +141,14 @@ try {
         rokit install
         if ($LASTEXITCODE -ne 0) {
             Stop-TaskBootstrap "rokit install failed"
+        }
+
+        foreach ($TaskAlias in $TaskAliases) {
+            $TaskAliasTarget = Join-Path $TaskRokitBin ($TaskAlias.name + ".exe")
+            Copy-Item -LiteralPath $TaskAlias.source -Destination $TaskAliasTarget -Force
+            if ((Get-FileHash -LiteralPath $TaskAliasTarget -Algorithm SHA256).Hash.ToLowerInvariant() -ne $TaskAlias.sha256) {
+                Stop-TaskBootstrap "$TaskAliasTarget sha256 mismatch"
+            }
         }
     }
     finally {
