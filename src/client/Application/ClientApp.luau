@@ -341,8 +341,12 @@ function ClientApp.start(launchContract: any)
 	local function renderPackPreview()
 		clearPreview()
 		local model = previewPool:acquire("pack") :: Model
+		local packAsset = specialContentAssets:get("pack", "classic")
+		assert(packAsset ~= nil, "P003-CLIENT-010 classic pack asset missing")
 		model.Name = "PackModel3D"
 		model:SetAttribute("AccessibleName", "Classic Starter Pack")
+		model:SetAttribute("AssetId", packAsset.assetId)
+		model:SetAttribute("FallbackAssetId", packAsset.fallbackAssetId)
 		model:SetAttribute("StaticFallback", true)
 		model.Parent = previewWorld
 		activePreview = model
