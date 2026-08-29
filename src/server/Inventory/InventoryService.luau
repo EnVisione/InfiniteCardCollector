@@ -138,6 +138,9 @@ function InventoryService.new(dependencies: any): any
 			uid = uid,
 			ownerUserId = ownerUserId,
 			jokerId = jokerId,
+			xp = 0,
+			level = 1,
+			bound = false,
 			flags = {
 				favorite = false,
 				wishlist = false,
@@ -225,8 +228,20 @@ function InventoryService.new(dependencies: any): any
 		return dependencies.inventoryStore:getCard(profile, uid)
 	end
 
+	function service:getJoker(profile: any, uid: string): any?
+		return dependencies.inventoryStore:getJoker(profile, uid)
+	end
+
 	function service:listCards(profile: any): { any }
 		return dependencies.inventoryStore:listCards(profile)
+	end
+
+	function service:listJokers(profile: any): { any }
+		return dependencies.inventoryStore:listJokers(profile)
+	end
+
+	function service:removeJoker(profile: any, uid: string): any?
+		return dependencies.inventoryStore:removeJoker(profile, uid)
 	end
 
 	function service:isProtectedForRemoval(profile: any, ownerUserId: number, uid: string): any
@@ -297,6 +312,29 @@ function InventoryService.new(dependencies: any): any
 			wishlist = card.flags.wishlist,
 			locked = locked,
 			tradeLocked = card.locks.trade == true,
+		}
+	end
+
+	function service:projectJoker(joker: any): any
+		local definition = jokers[joker.jokerId]
+		local locked = false
+		for _, active in joker.locks do
+			if active then
+				locked = true
+				break
+			end
+		end
+		return {
+			instanceId = joker.uid,
+			jokerId = joker.jokerId,
+			displayName = if definition ~= nil then definition.displayName else joker.jokerId,
+			rarityId = if definition ~= nil then definition.rarityId else nil,
+			xp = joker.xp,
+			level = joker.level,
+			bound = joker.bound,
+			favorite = joker.flags.favorite,
+			locked = locked,
+			tradeLocked = joker.locks.trade == true,
 		}
 	end
 

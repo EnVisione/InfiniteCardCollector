@@ -38,6 +38,15 @@ function InventoryStore.new(): any
 		return true
 	end
 
+	function store:removeJoker(profile: any, uid: string): any?
+		local joker = profile.jokers[uid]
+		if joker == nil then
+			return nil
+		end
+		profile.jokers[uid] = nil
+		return joker
+	end
+
 	function store:containsUid(profile: any, uid: string): boolean
 		return profile.cards[uid] ~= nil or profile.jokers[uid] ~= nil
 	end

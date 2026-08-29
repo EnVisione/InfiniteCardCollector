@@ -100,12 +100,12 @@ local actions = {
 		expectedRevision = revision(),
 		slotKey = stableId(32),
 	}, true, true),
-	policy("joker.equip", "durable_idempotent", false, nil, 1024, 4, 1, 4, {
+	policy("joker.equip", "durable_idempotent", true, "joker_equip", 1024, 4, 1, 4, {
 		expectedRevision = revision(),
 		instanceId = stableId(64),
 		slotIndex = scalar("integer", { min = 1, max = 5 }),
 	}, true, true),
-	policy("joker.unequip", "durable_idempotent", false, nil, 768, 4, 1, 4, {
+	policy("joker.unequip", "durable_idempotent", true, "joker_unequip", 768, 4, 1, 4, {
 		expectedRevision = revision(),
 		slotIndex = scalar("integer", { min = 1, max = 5 }),
 	}, true, true),

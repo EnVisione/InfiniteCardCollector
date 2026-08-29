@@ -369,16 +369,31 @@ function ProfileSchema.validate(profile: any): any
 	for uid, joker in profile.jokers do
 		assertString(uid, "P002-PROFILE-043 joker uid invalid")
 		assert(type(joker) == "table" and joker.uid == uid, "P002-PROFILE-044 joker map invalid")
+		if joker.xp == nil then
+			joker.xp = 0
+		end
+		if joker.level == nil then
+			joker.level = 1
+		end
+		if joker.bound == nil then
+			joker.bound = false
+		end
 		assertOnlyFields(joker, {
 			uid = true,
 			ownerUserId = true,
 			jokerId = true,
+			xp = true,
+			level = true,
+			bound = true,
 			flags = true,
 			locks = true,
 			provenance = true,
 		}, "P002-PROFILE-088 joker field unknown")
 		assertInteger(joker.ownerUserId, 1, "P002-PROFILE-045 joker owner invalid")
 		assertString(joker.jokerId, "P002-PROFILE-046 joker id invalid")
+		assertInteger(joker.xp, 0, "P003-PROFILE-001 joker experience invalid")
+		assertInteger(joker.level, 1, "P003-PROFILE-002 joker level invalid")
+		assert(type(joker.bound) == "boolean", "P003-PROFILE-003 joker bound invalid")
 		validateFlags(joker.flags, "P002-PROFILE-047 joker flags invalid")
 		validateLocks(joker.locks, "P002-PROFILE-048 joker locks invalid")
 		validateProvenance(joker.provenance, "P002-PROFILE-049 joker provenance invalid")

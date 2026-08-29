@@ -48,6 +48,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 003 special content asset tests](test/phase-003-special-content.md)
 - [Phase 003 pack reveal tests](test/phase-003-pack-reveal.md)
 - [Phase 003 progression tests](test/phase-003-progression.md)
+- [Phase 003 Joker service tests](test/phase-003-jokers.md)
 - [Phase 003 Deck Set pack tests](test/phase-003-pack-service.md)
 
 ## Verification
@@ -65,6 +66,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 003 Deck Set pack service evidence](verification/phase-003-pack-service.md)
 - [Phase 003 pack reveal evidence](verification/phase-003-pack-reveal.md)
 - [Phase 003 progression evidence](verification/phase-003-progression.md)
+- [Phase 003 Joker service evidence](verification/phase-003-jokers.md)
 
 ## Troubleshooting
 

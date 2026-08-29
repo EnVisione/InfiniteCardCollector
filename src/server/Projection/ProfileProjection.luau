@@ -34,6 +34,19 @@ function ProfileProjection.snapshot(
 	table.sort(cards, function(left, right)
 		return left.instanceId < right.instanceId
 	end)
+	local jokers = {}
+	for _, joker in inventory:listJokers(profile) do
+		table.insert(jokers, inventory:projectJoker(joker))
+	end
+	table.sort(jokers, function(left, right)
+		return left.instanceId < right.instanceId
+	end)
+	local jokerSlots = {}
+	for slotIndex = 1, 5 do
+		local uid = profile.activeJokers[slotIndex]
+		local joker = if uid ~= nil then inventory:getJoker(profile, uid) else nil
+		jokerSlots[slotIndex] = if joker ~= nil then inventory:projectJoker(joker) else nil
+	end
 	local pendingPacks = {}
 	for operationId, pending in profile.pendingPacks do
 		pendingPacks[operationId] = {
@@ -61,6 +74,12 @@ function ProfileProjection.snapshot(
 		storageMode = storageMode,
 		currencies = copyMap(profile.currencies),
 		cards = cards,
+		jokers = jokers,
+		activeJokers = table.clone(profile.activeJokers),
+		jokerStage = {
+			slots = jokerSlots,
+			count = #profile.activeJokers,
+		},
 		collection = collectionProjection(profile, inventory),
 		discovery = {
 			forms = copyMap(profile.discovery.forms),

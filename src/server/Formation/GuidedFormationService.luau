@@ -47,11 +47,14 @@ function GuidedFormationService.new(dependencies: any): any
 				discoveredFormCount += 1
 			end
 		end
+		local activeJokerIds = if dependencies.joker ~= nil
+			then dependencies.joker:activeIds(profile)
+			else {}
 		local calculationOk, calculation = pcall(dependencies.calculate, {
 			catalogVersion = dependencies.catalogVersion,
 			configVersion = dependencies.configVersion,
 			cards = cards,
-			activeJokerIds = {},
+			activeJokerIds = activeJokerIds,
 			activeDeckSetCounts = activeDeckSetCounts,
 			activeDeckFilledSlots = activeDeckFilledSlots,
 			discoveredFormCount = discoveredFormCount,
@@ -75,11 +78,15 @@ function GuidedFormationService.new(dependencies: any): any
 		profile.bestRecords.guidedSuccesses = (profile.bestRecords.guidedSuccesses or 0) + 1
 		profile.bestRecords.bestGuidedCash =
 			math.max(profile.bestRecords.bestGuidedCash or 0, rewardCash)
+		local jokerProgression = if dependencies.joker ~= nil
+			then dependencies.joker:awardActiveExperience(profile, ownerUserId, 1)
+			else {}
 		return {
 			ok = true,
 			code = "formation.reward_committed",
 			formationId = calculation.formation.id,
 			reward = { cash = rewardCash },
+			jokerProgression = jokerProgression,
 			calculation = dependencies.projectCalculation(calculation),
 		}
 	end

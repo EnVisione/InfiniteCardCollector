@@ -26,6 +26,7 @@ local GuidedFormationService = require(Server.Formation.GuidedFormationService)
 local CollectionService = require(Server.Inventory.CollectionService)
 local DeckService = require(Server.Inventory.DeckService)
 local InventoryService = require(Server.Inventory.InventoryService)
+local JokerService = require(Server.Inventory.JokerService)
 local NetworkGateway = require(Server.Network.NetworkGateway)
 local TokenBuckets = require(Server.Network.TokenBuckets)
 local PackService = require(Server.Packs.PackService)
@@ -197,6 +198,12 @@ function Phase002Runtime.start(serverRoot: Instance)
 	})
 	local deck =
 		DeckService.new({ catalog = LaunchCatalog, inventory = inventory, errors = ErrorRegistry })
+	local joker = JokerService.new({
+		catalog = LaunchCatalog,
+		config = LaunchConfig,
+		inventory = inventory,
+		errors = ErrorRegistry,
+	})
 	local starterPack = StarterPackService.new({
 		catalog = LaunchCatalog,
 		inventory = inventory,
@@ -227,6 +234,7 @@ function Phase002Runtime.start(serverRoot: Instance)
 	})
 	local guidedFormation = GuidedFormationService.new({
 		inventory = inventory,
+		joker = joker,
 		errors = ErrorRegistry,
 		catalogVersion = LaunchCatalog.catalogVersion,
 		configVersion = LaunchConfig.configVersion,
@@ -476,6 +484,48 @@ function Phase002Runtime.start(serverRoot: Instance)
 			end,
 		})
 		return withSnapshot(userKey, outcome, "inventory.salvage")
+	end
+
+	routes.joker_equip = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "joker.equip",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "joker.equip",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			apply = function(profile: any): any
+				return joker:equip(profile, player.UserId, payload.instanceId, payload.slotIndex)
+			end,
+		})
+		return withSnapshot(userKey, outcome, "joker.equip")
+	end
+
+	routes.joker_unequip = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "joker.unequip",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "joker.unequip",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			apply = function(profile: any): any
+				return joker:unequip(profile, player.UserId, payload.slotIndex)
+			end,
+		})
+		return withSnapshot(userKey, outcome, "joker.unequip")
 	end
 
 	routes.grade_apply_ink = function(userKey: string, payload: any, requestId: string): any

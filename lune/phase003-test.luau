@@ -26,7 +26,12 @@ local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
 local ProgressionService = require("../src/server/Progression/ProgressionService")
 local ArcanaService = require("../src/server/Progression/ArcanaService")
+local JokerService = require("../src/server/Inventory/JokerService")
 local ProfileProjection = require("../src/server/Projection/ProfileProjection")
+local FormationDetector = require("../src/shared/Math/FormationDetector")
+local JokerRegistry = require("../src/shared/Math/JokerRegistry")
+local SafeNumber = require("../src/shared/Math/SafeNumber")
+local ScoreCalculator = require("../src/shared/Math/ScoreCalculator")
 
 local Phase003Test = {}
 
@@ -1163,6 +1168,161 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 				)] == true
 				and snapshot.bestRecords.guidedSuccesses == 4,
 			"P003-TEST-013 collection projection"
+		)
+		ProfileSchema.validate(profile)
+	end)
+
+	addTest("P003-TEST-014-joker-service-and-loadout", function()
+		local collection = CollectionService.new()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = collection,
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_joker_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local jokers = JokerService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			errors = ErrorRegistry,
+		})
+		local owned = {}
+		for index = 1, 5 do
+			local created = inventory:createJoker(
+				profile,
+				42,
+				LaunchCatalog.jokers[index].id,
+				{ originType = "fixture", originId = "joker_" .. tostring(index) }
+			)
+			assert(created.ok, "P003-TEST-014 joker creation")
+			table.insert(owned, created.joker)
+		end
+		local duplicate = inventory:createJoker(profile, 42, owned[1].jokerId, {
+			originType = "fixture",
+			originId = "joker_duplicate",
+		})
+		assert(duplicate.ok and duplicate.joker.bound == false, "P003-TEST-014 duplicate unbound")
+		local replacement = inventory:createJoker(profile, 42, "balanced_scales", {
+			originType = "fixture",
+			originId = "joker_replacement",
+		})
+		assert(replacement.ok, "P003-TEST-014 replacement creation")
+		for slotIndex, joker in owned do
+			local equipped = jokers:equip(profile, 42, joker.uid, slotIndex)
+			assert(
+				equipped.ok and equipped.slotIndex == slotIndex and equipped.bound,
+				"P003-TEST-014 equip slot " .. tostring(slotIndex)
+			)
+		end
+		assert(#profile.activeJokers == 5, "P003-TEST-014 five active jokers")
+		local sixth = jokers:equip(profile, 42, duplicate.joker.uid, 6)
+		assert(
+			not sixth.ok and sixth.code == ErrorRegistry.codes.slotInvalid,
+			"P003-TEST-014 sixth slot"
+		)
+		local inspected = jokers:inspect(profile, 42, owned[1].uid)
+		assert(
+			inspected.ok
+				and inspected.definition.handlerId == "joker_component_add"
+				and inspected.definition.explanationReasonId == owned[1].jokerId
+				and #inspected.definition.stages == 1,
+			"P003-TEST-014 inspect contract"
+		)
+		local beforeReplacement = CanonicalValue.encode(profile.activeJokers)
+		profile.jokers[owned[1].uid].locks.manual = true
+		local blocked = jokers:equip(profile, 42, replacement.joker.uid, 1)
+		assert(
+			not blocked.ok and blocked.code == ErrorRegistry.codes.instanceLocked,
+			"P003-TEST-014 locked replacement"
+		)
+		assert(
+			CanonicalValue.encode(profile.activeJokers) == beforeReplacement,
+			"P003-TEST-014 locked atomicity"
+		)
+		profile.jokers[owned[1].uid].locks.manual = nil
+		local replaced = jokers:equip(profile, 42, replacement.joker.uid, 1)
+		assert(
+			replaced.ok and replaced.previousInstanceId == owned[1].uid,
+			"P003-TEST-014 replacement"
+		)
+		local unbound = jokers:bindDuplicate(profile, 42, duplicate.joker.uid, owned[1].uid)
+		assert(
+			unbound.ok
+				and unbound.code == "joker.duplicate_bound"
+				and unbound.xpAwarded == 10
+				and profile.jokers[duplicate.joker.uid] == nil
+				and profile.jokers[owned[1].uid].bound,
+			"P003-TEST-014 duplicate binding"
+		)
+		local progression = jokers:awardActiveExperience(profile, 42, 90)
+		assert(#progression == 5, "P003-TEST-014 active xp count")
+		local leveled = jokers:awardExperience(profile, 42, owned[1].uid, 90)
+		assert(
+			leveled.ok
+				and profile.jokers[owned[1].uid].xp == 100
+				and profile.jokers[owned[1].uid].level == 2,
+			"P003-TEST-014 level progression"
+		)
+		local projected = jokers:projectLoadout(profile)
+		assert(projected.count == 5 and #projected.activeIds == 5, "P003-TEST-014 stage projection")
+		local calculationInput = {
+			catalogVersion = LaunchCatalog.catalogVersion,
+			configVersion = LaunchConfig.configVersion,
+			cards = {
+				{
+					instanceId = "joker_runtime_card",
+					deckSetId = "classic",
+					rankId = "ace",
+					suitId = "hearts",
+					editionId = "normal",
+					gradeId = "f",
+					powerTierId = "common",
+				},
+			},
+			activeJokerIds = projected.activeIds,
+			activeDeckSetCounts = { classic = 52 },
+			activeDeckFilledSlots = 52,
+			discoveredFormCount = 624,
+			formationTarget = nil,
+			formationRankOverrides = nil,
+			formationStreak = 0,
+			successfulFormationCount = 0,
+			criticalTraitInstanceIds = {},
+			modeId = "formation_rush",
+			personalActiveBoostMultipliers = {},
+			serverEventBoostMultipliers = {},
+		}
+		local dependencies = {
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			formationDetector = FormationDetector,
+			jokerRegistry = JokerRegistry,
+			safeNumber = SafeNumber,
+		}
+		local firstCalculation = ScoreCalculator.calculate(dependencies, calculationInput)
+		local secondCalculation =
+			ScoreCalculator.calculate(dependencies, CanonicalValue.copy(calculationInput))
+		assert(
+			CanonicalValue.encode(firstCalculation) == CanonicalValue.encode(secondCalculation),
+			"P003-TEST-014 deterministic joker trace"
 		)
 		ProfileSchema.validate(profile)
 	end)

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This procedure verifies `P002-TASK-002`, `P002-TASK-003`, and the network portions of `P002-TASK-011` through `P002-TASK-014`. It covers the complete 25 action launch registry. Eleven routes are available after the Phase 003 extensions and the remaining routes stay fail closed.
+This procedure verifies `P002-TASK-002`, `P002-TASK-003`, and the network portions of `P002-TASK-011` through `P002-TASK-014`. It covers the complete 25 action launch registry. Thirteen routes are available after the Phase 003 extensions and the remaining routes stay fail closed.
 
 ## Prerequisites
 

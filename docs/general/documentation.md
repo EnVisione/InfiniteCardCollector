@@ -140,6 +140,7 @@ The runtime targets Roblox and uses strict typed Luau for shared domain modules,
 - `src/server/Packs/` owns the recoverable Classic Starter Pack slice, server-authoritative Classic, Radioactive, and Astral Deck Set Packs, and saved Joker and Arcana offer packs.
 - `src/server/Progression/ProgressionService.luau` owns deterministic Grade Ink progress, monotonic F through LR promotion, saved Tier preservation, explicit Trait choice and replacement, lock and favorite eligibility, Trait Essence costs, and sanitized progression traces.
 - `src/server/Progression/ArcanaService.luau` owns one-card Arcana previews and applications, permanent form discovery, identity copies that preserve their source, deterministic Grade and Trait choices, stack consumption, and sanitized Arcana traces.
+- `src/server/Inventory/JokerService.luau` owns the authoritative five-slot loadout, deliberate binding, replacement and lock checks, Joker inspection projections, duplicate binding, and deterministic XP and level progression.
 - `src/client/State/PackRevealController.luau` owns the client presentation state for committed pack results. It only reveals server supplied contents, exposes exact odds and pity metadata, supports staged reveal, reveal all, skip, one choice, reduced motion and static fallback cues, and hydrates pending records without inventing content.
 - `src/server/Formation/` owns the guided orchestration that calls the Phase 001 calculation contract without saving directly.
 - `src/server/Network/` owns token buckets and the fail closed gateway.
@@ -157,16 +158,17 @@ The complete service and data flow is documented in [Phase 002 runtime architect
 2. Publish the Classic, Radioactive, and Astral card and pack presentation fixtures from `ServerStorage` to a bounded client folder. The client resolves enabled card previews through the registered Deck Set visual systems and uses a neutral fallback for unknown or disabled data.
 3. Create one `ClientAction` and one `ServerMessage` remote.
 4. Select the memory or Roblox profile adapter from the universe identity.
-5. Construct migrations, profile storage, inventory storage, collection, inventory, deck, pack, guided Formation, transaction, token bucket, and gateway services.
-6. Acquire one session per player before exposing writable state.
-7. Attach action routing, heartbeat, player release, transaction drain, and bounded profile shutdown.
-8. Start the client state and request bootstrap.
+5. Construct migrations, profile storage, inventory storage, collection, inventory, deck, Joker, pack, guided Formation, transaction, token bucket, and gateway services.
+6. Pass the Joker service into guided Formation so active effects and experience are server derived.
+7. Acquire one session per player before exposing writable state.
+8. Attach action routing, heartbeat, player release, transaction drain, and bounded profile shutdown.
+9. Start the client state and request bootstrap.
 
 An unavailable service, malformed profile, foreign session, failed storage retry, invalid route, or unavailable feature closes its mutation path with a stable code.
 
 ### Network and Authority
 
-The launch action inventory is frozen at 25 IDs. Phase 003 enables bootstrap, pack open, pack choice, deck equip, deck unequip, inventory flags, card salvage, Grade Ink application, Arcana application, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
+The launch action inventory is frozen at 25 IDs. Phase 003 enables bootstrap, pack open, pack choice, deck equip, deck unequip, Joker equip, Joker unequip, inventory flags, card salvage, Grade Ink application, Arcana application, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
 
 The gateway validates envelope shape, exact action schema, encoded size, depth, node count, finite numbers, bounds, rate, availability, profile state, writable state, authorization, and route result in deterministic order. Every safe correlatable rejection returns the original request and action identity.
 
@@ -174,7 +176,7 @@ The client supplies intent only. It cannot supply a trusted card definition, pac
 
 ### Profiles, Sessions, and Transactions
 
-Profile schema version 1 contains the complete launch domain boundary. `ProfileCodec` serializes a separate compact representation with sorted currencies and discovery IDs. Strict decode rejects unknown fields, missing ownership references, duplicate pending identities, contradictory rank, suit, slot, or content identity fields, malformed receipts, receipt and barrier mismatch, impossible deck state, invalid settings, and unsupported versions.
+Profile schema version 1 contains the complete launch domain boundary. Joker instances persist `xp`, `level`, and `bound` state, with defaults applied when older version 1 records omit those fields. `ProfileCodec` serializes a separate compact representation with sorted currencies and discovery IDs. Strict decode rejects unknown fields, missing ownership references, duplicate pending identities, contradictory rank, suit, slot, or content identity fields, malformed receipts, receipt and barrier mismatch, impossible deck state, invalid settings, and unsupported versions.
 
 The profile policy warns at 1,000,000 encoded bytes and blocks writes above 1,500,000 bytes. The deterministic realistic fixture crosses those boundaries at 2,300 and 3,400 cards respectively.
 
