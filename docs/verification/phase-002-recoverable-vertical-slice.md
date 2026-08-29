@@ -12,7 +12,7 @@ The Phase 002 candidate implements network contract version 1, profile and compa
 
 The deterministic repository suite passes 52 tests with 0 failures. StyLua and Selene are clean. Rojo builds the mapped card and pack fixtures. Local Vinegar Studio passes the complete in memory vertical slice and an empty console.
 
-Phase exit remains blocked by `EXT-006`. The currently known owner controlled Roblox experience is not a valid isolated test environment because Studio API access is disabled and its public state is unresolved. No universe, place, access, questionnaire, API permission, or publication setting has been changed. Exact owner authorization is required before nondestructive isolated DataStore and rejoin testing.
+The isolated Roblox gate is now exercised against the owner authorized private universe and place listed below. The published candidate remains private and the prior place version was preserved. This evidence is limited to the authorized test account and does not establish production readiness.
 
 ## Protected Contract Audit
 
@@ -230,11 +230,27 @@ The artifact manifest currently names the approved Phase 001 base commit `c22280
 
 ## Isolated Roblox Gate
 
-Required isolated evidence remains absent. The candidate universe `1808549145` and start place `5183598846` are owner controlled, but the currently observed configuration has Studio API access disabled, no DataStore entries, inconsistent public availability indicators, and an incomplete maturity questionnaire. It must not be repurposed or changed without exact owner approval.
+The bounded isolated procedure is [Phase 002 blank account recovery workflow](../test/phase-002-recovery-workflow.md), SHA 256 `d73898941e8482cf8770708601afa0d627fb9a71eb3c02e3bfbb5331386d99c7`.
 
-The bounded isolated procedure is [Phase 002 blank account recovery workflow](../test/phase-002-recovery-workflow.md), SHA 256 `d73898941e8482cf8770708601afa0d627fb9a71eb3c02e3bfbb5331386d99c7`. Authorization and resulting evidence must bind to this exact procedure or record and review a replacement digest before execution.
+The owner authorized the private universe `1808549145` and private place `5183598846`. Creator Hub reported Studio API access saved successfully. The candidate was opened in Vinegar Roblox Studio through the authenticated Creator Hub flow and saved with the Studio confirmation `Saved new changes in RoADMINISTRATOR's Place to Roblox.` The Studio server reported `game.GameId = 1808549145`, `game.PlaceId = 5183598846`, and `Phase002StorageMode = isolated_data_store`. The test used the isolated Studio DataStore path and did not use the local memory adapter.
 
-The isolated run must prove real `UpdateAsync`, blank creation, healthy collision rejection, expired lease recovery, committed reveal reopen, acknowledgement, deck edits, reward replay, response loss, dirty shutdown, session release, and exact rejoin under the procedure in [Phase 002 blank account recovery workflow](../test/phase-002-recovery-workflow.md).
+### Authorized isolated run
+
+| Checkpoint | Result |
+| --- | --- |
+| Blank bootstrap | `bootstrap.ready`, revision 0, cash 0, cards 0, writable true. |
+| Starter Pack commit | `pack.starter_committed`, revision 1, five cards, pending state `committed`. |
+| Deck edits | Four legal equips committed revisions 2 through 5. The same pending reveal moved to `acknowledged`. |
+| Guided request correction | External `modeId = formation_rush` correctly rejected as `formation.invalid`. The route contract requires `guided_classic`; the corrected request committed `monosuit` at revision 6 with 62 cash. |
+| Exact reward replay | Replayed request returned `formation.reward_committed`, revision 6, reward cash 62, with no additional mutation. |
+| Conflicting replay | Same request ID with a changed round ID returned `request.replay_conflict`. |
+| Hostile payload | An extra field returned `network.unknown_field` and did not mutate the profile. |
+| Stale revision | A formation request using revision 5 after revision 6 returned `state.stale` and did not mutate the profile. |
+| Dirty shutdown and release | Stopping Studio Play mode completed the real server close path and returned to Edit mode without a console error. |
+| Exact rejoin | A new Play session returned `bootstrap.ready`, revision 6, cash 62, five cards, four equipped cards, pending state `acknowledged`, writable true, and `isolated_data_store`. |
+| Presentation | Screen capture `ScreenCapture_2` showed the private test UI with cash 62, five cards, four equipped cards, revision 6, isolated storage, acknowledged reveal, and readable card rows. |
+
+The run proves real `UpdateAsync` writes, committed reveal recovery, acknowledgement, deck edits, reward replay, rejection correlation, shutdown release, and exact rejoin for the authorized private test. Healthy concurrent collision, expired lease recovery, and injected response loss remain separate follow-up checks because the current run used one authenticated Studio session.
 
 ## Completion Gates
 
