@@ -238,7 +238,7 @@ function DocsValidator.validate()
 			"receipt version 1",
 			"1,000,000 encoded bytes",
 			"1,500,000 bytes",
-			"63 tests",
+			"64 tests",
 		}
 	do
 		assert(
@@ -251,8 +251,8 @@ function DocsValidator.validate()
 		fs.readFile("docs/verification/phase-002-recoverable-vertical-slice.md")
 	for _, phrase in
 		{
-			"52 tests with 0 failures",
-			"b19a524d3845670a8fb6f8df9d28a88183adfb87f2fabcceaf5d67e84b57ccd6",
+			"64 tests with 0 failures",
+			"e27648a49534a9f531aef412034890f20816f115e5d7d161923baafc9571a68a",
 			"request.replay_conflict",
 			"Static low graphics",
 			"The isolated Roblox gate is now exercised",

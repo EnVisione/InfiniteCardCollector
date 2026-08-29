@@ -25,6 +25,7 @@ local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
 local ProgressionService = require("../src/server/Progression/ProgressionService")
+local ArcanaService = require("../src/server/Progression/ArcanaService")
 
 local Phase003Test = {}
 
@@ -883,6 +884,145 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 		)
 		assert(CanonicalValue.encode(profile) == beforeLocked, "P003-TEST-011 locked no mutation")
 		card.locks.progression = nil
+		ProfileSchema.validate(profile)
+	end)
+
+	addTest("P003-TEST-012-arcana-service", function()
+		local collection = CollectionService.new()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		for _, arcanaId in { "polisher", "heart", "stair", "examiner", "regrader", "voice", "mask" } do
+			profile.arcanaStacks[arcanaId] = 1
+		end
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = collection,
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_arcana_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local created = inventory:createCard(
+			profile,
+			42,
+			"classic:ace:spades",
+			{ powerTierId = "zenith" },
+			{ originType = "fixture", originId = "arcana" }
+		)
+		assert(created.ok, "P003-TEST-012 source card created")
+		local source = created.card
+		local arcana = ArcanaService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			collection = collection,
+			errors = ErrorRegistry,
+		})
+		local preview = arcana:preview(profile, 42, source.uid, "polisher")
+		assert(
+			preview.ok and preview.targetEditionId == "foil" and preview.stackCount == 1,
+			"P003-TEST-012 edition preview"
+		)
+		local normalForm = LaunchCatalog.formKey(source.identityId, "normal")
+		local polished = arcana:apply(profile, 42, source.uid, "polisher", {
+			operationId = "arcana_apply_polisher_0001",
+		})
+		assert(polished.ok and source.editionId == "foil", "P003-TEST-012 edition apply")
+		assert(
+			profile.discovery.forms[normalForm]
+				and profile.discovery.forms[LaunchCatalog.formKey(source.identityId, "foil")],
+			"P003-TEST-012 edition forms preserved"
+		)
+		assert(profile.arcanaStacks.polisher == nil, "P003-TEST-012 edition consumed")
+		local beforeInvalid = CanonicalValue.encode(profile)
+		local invalid = arcana:apply(profile, 42, source.uid, "polisher")
+		assert(
+			not invalid.ok and invalid.code == ErrorRegistry.codes.arcanaUnavailable,
+			"P003-TEST-012 missing stack"
+		)
+		assert(
+			CanonicalValue.encode(profile) == beforeInvalid,
+			"P003-TEST-012 missing stack mutation"
+		)
+
+		local heart = arcana:apply(profile, 42, source.uid, "heart", {
+			operationId = "arcana_apply_heart_0001",
+		})
+		assert(
+			heart.ok and heart.targetIdentityId == "classic:ace:hearts",
+			"P003-TEST-012 suit identity"
+		)
+		assert(
+			heart.preservedSource and inventory:getCard(profile, heart.targetInstanceId) ~= nil,
+			"P003-TEST-012 suit source preserved"
+		)
+		local stair = arcana:apply(profile, 42, source.uid, "stair", {
+			operationId = "arcana_apply_stair_0001",
+		})
+		assert(
+			stair.ok and stair.targetIdentityId == "classic:2:spades",
+			"P003-TEST-012 rank identity"
+		)
+		local examiner = arcana:apply(profile, 42, source.uid, "examiner", {
+			operationId = "arcana_apply_examiner_0001",
+		})
+		assert(
+			examiner.ok and source.gradeId == "e" and source.gradeExperience == 10,
+			"P003-TEST-012 grade arcana"
+		)
+		local gradePreview = arcana:preview(profile, 42, source.uid, "regrader")
+		assert(gradePreview.ok and #gradePreview.choiceIds == 3, "P003-TEST-012 grade choices")
+		local regraded = arcana:apply(profile, 42, source.uid, "regrader", {
+			choiceId = gradePreview.choiceIds[2],
+			operationId = "arcana_apply_regrader_0001",
+		})
+		assert(regraded.ok and source.gradeId == "d", "P003-TEST-012 grade choice")
+		local traitPreview = arcana:preview(profile, 42, source.uid, "voice")
+		assert(
+			traitPreview.ok and #traitPreview.choiceIds == 3 and traitPreview.choiceRequired,
+			"P003-TEST-012 trait choices"
+		)
+		local voice = arcana:apply(profile, 42, source.uid, "voice", {
+			choiceId = traitPreview.choiceIds[1],
+			operationId = "arcana_apply_voice_0001",
+		})
+		assert(
+			voice.ok and source.traitId == traitPreview.choiceIds[1],
+			"P003-TEST-012 trait choice"
+		)
+		local maskPreview = arcana:preview(profile, 42, source.uid, "mask")
+		local mask = arcana:apply(profile, 42, source.uid, "mask", {
+			choiceId = maskPreview.choiceIds[2],
+			operationId = "arcana_apply_mask_0001",
+		})
+		assert(
+			mask.ok and source.traitId == maskPreview.choiceIds[2],
+			"P003-TEST-012 trait replacement"
+		)
+		profile.arcanaStacks.mask = 1
+		local lockedBefore = CanonicalValue.encode(profile)
+		source.locks.progression = true
+		local locked = arcana:apply(profile, 42, source.uid, "mask", { choiceId = "guardian" })
+		assert(
+			not locked.ok and locked.code == ErrorRegistry.codes.instanceLocked,
+			"P003-TEST-012 locked target"
+		)
+		source.locks.progression = nil
+		assert(CanonicalValue.encode(profile) == lockedBefore, "P003-TEST-012 locked no mutation")
 		ProfileSchema.validate(profile)
 	end)
 

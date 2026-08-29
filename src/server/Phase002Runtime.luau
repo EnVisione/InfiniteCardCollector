@@ -29,6 +29,7 @@ local InventoryService = require(Server.Inventory.InventoryService)
 local NetworkGateway = require(Server.Network.NetworkGateway)
 local TokenBuckets = require(Server.Network.TokenBuckets)
 local PackService = require(Server.Packs.PackService)
+local ArcanaService = require(Server.Progression.ArcanaService)
 local ProgressionService = require(Server.Progression.ProgressionService)
 local StarterPackService = require(Server.Packs.StarterPackService)
 local ProfileProjection = require(Server.Projection.ProfileProjection)
@@ -215,6 +216,13 @@ function Phase002Runtime.start(serverRoot: Instance)
 		catalog = LaunchCatalog,
 		config = LaunchConfig,
 		inventory = inventory,
+		errors = ErrorRegistry,
+	})
+	local arcana = ArcanaService.new({
+		catalog = LaunchCatalog,
+		config = LaunchConfig,
+		inventory = inventory,
+		collection = collection,
 		errors = ErrorRegistry,
 	})
 	local guidedFormation = GuidedFormationService.new({
@@ -473,6 +481,30 @@ function Phase002Runtime.start(serverRoot: Instance)
 			end,
 		})
 		return withSnapshot(userKey, outcome, "grade.apply_ink")
+	end
+
+	routes.arcana_apply = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "arcana.apply",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "arcana.apply",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			apply = function(profile: any): any
+				return arcana:apply(profile, player.UserId, payload.instanceId, payload.arcanaId, {
+					choiceId = payload.choiceId,
+					operationId = requestId,
+				})
+			end,
+		})
+		return withSnapshot(userKey, outcome, "arcana.apply")
 	end
 
 	routes.guided_formation = function(userKey: string, payload: any, requestId: string): any

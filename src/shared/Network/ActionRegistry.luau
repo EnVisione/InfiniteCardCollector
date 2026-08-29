@@ -109,8 +109,9 @@ local actions = {
 		expectedRevision = revision(),
 		slotIndex = scalar("integer", { min = 1, max = 5 }),
 	}, true, true),
-	policy("arcana.apply", "durable_idempotent", false, nil, 1024, 2, 1, 5, {
+	policy("arcana.apply", "durable_idempotent", true, "arcana_apply", 1024, 2, 1, 5, {
 		arcanaId = stableId(),
+		choiceId = optional(stableId()),
 		expectedRevision = revision(),
 		instanceId = stableId(64),
 	}, true, true),
