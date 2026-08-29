@@ -226,7 +226,7 @@ The finalized local source input produces the following reproducible candidate:
 | Built fixture inventory | Three Classic card frame parts and two Classic Starter Pack parts. |
 | Local CI | Two consecutive unchanged candidate runs each passed all nine gates with zero failures. |
 
-The artifact manifest currently names the approved Phase 001 base commit `c22280c3dbb1935afcedfa7278b27c1b6a9dc78f` because the Phase 002 candidate is not committed yet. The phase completion packet must replace that working tree provenance with the signed Phase 002 merge candidate commit, rerun artifact generation, and verify that the source input and artifact hashes remain unchanged.
+The final artifact manifest was regenerated from the verified Phase 002 merge commit `1ae97cfcec79427ff7849d83d0ecd39e31aebf72`. The source input SHA 256 and artifact SHA 256 and SHA 512 remain unchanged from the candidate table above. The regenerated main worktree passed all nine CI gates.
 
 ## Isolated Roblox Gate
 
