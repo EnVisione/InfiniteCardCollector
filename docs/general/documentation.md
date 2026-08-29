@@ -2,7 +2,7 @@
 
 ## Status
 
-InfiniteCardCollector is a Roblox game project with a completed Phase 000 foundation and an active Phase 001 shared calculation layer. The repository contains deterministic development commands, a verified Linux tool bootstrap, reproducible Rojo generation, exact launch catalogs, versioned configuration, pure formation detection, checked score math, Joker handlers, and client safe projections. It is not yet a playable game. This document separates implemented pure contracts from planned stateful gameplay.
+InfiniteCardCollector is a Roblox game project with integrated Phase 000 and Phase 001 foundations and an active Phase 002 recoverable vertical slice. The repository contains deterministic development commands, a verified Linux tool bootstrap, reproducible Rojo generation, exact launch catalogs, versioned configuration, pure calculations, a versioned network boundary, compact profiles, session leases, exact once transactions, owned cards, a 52 slot deck, one recoverable Starter Pack, one guided reward, and a minimal authoritative client interface. It is locally playable for verification but is not published or ready for players.
 
 ## Product Boundary
 
@@ -23,7 +23,7 @@ Use this order when documents disagree:
 7. Implemented source and passing tests after implementation begins.
 8. This technical overview and the root README.
 
-Phase 000 is integrated and tagged. Phase 001 implements only owner shared data and pure calculations. Profiles, persistence, network actions, services, controllers, interface workflows, and live gameplay remain assigned to later phases. The future plan does not authorize deferred content for the initial release.
+Phase 000 and Phase 001 are integrated and signed. Phase 002 is active on its sequential phase branch. Its deterministic and local Vinegar Studio paths pass, while the owner authorized isolated Roblox DataStore interruption and rejoin gate remains required. The future plan does not authorize deferred content for the initial release.
 
 ## Implemented Foundation
 
@@ -31,15 +31,15 @@ The repository pins Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, an
 
 The platform bootstrap scripts download archives to temporary storage, verify size, SHA 256, SHA 512, and archive layout before extraction, then seed Rokit with the verified binaries. `lune run verify-tools` independently checks the resolved path, exact executable bytes, version output, platform artifact, and provenance fields. It rejects a missing, changed, or PATH shadowed executable.
 
-`default.project.json` currently maps only the minimum foundation:
+`default.project.json` maps the foundation and Phase 002 slice:
 
 - `src/shared/` becomes `ReplicatedStorage/Shared`.
 - `src/server/` becomes `ServerScriptService/Server`.
 - `src/client/` becomes `StarterPlayer/StarterPlayerScripts/Client`.
-- Declarative folders reserve `ServerStorage/Assets` without placing tool or test content in the runtime.
+- `ServerStorage/Assets` contains one Rojo mapped Classic card frame fixture and one Classic Starter Pack fixture while reserving future asset families.
 - `StarterGui/App/AppRoot` is a scale based transparent GUI root.
 
-The shared bootstrap contract contains immutable foundation metadata. The Phase 001 server bootstrap also evaluates one frozen shared fixture as the authoritative result. The client bootstrap projects that same shared calculation through the client safe adapter. These bootstraps record verification attributes only. They do not create a remote, profile, reward mutation, purchase, pack operation, live round, or trade.
+The shared bootstrap contract contains immutable foundation metadata. The server and client bootstraps preserve the Phase 001 authoritative and projected calculation comparison. The server then starts the Phase 002 runtime, and the client starts the minimal application. The runtime creates one action remote, one message remote, profile and transaction services, inventory and deck services, the Starter Pack and guided Formation routes, player lifecycle, heartbeat work, bounded shutdown, and sanitized presentation fixtures. Trading, purchases, general pack routes, timed rounds, tasks, duels, and public release remain closed.
 
 StyLua covers every tracked Luau file in `src/` and `lune/`. Selene uses the committed, normalized `roblox.yml` standard library with `roblox-std-source = "pinned"`, so ordinary linting performs no standard library update. The Lune harness provides deterministic test IDs and ordering, repository bounded paths, supervised child process timeouts, isolated generated fixtures, stable error IDs, and nonzero failure exits.
 
@@ -123,65 +123,89 @@ The normalized active baseline is 100 units per minute and passive is 18 percent
 
 The repeatable test procedure is [Phase 001 catalog and calculation tests](../test/phase-001-calculation-contracts.md). Candidate hashes and current evidence are in [Phase 001 catalog and calculation evidence](../verification/phase-001-calculation-contracts.md).
 
-## Planned Runtime
+## Implemented Phase 002 Runtime
 
-- Platform: Roblox.
-- Language: typed Luau with strict mode for shared domain modules, server services, and client controllers.
-- Editor: Roblox Studio.
-- Authority: server authoritative inventory, RNG, scoring, rewards, progression, trading, and purchases.
-- Persistence: Roblox DataStore with session ownership, `UpdateAsync`, schema migrations, idempotent operations, and persistent trade journals.
-- Ephemeral coordination: MemoryStore only where temporary cross server coordination is eventually required.
+The runtime targets Roblox and uses strict typed Luau for shared domain modules, server services, and client controllers. Roblox Studio is the editor. The qualified Linux route runs the Windows Studio binary through Vinegar and Wine. The runtime makes no native Linux Studio support claim.
 
-Later phases add server services, controllers, persistence, networking, owned instances, live gameplay, and interface workflows behind the implemented foundation and shared calculation boundaries. Phase 001 integration and its signed tag must close before Phase 002 consumes these contracts.
+`Phase002Runtime` selects `MemoryProfileAdapter` only when Studio has `game.GameId == 0`. A nonzero universe uses `RobloxProfileAdapter` and `UpdateAsync` against the version 1 profile store. The in memory adapter is local test isolation, not persistence evidence.
 
-## Planned Product Module Map
+### Module Map
 
-The intended source layout is fully specified in the launch foundation. Its primary boundaries are:
+- `src/shared/Network/` owns the frozen 24 action registry, 43 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
+- `src/shared/Profile/` owns the readable profile domain, compact codec, canonical values, migration registry, and storage policy.
+- `src/shared/Rendering/` owns the shared card presentation model.
+- `src/server/Storage/` owns memory and Roblox adapters, the profile lifecycle, and the inventory storage interface.
+- `src/server/Transactions/` owns exact once profile mutation, versioned receipts, replay barriers, compaction, response recovery, and shutdown drain.
+- `src/server/Inventory/` owns card and Joker creation, collection history, flags, locks, eligibility, conservation, and the 52 slot deck.
+- `src/server/Packs/` owns the recoverable Classic Starter Pack slice.
+- `src/server/Formation/` owns the guided orchestration that calls the Phase 001 calculation contract without saving directly.
+- `src/server/Network/` owns token buckets and the fail closed gateway.
+- `src/server/Projection/` owns bounded client snapshots and binder pages.
+- `src/client/State/` owns presentation only correlated message state.
+- `src/client/Rendering/` owns 2D and 3D adapters, the component pool, bounded preload, and binder virtualization.
+- `src/client/Application/` owns the minimal local interface and narrow intent submission.
 
-- `ReplicatedStorage/Shared/Catalogs/` for stable data definitions.
-- `ReplicatedStorage/Shared/Math/` for pure card and formation calculations.
-- `ReplicatedStorage/Shared/Net/` for action schemas and stable errors.
-- `ServerScriptService/Server/Services/` for authoritative state and mutations.
-- `StarterPlayerScripts/Client/Controllers/` for presentation and player intent.
-- `StarterGui/App/` for responsive interface surfaces.
-- `ServerStorage/Assets/` for server controlled card, pack, and Joker assets.
+The complete service and data flow is documented in [Phase 002 runtime architecture](../implementation/phase-002-runtime.md).
 
-Catalogs contain data and handler references. Pure math cannot access persistence, remotes, UI, or mutable player state. Services own authoritative mutations. Client controllers render server messages and submit narrow intent.
+### Initialization
 
-## Planned Initialization
+1. Load and validate the Phase 001 catalog, configuration, and calculation contract.
+2. Publish the Classic card and pack presentation fixtures from `ServerStorage` to a bounded client folder.
+3. Create one `ClientAction` and one `ServerMessage` remote.
+4. Select the memory or Roblox profile adapter from the universe identity.
+5. Construct migrations, profile storage, inventory storage, collection, inventory, deck, pack, guided Formation, transaction, token bucket, and gateway services.
+6. Acquire one session per player before exposing writable state.
+7. Attach action routing, heartbeat, player release, transaction drain, and bounded profile shutdown.
+8. Start the client state and request bootstrap.
 
-1. Validate catalogs and configuration.
-2. Register remotes and action schemas.
-3. Start analytics, policy, security, profile, and transaction services.
-4. Start inventory, collection, random, pack, deck, progression, Arcana, and Joker services.
-5. Start formation, task, boost, duel, trade, and leaderboard services.
-6. Attach player lifecycle, autosave, network routing, and shutdown handling.
-7. Accept actions only after profile load, recovery, and policy checks succeed.
+An unavailable service, malformed profile, foreign session, failed storage retry, invalid route, or unavailable feature closes its mutation path with a stable code.
 
-Initialization must fail closed for economy actions when a required catalog, service, or persistent profile is unavailable.
+### Network and Authority
 
-## Planned State Ownership
+The launch action inventory is frozen at 24 IDs. Phase 002 enables bootstrap, Starter Pack open, deck equip, deck unequip, inventory flags, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
 
-- DataStore owns permanent profile and transaction state.
-- Profile service owns writable session leases and migrations.
-- Transaction service owns idempotent economy operations and receipts.
-- Inventory service owns instance creation, lookup, locking, and eligibility.
-- Formation service owns live hands, draw piles, submissions, and score traces.
-- Trade service owns offer state, journals, settlement, and recovery.
-- Clients own only local presentation, input state, and nonauthoritative previews.
+The gateway validates envelope shape, exact action schema, encoded size, depth, node count, finite numbers, bounds, rate, availability, profile state, writable state, authorization, and route result in deterministic order. Every safe correlatable rejection returns the original request and action identity.
 
-The client must never provide a trusted item, reward, price, score, Grade, Tier, Trait, timestamp, trade owner, or pack result.
+The client supplies intent only. It cannot supply a trusted card definition, pack result, reward, score, Grade, Tier, Trait, owner, timestamp, receipt, session, or writable state.
 
-## Planned Data Compatibility
+### Profiles, Sessions, and Transactions
 
-Stable identifiers are lowercase slugs. Saved profiles use schema versions and pure repeatable migrations. Display names may change without changing stable IDs. Content may be disabled without deleting ownership. Every card, Joker, and Soul instance uses a unique server generated ID with provenance and version fields.
+Profile schema version 1 contains the complete launch domain boundary. `ProfileCodec` serializes a separate compact representation with sorted currencies and discovery IDs. Strict decode rejects unknown fields, missing ownership references, duplicate pending identities, contradictory rank, suit, slot, or content identity fields, malformed receipts, receipt and barrier mismatch, impossible deck state, invalid settings, and unsupported versions.
 
-Launch storage may begin with a compact single profile document behind storage interfaces. Before content volume threatens the DataStore key limit, inventory must migrate to journaled shards without changing gameplay service APIs.
+The profile policy warns at 1,000,000 encoded bytes and blocks writes above 1,500,000 bytes. The deterministic realistic fixture crosses those boundaries at 2,300 and 3,400 cards respectively.
+
+Each writable session uses one opaque token with job ID, place version, and heartbeat. Acquisition, heartbeat, commit, dirty flush, and release use `UpdateAsync` with token and revision checks. A healthy second writer fails. An expired lease requires pending operation reconciliation before reassignment. Bounded retry exhaustion keeps the profile read only and preserves the durable value.
+
+Every durable operation stores receipt version 1, operation kind, canonical fingerprint, exact result, result reference, revision, and a matching replay barrier. Reuse with the same fingerprint returns the stored result. Reuse with another fingerprint returns `request.replay_conflict`. Full receipts compact after 256 entries while replay barriers remain. Cyclic service results and commit time schema exceptions fail closed, preserve durable state, and release the per profile transaction lane for the next valid operation.
+
+Shutdown closes new transactions, drains active work, flushes dirty profiles, and clears matching leases within one 25 second wall deadline.
+
+### Inventory and Recoverable Slice
+
+Card and Joker UIDs are opaque, server generated, and collision checked against current and pending ownership. Provenance is immutable. Discovery is permanent. Removal protects favorites, wishlists, locks, equipped cards, and the last copy.
+
+The deck contains exactly 52 rank and suit slots. Equip validates owner, content, lock, UID uniqueness, slot identity, occupancy, and expected profile revision. It changes only loadout references.
+
+The free Starter Pack commits five Classic cards and one pending result at revision 1. Rejoin reopens a committed reveal. The first successful equip of a result card acknowledges that reveal inside the deck transaction without adding a hidden remote. A guided four card Formation calls the Phase 001 score contract and commits one Cash reward with the same exact once protections.
+
+### Renderer and Client State
+
+One view model provides Deck Set, suit, rank, Edition, Grade, Power Tier, Trait, and status layers to both 2D and 3D adapters. Trade lock, general lock, favorite, wishlist, new, and unavailable content remain readable without relying on color. Missing content uses a neutral fallback.
+
+The client clones the two Rojo mapped fixture models through a component pool, preloads only those two fixtures, and virtualizes binder rows. Low graphics, reduced motion, and reduced flash remove nonessential animation while keeping all semantic layers.
+
+Client state rejects lower revisions and malformed messages. Read only and maintenance responses retain presentation but remove writable authority.
+
+## Planned Runtime Beyond Phase 002
+
+Later phases implement the full asset catalog, responsive interaction surfaces, timed Formation Rush rounds, tasks, progression, Joker and Arcana mutation, Friend Clash, trading journals, analytics, live operations, release verification, and controlled public access. Reserved action IDs are not evidence that those services exist.
+
+Inventory currently occupies one compact profile document behind `InventoryStore`. Before realistic profiles approach platform limits, a journaled sharding migration must replace the physical layout without changing gameplay service APIs.
 
 ## Security and Privacy
 
-- Validate type, shape, size, enum membership, permission, state, timing, ownership, and rate for every client action.
-- Use operation IDs and persistent receipts for retried economy mutations.
+- The Phase 002 gateway validates type, shape, estimated bytes, depth, nodes, finite numbers, exact fields, bounds, permission, profile state, ownership, and rate for every registered client action.
+- Durable Phase 002 mutations use operation IDs, versioned receipts, matching replay barriers, and exact result recovery.
 - Never store credentials or raw private logs in the repository, analytics, or diagnostics.
 - Never expose another player's private inventory or hidden hand.
 - Avoid custom trade text at launch. Any later player text must use Roblox filtering.
@@ -190,7 +214,7 @@ Launch storage may begin with a compact single profile document behind storage i
 
 ## Performance Direction
 
-Launch servers target eight players. Card and particle objects should be pooled, binder pages virtualized, and only essential assets preloaded. Passive income uses timestamp calculations rather than per frame server work. Formation detection remains bounded to an eight card hand and a maximum five card submission.
+Launch servers target eight players. Phase 002 pools its card and pack models, virtualizes binder rows, and preloads exactly two fixture models. The profile size gate warns at 1,000,000 encoded bytes and blocks above 1,500,000 bytes. Passive income remains planned and must use timestamp calculations rather than per frame server work. Formation detection remains bounded to an eight card hand and a maximum five card submission.
 
 ## Development and Verification
 
@@ -202,16 +226,11 @@ lune run ci
 
 That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
 
-The Phase 001 suite now covers catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Later gameplay phases must extend verification to cover:
+The combined suite now passes 52 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes.
 
-- Pack transactions, pity persistence, and disconnect recovery.
-- Profile migrations and idempotent transactions.
-- One card Arcana application and permanent Edition unlocks.
-- Server validation for every remote action.
-- Multi client Friend Clash and trade behavior.
-- Failure injection at every trade settlement state.
-- Touch, controller, keyboard, reduced motion, and low graphics paths.
-- Mobile performance and DataStore size fixtures.
+The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
+
+Later gameplay phases must extend verification to cover general pack pity, one card Arcana application, permanent Edition unlocks, Grade progression, timed rounds, tasks, multi client Friend Clash, trade settlement failure injection, touch, controller, mobile layout, broader performance, and production release gates.
 
 Do not claim a feature is complete before its specified deterministic checks and manual Roblox Studio paths pass.
 
@@ -221,9 +240,9 @@ Update the root README when setup, supported tools, public behavior, or release 
 
 ## Known Limitations
 
-- The repository contains implemented pure launch contracts but no playable loop.
-- Phase 001 remains incomplete until final Studio comparison, final audit, pull request checks, review disposition, merge, signed tag, and wiki gates pass.
+- The repository contains a local playable foundation slice, not a complete game loop or public experience.
+- Phase 002 remains incomplete until isolated DataStore interruption and rejoin, final artifact and CI, pull request checks, review disposition, merge, signed tag, and wiki gates pass.
 - InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
-- Trading and end scale inventory sharding are designed but unimplemented.
+- General packs, progression, timed rounds, tasks, duels, trading, purchases, analytics, and end scale inventory sharding are designed but unimplemented.
 - Popularity cannot be guaranteed; onboarding and retention targets require soft launch evidence.

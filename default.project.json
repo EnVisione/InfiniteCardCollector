@@ -20,13 +20,74 @@
       "Assets": {
         "$className": "Folder",
         "CardFrames": {
-          "$className": "Folder"
+          "$className": "Folder",
+          "ClassicFrameFixture": {
+            "$className": "Model",
+            "ClassicFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.643, 0.518, 0.259],
+                "Material": "SmoothPlastic",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "CardFace": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.922, 0.91, 0.863],
+                "Material": "SmoothPlastic",
+                "Size": [3.72, 5.32, 0.12]
+              }
+            },
+            "RankMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.157, 0.176, 0.216],
+                "Material": "SmoothPlastic",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            }
+          }
         },
         "JokerProps": {
           "$className": "Folder"
         },
         "PackModels": {
-          "$className": "Folder"
+          "$className": "Folder",
+          "ClassicStarterPackFixture": {
+            "$className": "Model",
+            "PackBody": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.102, 0.157, 0.267],
+                "Material": "SmoothPlastic",
+                "Size": [3.8, 5.2, 0.4]
+              }
+            },
+            "PackSeal": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.643, 0.518, 0.259],
+                "Material": "SmoothPlastic",
+                "Size": [3.2, 0.7, 0.12]
+              }
+            }
+          }
         }
       }
     },

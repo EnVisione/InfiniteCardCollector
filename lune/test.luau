@@ -11,6 +11,7 @@ local Common = require("./lib/common")
 local DocsValidator = require("./lib/docs-validator")
 local Environment = require("./lib/environment")
 local Phase001Test = require("./phase001-test")
+local Phase002Test = require("./phase002-test")
 local RuntimeGuard = require("./lib/runtime-guard")
 local SecretScanner = require("./lib/secret-scanner")
 local ToolVerifier = require("./lib/tool-verifier")
@@ -74,6 +75,7 @@ local function addTest(id: string, callback: () -> ())
 end
 
 Phase001Test.register(addTest, expectFailure)
+Phase002Test.register(addTest, expectFailure)
 
 addTest("P000-TEST-001-project-map", function()
 	local project = serde.decode("json", fs.readFile("default.project.json"))

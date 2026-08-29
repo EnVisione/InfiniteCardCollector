@@ -13,10 +13,17 @@ local requiredDocuments = {
 	"docs/operations/development-setup.md",
 	"docs/test/phase-000-toolchain.md",
 	"docs/test/phase-001-calculation-contracts.md",
+	"docs/implementation/phase-002-runtime.md",
+	"docs/test/phase-002-network-and-security.md",
+	"docs/test/phase-002-profile-and-transactions.md",
+	"docs/test/phase-002-inventory-and-rendering.md",
+	"docs/test/phase-002-recovery-workflow.md",
 	"docs/troubleshooting/toolchain.md",
+	"docs/troubleshooting/profile-and-recovery.md",
 	"docs/verification/phase-000-foundation.md",
 	"docs/verification/phase-000-tool-provenance.md",
 	"docs/verification/phase-001-calculation-contracts.md",
+	"docs/verification/phase-002-recoverable-vertical-slice.md",
 }
 
 local exactCommands = {
@@ -137,10 +144,10 @@ function DocsValidator.validate()
 	)
 	for _, phrase in
 		{
-			"Phase 000 is complete and Phase 001 is active",
-			"strict typed launch catalogs",
-			"still not a playable game",
-			"qualified Vinegar Studio route",
+			"Phase 000 and Phase 001 are integrated and signed",
+			"Phase 002 is active",
+			"local Phase 002 vertical slice",
+			"qualified Vinegar route",
 		}
 	do
 		assert(
@@ -165,7 +172,7 @@ function DocsValidator.validate()
 			"configVersion = 1",
 			"perfect_sum_accuracy",
 			"half up rounding",
-			"client safe projection",
+			"client safe launch projection",
 		}
 	do
 		assert(
@@ -222,6 +229,39 @@ function DocsValidator.validate()
 				"P000-DOCS-011 obsolete studio claim, " .. path
 			)
 		end
+	end
+
+	for _, phrase in
+		{
+			"Implemented Phase 002 Runtime",
+			"24 action registry",
+			"receipt version 1",
+			"1,000,000 encoded bytes",
+			"1,500,000 bytes",
+			"52 tests",
+		}
+	do
+		assert(
+			overview:find(phrase, 1, true) ~= nil,
+			"P002-DOCS-001 overview contract missing, " .. phrase
+		)
+	end
+
+	local phase002Evidence =
+		fs.readFile("docs/verification/phase-002-recoverable-vertical-slice.md")
+	for _, phrase in
+		{
+			"52 tests with 0 failures",
+			"8d05b334e07b07e84e565547091e697de3f528bc0b0db4429d12a399bc7e9762",
+			"request.replay_conflict",
+			"Static low graphics",
+			"The isolated Roblox gate is now exercised",
+		}
+	do
+		assert(
+			phase002Evidence:find(phrase, 1, true) ~= nil,
+			"P002-DOCS-002 evidence contract missing, " .. phrase
+		)
 	end
 
 	local paths = markdownPaths()
