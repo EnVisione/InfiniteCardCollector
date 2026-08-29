@@ -35,6 +35,7 @@ ErrorRegistry.codes = table.freeze({
 	uidUnavailable = "inventory.uid_unavailable",
 	starterAlreadyClaimed = "pack.starter_already_claimed",
 	packInvalid = "pack.invalid",
+	insufficientCurrency = "pack.insufficient_currency",
 	formationInvalid = "formation.invalid",
 	formationNoMatch = "formation.no_match",
 	staleState = "state.stale",

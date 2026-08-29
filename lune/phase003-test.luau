@@ -10,6 +10,16 @@ local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
 local PresentationResolver = require("../src/shared/Assets/PresentationResolver")
 local ComposedCardAssets = require("../src/shared/Assets/ComposedCardAssets")
 local SpecialContentAssets = require("../src/shared/Assets/SpecialContentAssets")
+local PackService = require("../src/server/Packs/PackService")
+local InventoryService = require("../src/server/Inventory/InventoryService")
+local InventoryStore = require("../src/server/Storage/InventoryStore")
+local CollectionService = require("../src/server/Inventory/CollectionService")
+local ProfileSchema = require("../src/shared/Profile/ProfileSchema")
+local CanonicalValue = require("../src/shared/Profile/CanonicalValue")
+local ErrorRegistry = require("../src/shared/Network/ErrorRegistry")
+local RollContract = require("../src/shared/Math/RollContract")
+local LaunchConfig = require("../src/shared/Config/LaunchConfig")
+local RandomService = require("../src/server/Random/RandomService")
 local CardViewModel = require("../src/shared/Rendering/CardViewModel")
 local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
@@ -271,6 +281,106 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 		expectFailure(function()
 			AssetManifestBuilder.build(duplicate)
 		end, "P003-ASSET-069")
+	end)
+
+	addTest("P003-TEST-008-deckset-pack-service", function()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		profile.currencies.cash = 5000
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = CollectionService.new(),
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_pack_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local packs = PackService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			canonical = CanonicalValue,
+			errors = ErrorRegistry,
+			rollContract = RollContract,
+		})
+		local result =
+			packs:open(profile, 42, "pack_request_00000001", "classic", RandomService.new(17))
+		assert(result.ok and #result.cards == 5, "P003-TEST-008 five card result")
+		assert(profile.currencies.cash == 4500, "P003-TEST-008 price deduction")
+		assert(
+			profile.pendingPacks.pack_request_00000001.state == "committed",
+			"P003-TEST-008 pending result"
+		)
+		assert(
+			profile.pendingPacks.pack_request_00000001.packId == "classic",
+			"P003-TEST-008 pending pack id"
+		)
+		assert(#result.tierRolls == 5, "P003-TEST-008 tier roll count")
+		assert(
+			result.pityBefore == 0 and result.pityAfter == profile.pity["pack.classic"],
+			"P003-TEST-008 pity state"
+		)
+		local slots = {}
+		for _, card in result.cards do
+			assert(card.deckSetId == "classic", "P003-TEST-008 deck set identity")
+			assert(slots[card.slotKey] == nil, "P003-TEST-008 duplicate slot")
+			slots[card.slotKey] = true
+		end
+		for _, card in inventory:listCards(profile) do
+			assert(card.provenance.originType == "pack", "P003-TEST-008 provenance type")
+			assert(
+				card.provenance.originId == "pack_request_00000001",
+				"P003-TEST-008 provenance id"
+			)
+		end
+		ProfileSchema.validate(profile)
+		local replayBefore = CanonicalValue.encode(profile)
+		local replayed =
+			packs:open(profile, 42, "pack_request_00000001", "classic", RandomService.new(17))
+		assert(
+			not replayed.ok and replayed.code == ErrorRegistry.codes.replayConflict,
+			"P003-TEST-008 pending replay"
+		)
+		assert(CanonicalValue.encode(profile) == replayBefore, "P003-TEST-008 replay mutation")
+		local before = CanonicalValue.encode(profile)
+		local insufficient = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		local insufficientBefore = CanonicalValue.encode(insufficient)
+		local rejected =
+			packs:open(insufficient, 42, "pack_request_00000002", "astral", RandomService.new(17))
+		assert(
+			not rejected.ok and rejected.code == ErrorRegistry.codes.insufficientCurrency,
+			"P003-TEST-008 insufficient currency"
+		)
+		assert(
+			CanonicalValue.encode(insufficient) == insufficientBefore,
+			"P003-TEST-008 rejected mutation"
+		)
+		local radioactive =
+			packs:open(profile, 42, "pack_request_00000003", "radioactive", RandomService.new(23))
+		assert(
+			radioactive.ok and radioactive.cards[1].deckSetId == "radioactive",
+			"P003-TEST-008 second deck set"
+		)
+		assert(CanonicalValue.encode(profile) ~= before, "P003-TEST-008 committed mutation")
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()

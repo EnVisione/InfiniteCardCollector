@@ -238,7 +238,7 @@ function DocsValidator.validate()
 			"receipt version 1",
 			"1,000,000 encoded bytes",
 			"1,500,000 bytes",
-			"59 tests",
+			"60 tests",
 		}
 	do
 		assert(
@@ -252,7 +252,7 @@ function DocsValidator.validate()
 	for _, phrase in
 		{
 			"52 tests with 0 failures",
-			"8d05b334e07b07e84e565547091e697de3f528bc0b0db4429d12a399bc7e9762",
+			"017e91d67a927d41531b30f4d05bcb8be0853fcd9eca81bb91cf84f43a5d6f0c",
 			"request.replay_conflict",
 			"Static low graphics",
 			"The isolated Roblox gate is now exercised",

@@ -39,7 +39,7 @@ Protected plan files and `docs/plan/goal.md` have no Phase 002 execution diff.
 
 | Report | SHA 256 |
 | --- | --- |
-| Actions and errors | `8d05b334e07b07e84e565547091e697de3f528bc0b0db4429d12a399bc7e9762` |
+| Actions and errors | `017e91d67a927d41531b30f4d05bcb8be0853fcd9eca81bb91cf84f43a5d6f0c` |
 | Failure stages | `c0686124dd4d6ad7588f475ec909b33db37bc25fceb5a137bc7aa514b2168535` |
 | Migrations | `87d1bb9db7e635352b4bf6c0ce05a35a1e42bccea6d9a280b609a45a49a540f2` |
 | Profile sizes | `c321df047d7257d29dc7aaf8b34b62dd291945714dff4f6120f49995387e8c60` |
@@ -48,7 +48,7 @@ Protected plan files and `docs/plan/goal.md` have no Phase 002 execution diff.
 
 ## Action and Error Inventory
 
-The generated network report contains 24 actions, 7 available Phase 002 handlers, and 43 stable error codes. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
+The generated network report contains 24 actions, 7 available Phase 002 handlers, and 44 stable error codes. The Phase 003 pack extension adds `pack.insufficient_currency` while preserving the Phase 002 action and validation contracts. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
 
 The complete hostile matrix constructs a valid minimum payload and invalid shape or boundary payloads for all 24 actions. Gateway tests prove deterministic validation, independent token buckets, unavailable route handling, readiness, writable state, authorization, protected routing, safe request correlation, and no mutation on rejection.
 

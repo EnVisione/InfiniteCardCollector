@@ -15,6 +15,7 @@ local LaunchContract = require(Shared.LaunchContract)
 local ActionRegistry = require(Shared.Network.ActionRegistry)
 local EnvelopeValidator = require(Shared.Network.EnvelopeValidator)
 local ErrorRegistry = require(Shared.Network.ErrorRegistry)
+local RollContract = require(Shared.Math.RollContract)
 local CanonicalValue = require(Shared.Profile.CanonicalValue)
 local MigrationRegistry = require(Shared.Profile.MigrationRegistry)
 local ProfileCodec = require(Shared.Profile.ProfileCodec)
@@ -27,6 +28,7 @@ local DeckService = require(Server.Inventory.DeckService)
 local InventoryService = require(Server.Inventory.InventoryService)
 local NetworkGateway = require(Server.Network.NetworkGateway)
 local TokenBuckets = require(Server.Network.TokenBuckets)
+local PackService = require(Server.Packs.PackService)
 local StarterPackService = require(Server.Packs.StarterPackService)
 local ProfileProjection = require(Server.Projection.ProfileProjection)
 local RandomService = require(Server.Random.RandomService)
@@ -194,6 +196,14 @@ function Phase002Runtime.start(serverRoot: Instance)
 		canonical = CanonicalValue,
 		errors = ErrorRegistry,
 	})
+	local packService = PackService.new({
+		catalog = LaunchCatalog,
+		config = LaunchConfig,
+		inventory = inventory,
+		canonical = CanonicalValue,
+		errors = ErrorRegistry,
+		rollContract = RollContract,
+	})
 	local guidedFormation = GuidedFormationService.new({
 		inventory = inventory,
 		errors = ErrorRegistry,
@@ -271,12 +281,15 @@ function Phase002Runtime.start(serverRoot: Instance)
 	end
 
 	routes.starter_pack = function(userKey: string, payload: any, requestId: string): any
-		if payload.packId ~= "classic_starter" then
-			return { ok = false, code = ErrorRegistry.codes.packInvalid, action = "pack.open" }
-		end
 		local player = playersByKey[userKey]
 		if player == nil then
 			return { ok = false, code = ErrorRegistry.codes.permissionDenied, action = "pack.open" }
+		end
+		if
+			payload.packId ~= "classic_starter"
+			and packService:definition(payload.packId) == nil
+		then
+			return { ok = false, code = ErrorRegistry.codes.packInvalid, action = "pack.open" }
 		end
 		local outcome = transactions:execute(userKey, {
 			id = requestId,
@@ -285,6 +298,15 @@ function Phase002Runtime.start(serverRoot: Instance)
 			expectedRevision = payload.expectedRevision,
 			resultReference = requestId,
 			apply = function(profile: any): any
+				if payload.packId ~= "classic_starter" then
+					return packService:open(
+						profile,
+						player.UserId,
+						requestId,
+						payload.packId,
+						RandomService.new(seedFor(player.UserId, requestId))
+					)
+				end
 				return starterPack:apply(
 					profile,
 					player.UserId,
