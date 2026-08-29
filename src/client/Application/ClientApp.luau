@@ -12,6 +12,7 @@ local PreloadManifest = require(script.Parent.Parent.Rendering.PreloadManifest)
 local VirtualizedBinder = require(script.Parent.Parent.Rendering.VirtualizedBinder)
 local LaunchDeckSetAssets = require(ReplicatedStorage.Shared.Assets.LaunchDeckSetAssets)
 local PresentationResolver = require(ReplicatedStorage.Shared.Assets.PresentationResolver)
+local ComposedCardAssets = require(ReplicatedStorage.Shared.Assets.ComposedCardAssets)
 local CardViewModel = require(ReplicatedStorage.Shared.Rendering.CardViewModel)
 
 local ClientApp = {}
@@ -70,6 +71,7 @@ function ClientApp.start(launchContract: any)
 	local presentationAssets = ReplicatedStorage:WaitForChild("PresentationAssets", 30)
 	assert(presentationAssets ~= nil, "P002-CLIENT-004 presentation assets missing")
 	local preloadInstances = PreloadManifest.resolve(presentationAssets)
+	local composedCardAssets = ComposedCardAssets.build(launchContract.clientCatalog)
 	task.spawn(function()
 		local ok = pcall(function()
 			ContentProvider:PreloadAsync(preloadInstances)
@@ -284,7 +286,12 @@ function ClientApp.start(launchContract: any)
 
 	local function renderPreview(card: any, snapshot: any)
 		clearPreview()
-		local viewModel = CardViewModel.build(launchContract.clientCatalog, card, snapshot.settings)
+		local viewModel = CardViewModel.build(
+			launchContract.clientCatalog,
+			card,
+			snapshot.settings,
+			composedCardAssets
+		)
 		local descriptor = CardRenderer3D.render(viewModel)
 		local presentation =
 			PresentationResolver.card(launchContract.clientCatalog, card, LaunchDeckSetAssets)
@@ -377,8 +384,12 @@ function ClientApp.start(launchContract: any)
 		for _, visible in VirtualizedBinder.project(snapshot.cards, range) do
 			local index = visible.index
 			local card = visible.item
-			local viewModel =
-				CardViewModel.build(launchContract.clientCatalog, card, snapshot.settings)
+			local viewModel = CardViewModel.build(
+				launchContract.clientCatalog,
+				card,
+				snapshot.settings,
+				composedCardAssets
+			)
 			local descriptor = CardRenderer2D.render(viewModel)
 			local row = makeText(
 				cards,

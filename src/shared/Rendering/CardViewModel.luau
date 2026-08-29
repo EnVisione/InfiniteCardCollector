@@ -32,7 +32,7 @@ local function deepFreeze(value: any): any
 	return value
 end
 
-function CardViewModel.build(catalog: any, card: any, settings: any): any
+function CardViewModel.build(catalog: any, card: any, settings: any, composedAssets: any?): any
 	local deckSets = indexById(catalog.deckSets)
 	local ranks = indexById(catalog.ranks)
 	local suits = indexById(catalog.suits)
@@ -92,6 +92,10 @@ function CardViewModel.build(catalog: any, card: any, settings: any): any
 		table.insert(statusNames, status.text)
 	end
 	local statusSuffix = if #statusNames > 0 then ", " .. table.concat(statusNames, ", ") else ""
+	local composition = if type(composedAssets) == "table"
+			and type(composedAssets.compose) == "function"
+		then composedAssets:compose(card)
+		else nil
 	local layers = {
 		{ id = "deck_set", valueId = deckSet.id, text = deckSet.displayName },
 		{ id = "suit", valueId = suit.id, text = suit.displayName, colorId = suit.color },
@@ -106,6 +110,26 @@ function CardViewModel.build(catalog: any, card: any, settings: any): any
 		},
 		{ id = "status", values = statuses },
 	}
+	if composition ~= nil then
+		for _, layer in layers do
+			local composed = composition.layers[layer.id]
+			if layer.id == "status" and composed ~= nil then
+				local composedById = indexById(composed)
+				for _, status in layer.values do
+					local composedStatus = composedById[status.id]
+					if composedStatus ~= nil then
+						status.assetId = composedStatus.assetId
+						status.fallbackAssetId = composedStatus.fallbackAssetId
+					end
+				end
+			elseif composed ~= nil then
+				layer.assetId = composed.assetId
+				layer.fallbackAssetId = composed.fallbackAssetId
+			end
+		end
+		layers[1].formAssetId = composition.form.assetId
+		layers[1].formFallbackAssetId = composition.form.fallbackAssetId
+	end
 	return deepFreeze({
 		version = CardViewModel.version,
 		instanceId = card.instanceId,

@@ -36,7 +36,7 @@ The platform bootstrap scripts download archives to temporary storage, verify si
 - `src/shared/` becomes `ReplicatedStorage/Shared`.
 - `src/server/` becomes `ServerScriptService/Server`.
 - `src/client/` becomes `StarterPlayer/StarterPlayerScripts/Client`.
-- `ServerStorage/Assets` contains one Rojo mapped Classic card frame fixture and one Classic Starter Pack fixture while reserving future asset families.
+- `ServerStorage/Assets` contains three themed card frame fixtures, three neutral fallback fixtures, and three Deck Set pack fixtures. The fixtures are bounded procedural verification assets, not the complete reviewed launch media bundle.
 - `StarterGui/App/AppRoot` is a scale based transparent GUI root.
 
 The shared bootstrap contract contains immutable foundation metadata. The server and client bootstraps preserve the Phase 001 authoritative and projected calculation comparison. The server then starts the Phase 002 runtime, and the client starts the minimal application. The runtime creates one action remote, one message remote, profile and transaction services, inventory and deck services, the Starter Pack and guided Formation routes, player lifecycle, heartbeat work, bounded shutdown, and sanitized presentation fixtures. Trading, purchases, general pack routes, timed rounds, tasks, duels, and public release remain closed.
@@ -150,7 +150,7 @@ The complete service and data flow is documented in [Phase 002 runtime architect
 ### Initialization
 
 1. Load and validate the Phase 001 catalog, configuration, and calculation contract.
-2. Publish the Classic, Radioactive, and Astral card and pack presentation fixtures from `ServerStorage` to a bounded client folder. Dynamic selection remains a Phase 003 renderer task.
+2. Publish the Classic, Radioactive, and Astral card and pack presentation fixtures from `ServerStorage` to a bounded client folder. The client resolves enabled card previews through the registered Deck Set visual systems and uses a neutral fallback for unknown or disabled data.
 3. Create one `ClientAction` and one `ServerMessage` remote.
 4. Select the memory or Roblox profile adapter from the universe identity.
 5. Construct migrations, profile storage, inventory storage, collection, inventory, deck, pack, guided Formation, transaction, token bucket, and gateway services.
@@ -190,9 +190,9 @@ The free Starter Pack commits five Classic cards and one pending result at revis
 
 ### Renderer and Client State
 
-One view model provides Deck Set, suit, rank, Edition, Grade, Power Tier, Trait, and status layers to both 2D and 3D adapters. Trade lock, general lock, favorite, wishlist, new, and unavailable content remain readable without relying on color. Missing content uses a neutral fallback.
+One view model provides Deck Set, suit, rank, Edition, Grade, Power Tier, Trait, and status layers to both 2D and 3D adapters. `ComposedCardAssets` adds stable asset and fallback references for all 624 forms and every launch compositional layer. Trade lock, general lock, favorite, wishlist, new, and unavailable content remain readable without relying on color. Missing content uses a neutral fallback.
 
-The client clones the two Rojo mapped fixture models through a component pool, preloads only those two fixtures, and virtualizes binder rows. Low graphics, reduced motion, and reduced flash remove nonessential animation while keeping all semantic layers.
+The client resolves themed and fallback card fixtures through a component pool, preloads only the bounded opening fixtures, and virtualizes binder rows. Low graphics, reduced motion, and reduced flash remove nonessential animation while keeping all semantic layers.
 
 Client state rejects lower revisions and malformed messages. Read only and maintenance responses retain presentation but remove writable authority.
 
@@ -230,7 +230,7 @@ The combined suite now passes 58 tests. Phase 001 coverage includes catalog coun
 
 The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
 
-Phase 003 entry and asset contract evidence is recorded in [the Phase 003 entry packet](../verification/phase-003-entry.md), [the Phase 003 asset contract record](../verification/phase-003-asset-contract.md), and [the Phase 003 manifest snapshot](../verification/phase-003-asset-manifest.json). [The Deck Set identity evidence](../verification/phase-003-deckset-identities.md) records the three visual systems, 156 base identity records, and six procedural fixtures. The version 1 manifest validator now freezes source and built identities, hashes, provenance, review, fallbacks, references, preload groups, pool groups, and measured budgets before new launch assets are produced. It does not claim that the complete launch bundle exists.
+Phase 003 entry and asset contract evidence is recorded in [the Phase 003 entry packet](../verification/phase-003-entry.md), [the Phase 003 asset contract record](../verification/phase-003-asset-contract.md), and [the Phase 003 manifest snapshot](../verification/phase-003-asset-manifest.json). [The Deck Set identity evidence](../verification/phase-003-deckset-identities.md) records the three visual systems, 156 base identity records, and nine procedural fixtures. [The compositional card asset evidence](../verification/phase-003-composition.md) records the 624 form registry and semantic renderer references. The version 1 manifest validator now freezes source and built identities, hashes, provenance, review, fallbacks, references, preload groups, pool groups, and measured budgets before new launch assets are produced. It does not claim that the complete launch bundle exists.
 
 Later gameplay phases must extend verification to cover general pack pity, one card Arcana application, permanent Edition unlocks, Grade progression, timed rounds, tasks, multi client Friend Clash, trade settlement failure injection, touch, controller, mobile layout, broader performance, and production release gates.
 

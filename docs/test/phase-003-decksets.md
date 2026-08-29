@@ -27,6 +27,10 @@ The suite must report `P003-TEST-005-deckset-identity-assets`, `P003-TEST-006-de
 
 The Rojo project maps one original procedural frame model, one neutral fallback model, and one pack model for each launch Deck Set. Classic uses ivory stock and red or black ink. Radioactive uses hazard stripes, warning accents, and neon green. Astral uses a violet nebula palette, silver marks, and constellation accents. `Phase002Runtime` publishes all nine fixtures to the bounded client folder. `PresentationResolver` selects the registered themed fixture for enabled card data and selects the matching neutral fallback for unknown or disabled data. The client records the selected visual system and fallback state on the preview model.
 
+## Compositional handoff
+
+The shared `ComposedCardAssets` registry now consumes the same projected axes to produce all 624 form keys and the Edition, Grade, Tier, Trait, status, and formation presentation references used by the renderer. Its focused procedure and limits are recorded in [the compositional card asset procedure](phase-003-composition.md).
+
 ## Evidence limits
 
 The records and procedural fixtures are the first Deck Set presentation slice. They do not substitute for reviewed source art files, content hashes, audio, complete binder or mastery surfaces, golden screenshots, or the remaining Edition and progression layers owned by later Phase 003 tasks.

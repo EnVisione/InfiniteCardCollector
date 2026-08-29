@@ -7,6 +7,10 @@ local AssetManifest = require("../src/shared/Assets/AssetManifest")
 local LaunchCatalog = require("../src/shared/Catalogs/LaunchCatalog")
 local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
 local PresentationResolver = require("../src/shared/Assets/PresentationResolver")
+local ComposedCardAssets = require("../src/shared/Assets/ComposedCardAssets")
+local CardViewModel = require("../src/shared/Rendering/CardViewModel")
+local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
+local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 
 local Phase003Test = {}
 
@@ -369,6 +373,95 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			"P003-TEST-005 resolver disabled fallback"
 		)
 		assert(disabled.fallback, "P003-TEST-005 resolver disabled state")
+		local composed = ComposedCardAssets.build(LaunchCatalog)
+		assert(#composed.editions == 4, "P003-TEST-005 edition asset count")
+		assert(#composed.grades == 11, "P003-TEST-005 grade asset count")
+		assert(#composed.powerTiers == 11, "P003-TEST-005 tier asset count")
+		assert(#composed.traits == 12, "P003-TEST-005 trait asset count")
+		assert(#composed.formations == 12, "P003-TEST-005 formation asset count")
+		assert(#composed.statuses == 6, "P003-TEST-005 status asset count")
+		assert(#composed.forms == 624, "P003-TEST-005 form asset count")
+		local composedFormIds = {}
+		for _, form in composed.forms do
+			assert(composedFormIds[form.id] == nil, "P003-TEST-005 duplicate form asset")
+			composedFormIds[form.id] = true
+			assert(form.assetId == "asset.form." .. form.id, "P003-TEST-005 form asset id")
+			assert(
+				form.fallbackAssetId == "fallback.form." .. form.id,
+				"P003-TEST-005 form fallback id"
+			)
+		end
+		for _, form in LaunchCatalog.forms do
+			assert(composedFormIds[form.id] == true, "P003-TEST-005 form reachability")
+		end
+		local composedCard = composed:compose({
+			deckSetId = "classic",
+			rankId = "ace",
+			suitId = "hearts",
+			editionId = "foil",
+			gradeId = "a",
+			powerTierId = "legendary",
+			traitId = "fortune",
+			locked = true,
+		})
+		assert(composedCard.form.id == "classic:ace:hearts:foil", "P003-TEST-005 form composition")
+		assert(
+			composedCard.layers.edition.assetId == "asset.edition.foil",
+			"P003-TEST-005 edition composition"
+		)
+		assert(
+			composedCard.layers.power_tier.assetId == "asset.power_tier.legendary",
+			"P003-TEST-005 tier composition"
+		)
+		assert(
+			#composedCard.layers.status == 1 and not composedCard.unavailable,
+			"P003-TEST-005 status composition"
+		)
+		local viewModel = CardViewModel.build(LaunchCatalog, {
+			instanceId = "composed_card",
+			deckSetId = "classic",
+			rankId = "ace",
+			suitId = "hearts",
+			editionId = "foil",
+			gradeId = "a",
+			powerTierId = "legendary",
+			locked = true,
+		}, {}, composed)
+		assert(
+			viewModel.layers[1].formAssetId == "asset.form.classic:ace:hearts:foil",
+			"P003-TEST-005 view model form asset"
+		)
+		assert(
+			viewModel.layers[4].assetId == "asset.edition.foil",
+			"P003-TEST-005 view model edition asset"
+		)
+		assert(
+			viewModel.layers[8].values[1].assetId == "asset.status.locked",
+			"P003-TEST-005 view model status asset"
+		)
+		local twoDimensional = CardRenderer2D.render(viewModel)
+		local threeDimensional = CardRenderer3D.render(viewModel)
+		assert(
+			twoDimensional.children[4].assetId == "asset.edition.foil",
+			"P003-TEST-005 2d asset reference"
+		)
+		assert(
+			threeDimensional.children[1].formAssetId == "asset.form.classic:ace:hearts:foil",
+			"P003-TEST-005 3d form reference"
+		)
+		local incompleteCard = composed:compose({
+			deckSetId = "classic",
+			rankId = "ace",
+			suitId = "hearts",
+			editionId = "foil",
+			gradeId = "missing",
+			powerTierId = "legendary",
+		})
+		assert(composedCard.unavailable == false, "P003-TEST-005 complete composition")
+		assert(
+			incompleteCard.unavailable and #incompleteCard.layers.status == 1,
+			"P003-TEST-005 unavailable composition"
+		)
 	end)
 
 	addTest("P003-TEST-006-deckset-fixture-project", function()
