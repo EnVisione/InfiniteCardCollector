@@ -9,6 +9,36 @@ local DEFAULT_COSTS = {
 	traitRemovalRefund = 1,
 }
 
+local DEFAULT_SALVAGE = {
+	gradeInkByGrade = {
+		f = 1,
+		e = 2,
+		d = 3,
+		c = 4,
+		b = 5,
+		a = 6,
+		s = 8,
+		ss = 10,
+		sr = 12,
+		ur = 15,
+		lr = 20,
+	},
+	traitEssence = 1,
+	ascensionFragmentsByTier = {
+		common = 0,
+		uncommon = 0,
+		rare = 0,
+		epic = 0,
+		legendary = 0,
+		mythic = 0,
+		secret = 1,
+		infernal = 2,
+		celestial = 3,
+		chaos = 4,
+		zenith = 5,
+	},
+}
+
 local function indexById(records: { any }): { [string]: any }
 	local result = {}
 	for _, record in records do
@@ -48,6 +78,29 @@ function ProgressionService.new(dependencies: any): any
 	for key, value in dependencies.costs or {} do
 		if integer(value) and value > 0 then
 			costs[key] = value
+		end
+	end
+	local configuredSalvage = dependencies.config.economy.salvage or {}
+	local salvage = {
+		gradeInkByGrade = table.clone(DEFAULT_SALVAGE.gradeInkByGrade),
+		traitEssence = DEFAULT_SALVAGE.traitEssence,
+		ascensionFragmentsByTier = table.clone(DEFAULT_SALVAGE.ascensionFragmentsByTier),
+	}
+	if type(configuredSalvage.gradeInkByGrade) == "table" then
+		for gradeId, amount in configuredSalvage.gradeInkByGrade do
+			if integer(amount) and amount >= 0 then
+				salvage.gradeInkByGrade[gradeId] = amount
+			end
+		end
+	end
+	if integer(configuredSalvage.traitEssence) and configuredSalvage.traitEssence >= 0 then
+		salvage.traitEssence = configuredSalvage.traitEssence
+	end
+	if type(configuredSalvage.ascensionFragmentsByTier) == "table" then
+		for tierId, amount in configuredSalvage.ascensionFragmentsByTier do
+			if integer(amount) and amount >= 0 then
+				salvage.ascensionFragmentsByTier[tierId] = amount
+			end
 		end
 	end
 	local gradeCap = dependencies.config.gameplayCaps.grade_experience
@@ -134,6 +187,42 @@ function ProgressionService.new(dependencies: any): any
 			reasonId = if stageId == "grade" then "grade_progress" else "trait_choice",
 			details = details,
 		}
+	end
+
+	local function currencyCap(currencyId: string): number?
+		for _, currency in dependencies.config.economy.currencies do
+			if currency.id == currencyId then
+				return currency.cap
+			end
+		end
+		return nil
+	end
+
+	local function credit(profile: any, currencyId: string, amount: number): number
+		if amount <= 0 then
+			return 0
+		end
+		local before = profile.currencies[currencyId]
+		if type(before) ~= "number" or before < 0 then
+			return 0
+		end
+		local cap = currencyCap(currencyId)
+		local after = before + amount
+		if cap ~= nil then
+			after = math.min(after, cap)
+		end
+		profile.currencies[currencyId] = after
+		return after - before
+	end
+
+	local function ownedCount(profile: any, identityId: string): number
+		local count = 0
+		for _, owned in dependencies.inventory:listCards(profile) do
+			if owned.identityId == identityId then
+				count += 1
+			end
+		end
+		return count
 	end
 
 	local service = {}
@@ -340,6 +429,82 @@ function ProgressionService.new(dependencies: any): any
 			},
 		}
 	end
+
+	function service:salvageCard(profile: any, ownerUserId: number, instanceId: string): any
+		if dependencies.config.features.salvageEnabled == false then
+			return { ok = false, code = dependencies.errors.codes.featureUnavailable }
+		end
+		local protection =
+			dependencies.inventory:isProtectedForRemoval(profile, ownerUserId, instanceId)
+		if not protection.ok then
+			return protection
+		end
+		local card = protection.card
+		local identityCountBefore = ownedCount(profile, card.identityId)
+		local formId = dependencies.catalog.formKey(card.identityId, card.editionId)
+		local discovered = profile.discovery.forms[formId] == true
+		local gradeInkRequested = salvage.gradeInkByGrade[card.gradeId] or 0
+		local traitEssenceRequested = if card.traitId ~= nil then salvage.traitEssence else 0
+		local ascensionRequested = salvage.ascensionFragmentsByTier[card.powerTierId] or 0
+		local beforeBalances = {
+			gradeInk = profile.currencies.grade_ink,
+			traitEssence = profile.currencies.trait_essence,
+			ascensionFragments = profile.currencies.ascension_fragments,
+		}
+		local removed = dependencies.inventory:removeCard(profile, ownerUserId, instanceId)
+		if not removed.ok then
+			return removed
+		end
+		local gradeInk = credit(profile, "grade_ink", gradeInkRequested)
+		local traitEssence = credit(profile, "trait_essence", traitEssenceRequested)
+		local ascensionFragments = credit(profile, "ascension_fragments", ascensionRequested)
+		local afterBalances = {
+			gradeInk = profile.currencies.grade_ink,
+			traitEssence = profile.currencies.trait_essence,
+			ascensionFragments = profile.currencies.ascension_fragments,
+		}
+		return {
+			ok = true,
+			code = "progression.card_salvaged",
+			instanceId = instanceId,
+			identityId = card.identityId,
+			classification = "duplicate",
+			ownedCountBefore = identityCountBefore,
+			ownedCountAfter = identityCountBefore - 1,
+			discovered = discovered,
+			values = {
+				gradeInk = gradeInk,
+				traitEssence = traitEssence,
+				ascensionFragments = ascensionFragments,
+			},
+			balancesBefore = beforeBalances,
+			balancesAfter = afterBalances,
+			card = dependencies.inventory:projectCard(card),
+			trace = {
+				{
+					stageId = "salvage",
+					handlerId = "progression_service",
+					operation = "salvage_card",
+					input = identityCountBefore,
+					output = identityCountBefore - 1,
+					reasonId = "card_salvage",
+					details = {
+						identityId = card.identityId,
+						gradeInk = gradeInk,
+						traitEssence = traitEssence,
+						ascensionFragments = ascensionFragments,
+						discovered = discovered,
+					},
+				},
+			},
+			versions = {
+				catalogVersion = dependencies.catalog.catalogVersion,
+				configVersion = dependencies.config.configVersion,
+			},
+		}
+	end
+
+	service.salvage = service.salvageCard
 
 	function service:removeTrait(profile: any, ownerUserId: number, instanceId: string): any
 		local access = eligible(profile, ownerUserId, instanceId)

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This procedure verifies `P002-TASK-002`, `P002-TASK-003`, and the network portions of `P002-TASK-011` through `P002-TASK-014`. It covers the complete 24 action launch registry. Ten routes are available after the Phase 003 extensions and the remaining routes stay fail closed.
+This procedure verifies `P002-TASK-002`, `P002-TASK-003`, and the network portions of `P002-TASK-011` through `P002-TASK-014`. It covers the complete 25 action launch registry. Eleven routes are available after the Phase 003 extensions and the remaining routes stay fail closed.
 
 ## Prerequisites
 
@@ -17,11 +17,11 @@ lune run test
 lune run phase002-evidence
 ```
 
-The full test run must report 64 passed and 0 failed. The relevant named cases are:
+The full test run must report 65 passed and 0 failed. The relevant named cases are:
 
 | Test | Coverage |
 | --- | --- |
-| `P002-TEST-001-action-and-error-registries` | Registry and error versions, 24 unique actions, frozen schemas, available handler coverage, and 54 declared error codes. |
+| `P002-TEST-001-action-and-error-registries` | Registry and error versions, 25 unique actions, frozen schemas, available handler coverage, and 54 declared error codes. |
 | `P002-TEST-002-envelope-happy-paths` | Valid bootstrap, pack, deck, Formation, and binder envelopes. |
 | `P002-TEST-003-envelope-and-schema-rejection` | Unknown fields, missing fields, malformed IDs, wrong types, integer bounds, and action specific schema rejection. |
 | `P002-TEST-004-envelope-resource-limits` | Depth, node, encoded byte, cyclic value, invalid key, and nonfinite number rejection. |

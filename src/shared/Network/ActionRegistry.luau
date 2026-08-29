@@ -124,7 +124,12 @@ local actions = {
 		expectedRevision = revision(),
 		favorite = optional(scalar("boolean")),
 		instanceId = stableId(64),
+		locked = optional(scalar("boolean")),
 		wishlist = optional(scalar("boolean")),
+	}, true, true),
+	policy("inventory.salvage", "durable_idempotent", true, "inventory_salvage", 1024, 4, 1, 3, {
+		expectedRevision = revision(),
+		instanceId = stableId(64),
 	}, true, true),
 	policy("formation.start", "ephemeral_idempotent", false, nil, 768, 3, 1, 5, {
 		expectedRevision = revision(),
@@ -218,7 +223,7 @@ local ActionRegistry = {
 	maxEnvelopeDepth = 8,
 	maxEnvelopeNodes = 192,
 	globalRate = {
-		capacity = 24,
+		capacity = 25,
 		refillAmount = 12,
 		refillSeconds = 1,
 	},

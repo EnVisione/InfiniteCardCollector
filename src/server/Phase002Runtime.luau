@@ -438,7 +438,7 @@ function Phase002Runtime.start(serverRoot: Instance)
 				code = ErrorRegistry.codes.permissionDenied,
 				action = "inventory.set_flags",
 			}
-		elseif payload.favorite == nil and payload.wishlist == nil then
+		elseif payload.favorite == nil and payload.wishlist == nil and payload.locked == nil then
 			return {
 				ok = false,
 				code = ErrorRegistry.codes.operationInvalid,
@@ -455,6 +455,27 @@ function Phase002Runtime.start(serverRoot: Instance)
 			end,
 		})
 		return withSnapshot(userKey, outcome, "inventory.set_flags")
+	end
+
+	routes.inventory_salvage = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "inventory.salvage",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "inventory.salvage",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			apply = function(profile: any): any
+				return progression:salvageCard(profile, player.UserId, payload.instanceId)
+			end,
+		})
+		return withSnapshot(userKey, outcome, "inventory.salvage")
 	end
 
 	routes.grade_apply_ink = function(userKey: string, payload: any, requestId: string): any

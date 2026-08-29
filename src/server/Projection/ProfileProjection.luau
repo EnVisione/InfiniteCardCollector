@@ -6,6 +6,21 @@ local function copyMap(value: any): any
 	return table.clone(value)
 end
 
+local function collectionProjection(profile: any, inventory: any): any
+	local ownedIdentityCounts = {}
+	for _, card in inventory:listCards(profile) do
+		ownedIdentityCounts[card.identityId] = (ownedIdentityCounts[card.identityId] or 0) + 1
+	end
+	return {
+		ownedIdentityCounts = ownedIdentityCounts,
+		discoveredForms = copyMap(profile.discovery.forms),
+		discoveredJokers = copyMap(profile.discovery.jokers),
+		discoveredArcana = copyMap(profile.discovery.arcana),
+		discoveredSouls = copyMap(profile.discovery.souls),
+		bestRecords = copyMap(profile.bestRecords),
+	}
+end
+
 function ProfileProjection.snapshot(
 	profile: any,
 	inventory: any,
@@ -46,6 +61,14 @@ function ProfileProjection.snapshot(
 		storageMode = storageMode,
 		currencies = copyMap(profile.currencies),
 		cards = cards,
+		collection = collectionProjection(profile, inventory),
+		discovery = {
+			forms = copyMap(profile.discovery.forms),
+			jokers = copyMap(profile.discovery.jokers),
+			arcana = copyMap(profile.discovery.arcana),
+			souls = copyMap(profile.discovery.souls),
+		},
+		bestRecords = copyMap(profile.bestRecords),
 		activeDeck = copyMap(profile.activeDeck),
 		pendingPacks = pendingPacks,
 		settings = copyMap(profile.settings),

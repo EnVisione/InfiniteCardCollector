@@ -204,7 +204,7 @@ function Phase002Test.register(addTest: (string, () -> ()) -> (), expectFailure:
 	addTest("P002-TEST-001-action-and-error-registries", function()
 		assert(ActionRegistry.version == 1, "P002-TEST-003 action registry version")
 		assert(ActionRegistry.envelopeVersion == 1, "P002-TEST-004 envelope version")
-		assert(#ActionRegistry.actions == 24, "P002-TEST-005 action count")
+		assert(#ActionRegistry.actions == 25, "P002-TEST-005 action count")
 		local seenHandlers = {}
 		for _, action in ActionRegistry.actions do
 			assert(ActionRegistry.byId[action.id] == action, "P002-TEST-006 lookup mismatch")
@@ -223,6 +223,7 @@ function Phase002Test.register(addTest: (string, () -> ()) -> (), expectFailure:
 				"deck_equip",
 				"deck_unequip",
 				"inventory_flags",
+				"inventory_salvage",
 				"guided_formation",
 				"binder_page",
 			}

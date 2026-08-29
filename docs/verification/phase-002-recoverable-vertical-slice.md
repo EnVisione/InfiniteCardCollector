@@ -10,7 +10,7 @@ It does not claim general pack opening, progression, tasks, duels, trading, comm
 
 The Phase 002 candidate implements network contract version 1, profile and compact codec version 1, receipt and replay barrier version 1, renderer version 1, one writable session model, bounded retry and shutdown, exact once transactions, card and Joker ownership boundaries, the 52 slot deck, a recoverable Classic Starter Pack, one guided Monosuit reward, and one shared 2D and 3D renderer foundation.
 
-The deterministic repository suite passes 64 tests with 0 failures. The Phase 002 baseline contributed 52 named tests before the Phase 003 extensions. StyLua and Selene are clean. Rojo builds the mapped card and pack fixtures. Local and isolated Vinegar Studio pass the complete vertical slice and an empty project console.
+The deterministic repository suite passes 65 tests with 0 failures. The Phase 002 baseline contributed 52 named tests before the Phase 003 extensions. StyLua and Selene are clean. Rojo builds the mapped card and pack fixtures. Local and isolated Vinegar Studio pass the complete vertical slice and an empty project console.
 
 The isolated Roblox gate is now exercised against the owner authorized private universe and place listed below. The published candidate remains private and the prior place version was preserved. This evidence is limited to the authorized test account and does not establish production readiness.
 
@@ -39,7 +39,7 @@ Protected plan files and `docs/plan/goal.md` have no Phase 002 execution diff.
 
 | Report | SHA 256 |
 | --- | --- |
-| Actions and errors | `e27648a49534a9f531aef412034890f20816f115e5d7d161923baafc9571a68a` |
+| Actions and errors | `a077101e902e41928754e669138ade542609e378fa40222bca4720e786f53ed1` |
 | Failure stages | `c0686124dd4d6ad7588f475ec909b33db37bc25fceb5a137bc7aa514b2168535` |
 | Migrations | `87d1bb9db7e635352b4bf6c0ce05a35a1e42bccea6d9a280b609a45a49a540f2` |
 | Profile sizes | `c321df047d7257d29dc7aaf8b34b62dd291945714dff4f6120f49995387e8c60` |
@@ -48,9 +48,9 @@ Protected plan files and `docs/plan/goal.md` have no Phase 002 execution diff.
 
 ## Action and Error Inventory
 
-The generated network report contains 24 actions, 10 currently available handlers, and 54 stable error codes. The Phase 003 pack, progression, and Arcana extension adds earned pack opening, saved choices, Grade Ink application, one-card Arcana application, `pack.insufficient_currency`, `pack.choice_invalid`, `pack.choice_unavailable`, and progression or Arcana validation while preserving the versioned action and validation contracts. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
+The generated network report contains 25 actions, 11 currently available handlers, and 54 stable error codes. The Phase 003 pack, progression, Arcana, and salvage extension adds earned pack opening, saved choices, Grade Ink application, one-card Arcana application, protected duplicate salvage, `pack.insufficient_currency`, `pack.choice_invalid`, `pack.choice_unavailable`, and progression or Arcana validation while preserving the versioned action and validation contracts. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
 
-The complete hostile matrix constructs a valid minimum payload and invalid shape or boundary payloads for all 24 actions. Gateway tests prove deterministic validation, independent token buckets, unavailable route handling, readiness, writable state, authorization, protected routing, safe request correlation, and no mutation on rejection.
+The complete hostile matrix constructs a valid minimum payload and invalid shape or boundary payloads for all 25 actions. Gateway tests prove deterministic validation, independent token buckets, unavailable route handling, readiness, writable state, authorization, protected routing, safe request correlation, and no mutation on rejection.
 
 ## Profile Size Evidence
 

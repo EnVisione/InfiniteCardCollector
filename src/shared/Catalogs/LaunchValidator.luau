@@ -1142,6 +1142,7 @@ local function validateConfig(config: any, indexes: any, catalog: any)
 		"jokersEnabled",
 		"arcanaEnabled",
 		"traitsEnabled",
+		"salvageEnabled",
 		"formationsEnabled",
 		"passiveRewardsEnabled",
 		"friendClashRewardsEnabled",
@@ -1164,6 +1165,7 @@ local function validateConfig(config: any, indexes: any, catalog: any)
 			"jokersEnabled",
 			"arcanaEnabled",
 			"traitsEnabled",
+			"salvageEnabled",
 			"formationsEnabled",
 			"passiveRewardsEnabled",
 			"friendClashRewardsEnabled",
@@ -1203,11 +1205,55 @@ local function validateConfig(config: any, indexes: any, catalog: any)
 	assertExactMapKeys(config.economy, {
 		"startingBalances",
 		"packPrices",
+		"salvage",
 		"currencies",
 		"reasonIds",
 		"activeBaselinePerMinute",
 		"passivePercentOfActive",
 	}, "P001-CONFIG-071 economy schema")
+	assertExactMapKeys(config.economy.salvage, {
+		"gradeInkByGrade",
+		"traitEssence",
+		"ascensionFragmentsByTier",
+	}, "P001-CONFIG-072 salvage schema")
+	assertExactMapKeys(config.economy.salvage.gradeInkByGrade, {
+		"f",
+		"e",
+		"d",
+		"c",
+		"b",
+		"a",
+		"s",
+		"ss",
+		"sr",
+		"ur",
+		"lr",
+	}, "P001-CONFIG-073 grade salvage keys")
+	assertExactMapKeys(config.economy.salvage.ascensionFragmentsByTier, {
+		"common",
+		"uncommon",
+		"rare",
+		"epic",
+		"legendary",
+		"mythic",
+		"secret",
+		"infernal",
+		"celestial",
+		"chaos",
+		"zenith",
+	}, "P001-CONFIG-074 tier salvage keys")
+	for _, amount in config.economy.salvage.gradeInkByGrade do
+		assertInteger(amount, 0, 999999999999999, "P001-CONFIG-075 grade salvage amount")
+	end
+	assertInteger(
+		config.economy.salvage.traitEssence,
+		0,
+		999999999999999,
+		"P001-CONFIG-076 trait salvage amount"
+	)
+	for _, amount in config.economy.salvage.ascensionFragmentsByTier do
+		assertInteger(amount, 0, 999999999999999, "P001-CONFIG-077 tier salvage amount")
+	end
 
 	local reasons = {}
 	for _, reasonId in config.economy.reasonIds do

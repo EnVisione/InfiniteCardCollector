@@ -17,6 +17,15 @@ function InventoryStore.new(): any
 		return true
 	end
 
+	function store:removeCard(profile: any, uid: string): any?
+		local card = profile.cards[uid]
+		if card == nil then
+			return nil
+		end
+		profile.cards[uid] = nil
+		return card
+	end
+
 	function store:getJoker(profile: any, uid: string): any?
 		return profile.jokers[uid]
 	end

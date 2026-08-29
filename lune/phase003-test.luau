@@ -26,6 +26,7 @@ local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
 local ProgressionService = require("../src/server/Progression/ProgressionService")
 local ArcanaService = require("../src/server/Progression/ArcanaService")
+local ProfileProjection = require("../src/server/Projection/ProfileProjection")
 
 local Phase003Test = {}
 
@@ -1023,6 +1024,146 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 		)
 		source.locks.progression = nil
 		assert(CanonicalValue.encode(profile) == lockedBefore, "P003-TEST-012 locked no mutation")
+		ProfileSchema.validate(profile)
+	end)
+
+	addTest("P003-TEST-013-collection-protection-and-salvage", function()
+		local collection = CollectionService.new()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		profile.bestRecords.guidedSuccesses = 4
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = collection,
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_salvage_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local first = inventory:createCard(
+			profile,
+			42,
+			"classic:ace:hearts",
+			{ gradeId = "a", powerTierId = "secret", traitId = "fortune" },
+			{ originType = "fixture", originId = "salvage" }
+		)
+		local second = inventory:createCard(
+			profile,
+			42,
+			"classic:ace:hearts",
+			{ gradeId = "e", powerTierId = "common" },
+			{ originType = "fixture", originId = "salvage" }
+		)
+		assert(first.ok and second.ok, "P003-TEST-013 duplicate cards")
+		local firstCard = first.card
+		local secondCard = second.card
+		local locked = inventory:setFlags(profile, 42, firstCard.uid, { locked = true })
+		assert(locked.ok and locked.locked, "P003-TEST-013 manual lock")
+		local lockedProtection = inventory:isProtectedForRemoval(profile, 42, firstCard.uid)
+		assert(
+			not lockedProtection.ok and lockedProtection.code == ErrorRegistry.codes.instanceLocked,
+			"P003-TEST-013 locked protection"
+		)
+		assert(
+			inventory:setFlags(profile, 42, firstCard.uid, { locked = false }).ok,
+			"P003-TEST-013 manual unlock"
+		)
+		for _, flag in { "favorite", "wishlist" } do
+			local set = {}
+			set[flag] = true
+			assert(
+				inventory:setFlags(profile, 42, firstCard.uid, set).ok,
+				"P003-TEST-013 " .. flag .. " set"
+			)
+			local protected = inventory:isProtectedForRemoval(profile, 42, firstCard.uid)
+			assert(
+				not protected.ok and protected.code == ErrorRegistry.codes.removalProtected,
+				"P003-TEST-013 " .. flag .. " protection"
+			)
+			set[flag] = false
+			assert(
+				inventory:setFlags(profile, 42, firstCard.uid, set).ok,
+				"P003-TEST-013 " .. flag .. " clear"
+			)
+		end
+		profile.activeDeck["ace:hearts"] = firstCard.uid
+		local activeProtection = inventory:isProtectedForRemoval(profile, 42, firstCard.uid)
+		assert(
+			not activeProtection.ok
+				and activeProtection.code == ErrorRegistry.codes.removalProtected,
+			"P003-TEST-013 active protection"
+		)
+		profile.activeDeck["ace:hearts"] = nil
+		profile.pendingPacks.salvage_pending_0001 = {
+			state = "committed",
+			packId = "classic",
+			catalogVersion = 1,
+			cardInstanceIds = { firstCard.uid },
+			resultReference = "salvage_pending_0001",
+		}
+		local pendingProtection = inventory:isProtectedForRemoval(profile, 42, firstCard.uid)
+		assert(
+			not pendingProtection.ok
+				and pendingProtection.code == ErrorRegistry.codes.removalProtected,
+			"P003-TEST-013 pending protection"
+		)
+		profile.pendingPacks.salvage_pending_0001 = nil
+
+		local progression = ProgressionService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			errors = ErrorRegistry,
+		})
+		local salvaged = progression:salvageCard(profile, 42, secondCard.uid)
+		assert(
+			salvaged.ok
+				and salvaged.classification == "duplicate"
+				and salvaged.ownedCountBefore == 2
+				and salvaged.ownedCountAfter == 1,
+			"P003-TEST-013 duplicate salvage"
+		)
+		assert(
+			salvaged.values.gradeInk == 2
+				and salvaged.values.traitEssence == 0
+				and salvaged.values.ascensionFragments == 0,
+			"P003-TEST-013 salvage values"
+		)
+		assert(profile.currencies.grade_ink == 2, "P003-TEST-013 grade ink balance")
+		assert(profile.cards[secondCard.uid] == nil, "P003-TEST-013 removed card")
+		assert(
+			profile.discovery.forms[LaunchCatalog.formKey(firstCard.identityId, "normal")] == true,
+			"P003-TEST-013 permanent discovery"
+		)
+		local lastCopy = progression:salvageCard(profile, 42, firstCard.uid)
+		assert(
+			not lastCopy.ok and lastCopy.code == ErrorRegistry.codes.removalProtected,
+			"P003-TEST-013 last copy protection"
+		)
+		local snapshot = ProfileProjection.snapshot(profile, inventory, true, "local_memory")
+		assert(
+			snapshot.collection.ownedIdentityCounts[firstCard.identityId] == 1
+				and snapshot.collection.discoveredForms[LaunchCatalog.formKey(
+					firstCard.identityId,
+					"normal"
+				)] == true
+				and snapshot.bestRecords.guidedSuccesses == 4,
+			"P003-TEST-013 collection projection"
+		)
 		ProfileSchema.validate(profile)
 	end)
 

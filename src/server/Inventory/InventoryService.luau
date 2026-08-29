@@ -165,13 +165,41 @@ function InventoryService.new(dependencies: any): any
 		elseif card.ownerUserId ~= ownerUserId then
 			return { ok = false, code = dependencies.errors.codes.foreignInstance }
 		end
+		if
+			(flags.favorite ~= nil and type(flags.favorite) ~= "boolean")
+			or (flags.wishlist ~= nil and type(flags.wishlist) ~= "boolean")
+			or (flags.locked ~= nil and type(flags.locked) ~= "boolean")
+		then
+			return { ok = false, code = dependencies.errors.codes.boundsInvalid }
+		end
 		if flags.favorite ~= nil then
 			card.flags.favorite = flags.favorite
 		end
 		if flags.wishlist ~= nil then
 			card.flags.wishlist = flags.wishlist
 		end
-		return { ok = true, code = "inventory.flags_updated", instanceId = uid }
+		if flags.locked ~= nil then
+			if flags.locked then
+				card.locks.manual = true
+			else
+				card.locks.manual = nil
+			end
+		end
+		local locked = false
+		for _, active in card.locks do
+			if active then
+				locked = true
+				break
+			end
+		end
+		return {
+			ok = true,
+			code = "inventory.flags_updated",
+			instanceId = uid,
+			favorite = card.flags.favorite,
+			wishlist = card.flags.wishlist,
+			locked = locked,
+		}
 	end
 
 	function service:isEligible(profile: any, ownerUserId: number, uid: string): any
@@ -207,6 +235,13 @@ function InventoryService.new(dependencies: any): any
 			return eligibility
 		end
 		local card = eligibility.card
+		for _, pending in profile.pendingPacks do
+			for _, pendingUid in pending.cardInstanceIds or {} do
+				if pendingUid == uid then
+					return { ok = false, code = dependencies.errors.codes.removalProtected }
+				end
+			end
+		end
 		if card.flags.favorite or card.flags.wishlist then
 			return { ok = false, code = dependencies.errors.codes.removalProtected }
 		end
@@ -225,6 +260,18 @@ function InventoryService.new(dependencies: any): any
 			return { ok = false, code = dependencies.errors.codes.removalProtected }
 		end
 		return { ok = true, code = "ok", card = card }
+	end
+
+	function service:removeCard(profile: any, ownerUserId: number, uid: string): any
+		local protection = self:isProtectedForRemoval(profile, ownerUserId, uid)
+		if not protection.ok then
+			return protection
+		end
+		local removed = dependencies.inventoryStore:removeCard(profile, uid)
+		if removed == nil then
+			return { ok = false, code = dependencies.errors.codes.instanceNotFound }
+		end
+		return { ok = true, code = "inventory.card_removed", card = removed }
 	end
 
 	function service:projectCard(card: any): any

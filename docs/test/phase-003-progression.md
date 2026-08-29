@@ -12,7 +12,7 @@ Run the complete suite with:
 ROKIT_ROOT="$PWD/build/rokit" PATH="$PWD/build/rokit/bin:$PATH" lune run test
 ```
 
-Expected result is 64 passed and 0 failed.
+Expected result is 65 passed and 0 failed.
 
 ## Runtime contract
 

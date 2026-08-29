@@ -131,7 +131,7 @@ The runtime targets Roblox and uses strict typed Luau for shared domain modules,
 
 ### Module Map
 
-- `src/shared/Network/` owns the frozen 24 action registry, 54 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
+- `src/shared/Network/` owns the frozen 25 action registry, 54 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
 - `src/shared/Profile/` owns the readable profile domain, compact codec, canonical values, migration registry, and storage policy.
 - `src/shared/Rendering/` owns the shared card presentation model.
 - `src/server/Storage/` owns memory and Roblox adapters, the profile lifecycle, and the inventory storage interface.
@@ -166,7 +166,7 @@ An unavailable service, malformed profile, foreign session, failed storage retry
 
 ### Network and Authority
 
-The launch action inventory is frozen at 24 IDs. Phase 003 enables bootstrap, pack open, pack choice, deck equip, deck unequip, inventory flags, Grade Ink application, Arcana application, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
+The launch action inventory is frozen at 25 IDs. Phase 003 enables bootstrap, pack open, pack choice, deck equip, deck unequip, inventory flags, card salvage, Grade Ink application, Arcana application, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
 
 The gateway validates envelope shape, exact action schema, encoded size, depth, node count, finite numbers, bounds, rate, availability, profile state, writable state, authorization, and route result in deterministic order. Every safe correlatable rejection returns the original request and action identity.
 
@@ -186,7 +186,7 @@ Shutdown closes new transactions, drains active work, flushes dirty profiles, an
 
 ### Inventory and Recoverable Slice
 
-Card and Joker UIDs are opaque, server generated, and collision checked against current and pending ownership. Provenance is immutable. Discovery is permanent. Removal protects favorites, wishlists, locks, equipped cards, and the last copy. Progression uses the same transaction boundary, preserves saved Power Tier and provenance, promotes Grade from cumulative XP without lowering it, and requires explicit replacement confirmation for an existing Trait. Grade Ink and Trait Essence changes return a compact trace and version pair.
+Card and Joker UIDs are opaque, server generated, and collision checked against current and pending ownership. Provenance is immutable. Discovery is permanent. Manual locks, favorites, wishlists, equipped cards, pending results, traded items, and the last copy protect cards from salvage. Duplicate salvage removes one current instance inside the transaction, credits capped configured Grade Ink, Trait Essence, and high Tier fragments, and returns a duplicate decision with before and after ownership counts. Progression uses the same transaction boundary, preserves saved Power Tier and provenance, promotes Grade from cumulative XP without lowering it, and requires explicit replacement confirmation for an existing Trait. Grade Ink, Trait Essence, and salvage changes return a compact trace and version pair.
 
 The deck contains exactly 52 rank and suit slots. Equip validates owner, content, lock, UID uniqueness, slot identity, occupancy, and expected profile revision. It changes only loadout references.
 
@@ -230,7 +230,7 @@ lune run ci
 
 That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
 
-The combined suite now passes 64 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, classifications, and pending results, a client staged reveal controller with recovery and input parity, server-authoritative Joker and Arcana offer packs with saved choices and exact grants, nonregressing Grade Ink and Trait progression with saved Tier preservation, and one-card Arcana application with source-form preservation.
+The combined suite now passes 65 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, classifications, and pending results, a client staged reveal controller with recovery and input parity, server-authoritative Joker and Arcana offer packs with saved choices and exact grants, nonregressing Grade Ink and Trait progression with saved Tier preservation, one-card Arcana application with source-form preservation, and protected collection metadata and salvage.
 
 The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, Grade Ink route readiness, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
 
