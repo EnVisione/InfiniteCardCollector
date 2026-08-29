@@ -2,6 +2,31 @@
 
 local LaunchDeckSetAssets = {}
 
+local rankSymbols = {
+	["2"] = "2",
+	["3"] = "3",
+	["4"] = "4",
+	["5"] = "5",
+	["6"] = "6",
+	["7"] = "7",
+	["8"] = "8",
+	["9"] = "9",
+	["10"] = "10",
+	jack = "J",
+	queen = "Q",
+	king = "K",
+	ace = "A",
+}
+local rankOrder = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace" }
+
+local suitSymbols = {
+	hearts = { symbol = "heart", color = "red" },
+	diamonds = { symbol = "diamond", color = "red" },
+	clubs = { symbol = "club", color = "black" },
+	spades = { symbol = "spade", color = "black" },
+}
+local suitOrder = { "hearts", "diamonds", "clubs", "spades" }
+
 local visualSystems = {
 	{
 		id = "classic",
@@ -70,6 +95,45 @@ for _, system in visualSystems do
 	visualSystemsById[system.id] = system
 end
 
+local function buildRankPresentations(): { any }
+	local result = {}
+	for _, rankId in rankOrder do
+		table.insert(result, {
+			id = "rank." .. rankId,
+			assetId = "asset.rank." .. rankId,
+			fallbackAssetId = "fallback.rank." .. rankId,
+			symbol = rankSymbols[rankId],
+		})
+	end
+	return result
+end
+
+local function buildSuitPresentations(): { any }
+	local result = {}
+	for _, suitId in suitOrder do
+		local definition = suitSymbols[suitId]
+		table.insert(result, {
+			id = "suit." .. suitId,
+			assetId = "asset.suit." .. suitId,
+			fallbackAssetId = "fallback.suit." .. suitId,
+			symbol = definition.symbol,
+			color = definition.color,
+		})
+	end
+	return result
+end
+
+local rankPresentations = buildRankPresentations()
+local suitPresentations = buildSuitPresentations()
+local rankPresentationsById = {}
+for _, presentation in rankPresentations do
+	rankPresentationsById[presentation.id] = presentation
+end
+local suitPresentationsById = {}
+for _, presentation in suitPresentations do
+	suitPresentationsById[presentation.id] = presentation
+end
+
 local function deepFreeze(value: any): any
 	if type(value) == "table" and not table.isfrozen(value) then
 		for _, child in value do
@@ -123,6 +187,8 @@ function LaunchDeckSetAssets.buildIdentityRecords(catalog: any): { any }
 						frameAssetId = system.frameAssetId,
 						rankAssetId = system.rankAssetPrefix .. rank.id,
 						suitAssetId = system.suitAssetPrefix .. suit.id,
+						rankPresentationId = "rank." .. rank.id,
+						suitPresentationId = "suit." .. suit.id,
 						packAssetId = system.packAssetId,
 						revealSoundAssetId = system.revealSoundAssetId,
 						binderPageAssetId = system.binderPageAssetId,
@@ -153,9 +219,19 @@ function LaunchDeckSetAssets.buildIdentityRecords(catalog: any): { any }
 end
 
 LaunchDeckSetAssets.visualSystems = deepFreeze(visualSystems)
+LaunchDeckSetAssets.rankPresentations = deepFreeze(rankPresentations)
+LaunchDeckSetAssets.suitPresentations = deepFreeze(suitPresentations)
 
 function LaunchDeckSetAssets.visualSystem(deckSetId: string): any
 	return visualSystemsById[deckSetId]
+end
+
+function LaunchDeckSetAssets.rankPresentation(rankId: string): any
+	return rankPresentationsById["rank." .. rankId]
+end
+
+function LaunchDeckSetAssets.suitPresentation(suitId: string): any
+	return suitPresentationsById["suit." .. suitId]
 end
 
 return table.freeze(LaunchDeckSetAssets)

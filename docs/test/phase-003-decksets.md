@@ -21,7 +21,7 @@ The suite must report `P003-TEST-005-deckset-identity-assets`, `P003-TEST-006-de
 
 ## Identity checks
 
-`LaunchDeckSetAssets.buildIdentityRecords` consumes the existing launch catalog and produces exactly 52 records for each of Classic, Radioactive, and Astral. Each record keeps the catalog base identity and slot key, binds a visual system, frame, pack, reveal sound, binder, mastery, affinity cue, fallback, source identity, built identity, provenance, review state, and sorted consumer references. Every rank and suit slot appears once per Deck Set, and all records are immutable after construction.
+`LaunchDeckSetAssets.buildIdentityRecords` consumes the existing launch catalog and produces exactly 52 records for each of Classic, Radioactive, and Astral. The shared presentation tables contain all 13 rank marks and all four suit treatments, with stable asset and fallback IDs. Each identity record keeps the catalog base identity and slot key, binds a visual system, frame, rank, suit, pack, reveal sound, binder, mastery, affinity cue, fallback, source identity, built identity, provenance, review state, and sorted consumer references. Every rank and suit slot appears once per Deck Set, and all records are immutable after construction.
 
 ## Presentation fixtures
 

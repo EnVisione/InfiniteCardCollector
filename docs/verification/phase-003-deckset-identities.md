@@ -2,7 +2,7 @@
 
 ## Result
 
-`LaunchDeckSetAssets` now binds the enabled Classic, Radioactive, and Astral Deck Sets to three original visual system descriptors and exactly 156 immutable base identity records. Every record uses the pinned `deck set, rank, suit` identity and slot keys from `LaunchCatalog`, and each record carries a stable asset contract ID, source and built identity, reviewed original provenance, fallback, and sorted references for frame, rank, suit, binder, and mastery presentation.
+`LaunchDeckSetAssets` now binds the enabled Classic, Radioactive, and Astral Deck Sets to three original visual system descriptors, 13 rank presentations, four suit presentations, and exactly 156 immutable base identity records. Every record uses the pinned `deck set, rank, suit` identity and slot keys from `LaunchCatalog`, and each record carries a stable asset contract ID, source and built identity, reviewed original provenance, fallback, and sorted references for frame, rank, suit, binder, and mastery presentation.
 
 The Rojo project now contains six bounded procedural presentation fixtures. The three frame models and three pack models use distinct palettes and materials for the launch visual systems. `Phase002Runtime` publishes all six fixtures to `ReplicatedStorage.PresentationAssets`; the current Classic preview remains unchanged while dynamic Deck Set renderer selection is implemented in a later task.
 

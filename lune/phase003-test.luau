@@ -285,6 +285,49 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			"P003-TEST-005 astral style"
 		)
 		assert(LaunchDeckSetAssets.visualSystem("future") == nil, "P003-TEST-005 unknown style")
+		assert(
+			#LaunchDeckSetAssets.rankPresentations == 13,
+			"P003-TEST-005 rank presentation count"
+		)
+		assert(#LaunchDeckSetAssets.suitPresentations == 4, "P003-TEST-005 suit presentation count")
+		for index, presentation in LaunchDeckSetAssets.rankPresentations do
+			assert(
+				LaunchDeckSetAssets.rankPresentation(presentation.id:sub(6)) == presentation,
+				"P003-TEST-005 rank presentation lookup"
+			)
+			assert(
+				presentation.assetId == "asset." .. presentation.id,
+				"P003-TEST-005 rank presentation asset"
+			)
+			assert(
+				presentation.fallbackAssetId == "fallback." .. presentation.id,
+				"P003-TEST-005 rank presentation fallback"
+			)
+			assert(
+				presentation.id
+					== "rank."
+						.. (
+							if index <= 9
+								then tostring(index + 1)
+								else ({ "10", "jack", "queen", "king", "ace" })[index - 8]
+						),
+				"P003-TEST-005 rank presentation order"
+			)
+		end
+		for _, presentation in LaunchDeckSetAssets.suitPresentations do
+			assert(
+				LaunchDeckSetAssets.suitPresentation(presentation.id:sub(6)) == presentation,
+				"P003-TEST-005 suit presentation lookup"
+			)
+			assert(
+				presentation.assetId == "asset." .. presentation.id,
+				"P003-TEST-005 suit presentation asset"
+			)
+			assert(
+				presentation.fallbackAssetId == "fallback." .. presentation.id,
+				"P003-TEST-005 suit presentation fallback"
+			)
+		end
 	end)
 
 	addTest("P003-TEST-006-deckset-fixture-project", function()
