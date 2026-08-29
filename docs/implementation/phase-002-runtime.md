@@ -16,14 +16,14 @@ The Rojo project maps these boundaries:
 | --- | --- | --- |
 | `ReplicatedStorage.Shared` | `src/shared/` | Immutable catalogs, configuration, math, network contracts, profile schema, serializer, and renderer view model. |
 | `ServerScriptService.Server` | `src/server/` | Profiles, storage adapters, transactions, inventory, deck, packs, Formation orchestration, network routing, and lifecycle. |
-| `StarterPlayerScripts.Client` | `src/client/` | Authoritative message state, intent submission, 2D and 3D adapters, component pools, preload bounds, virtualization, and the local slice interface. |
+| `StarterPlayerScripts.Client` | `src/client/` | Authoritative message and surface state, intent submission, 2D and 3D adapters, component pools, preload bounds, virtualization, and the local interface. |
 | `ServerStorage.Assets.CardFrames` | `default.project.json` | Server controlled Classic card fixture. |
 | `ServerStorage.Assets.PackModels` | `default.project.json` | Server controlled Classic Starter Pack fixture. |
 | `StarterGui.App.AppRoot` | `default.project.json` | Responsive screen root populated by `ClientApp`. |
 
 `Bootstrap.server.luau` first preserves the Phase 001 shared calculation checks, then starts `Phase002Runtime`. The runtime publishes the three sanitized Deck Set card frame fixtures, their three neutral fallback fixtures, and their three pack fixtures to `ReplicatedStorage.PresentationAssets`, creates one `ClientAction` and one `ServerMessage` remote, chooses its storage adapter, constructs services, attaches player lifecycle and heartbeat work, and registers a bounded shutdown callback.
 
-`ClientBootstrap.client.luau` preserves the Phase 001 client projection check, then starts `ClientApp`. The application requests bootstrap state, displays only server projections, and enables mutation controls only while the snapshot is writable.
+`ClientBootstrap.client.luau` preserves the Phase 001 client projection check, then starts `ClientApp`. The application requests bootstrap state, displays only server projections, maps the required named surfaces through `SurfaceState`, and enables mutation controls only while the snapshot is writable. Task, duel, and trade surfaces remain visibly unavailable until their services are enabled.
 
 ## Storage Selection
 

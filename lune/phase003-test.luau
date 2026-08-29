@@ -24,6 +24,7 @@ local CardViewModel = require("../src/shared/Rendering/CardViewModel")
 local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
+local SurfaceState = require("../src/client/State/SurfaceState")
 local ProgressionService = require("../src/server/Progression/ProgressionService")
 local ArcanaService = require("../src/server/Progression/ArcanaService")
 local JokerService = require("../src/server/Inventory/JokerService")
@@ -1325,6 +1326,87 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			"P003-TEST-014 deterministic joker trace"
 		)
 		ProfileSchema.validate(profile)
+	end)
+
+	addTest("P003-TEST-015-surface-state-contract", function()
+		local state = SurfaceState.new()
+		assert(state.phase == "bootstrapping", "P003-TEST-015 initial phase")
+		assert(#SurfaceState.definitions == 14, "P003-TEST-015 surface count")
+		local ids = {}
+		for _, definition in SurfaceState.definitions do
+			assert(ids[definition.id] == nil, "P003-TEST-015 duplicate id")
+			ids[definition.id] = true
+			local projected = SurfaceState.project(state, definition.id)
+			assert(
+				projected.id == definition.id
+					and projected.status
+						== if definition.laterService then "unavailable" else "bootstrapping",
+				"P003-TEST-015 boot surface projection"
+			)
+		end
+		local snapshot = {
+			writable = true,
+			revision = 7,
+			cards = { { instanceId = "card_1" } },
+			jokers = { { instanceId = "joker_1" } },
+			pendingPacks = { pending_1 = { state = "committed" } },
+		}
+		state = SurfaceState.applyMessage(state, {
+			ok = true,
+			code = "bootstrap.ready",
+			snapshot = snapshot,
+		})
+		assert(state.phase == "ready", "P003-TEST-015 ready phase")
+		assert(state.pendingRecovery, "P003-TEST-015 pending recovery")
+		state = SurfaceState.selectCard(state, "card_1")
+		state = SurfaceState.selectJoker(state, "joker_1")
+		assert(
+			state.selectedCardId == "card_1" and state.selectedJokerId == "joker_1",
+			"P003-TEST-015 selection state"
+		)
+		for _, definition in SurfaceState.definitions do
+			state = SurfaceState.navigate(state, definition.id)
+			local projected = SurfaceState.project(state)
+			assert(projected.id == definition.id, "P003-TEST-015 navigation")
+		end
+		local formation = SurfaceState.action(state, "formation_rush")
+		assert(
+			formation.ok
+				and formation.action == "formation.submit"
+				and formation.expectedRevision == 7,
+			"P003-TEST-015 formation action"
+		)
+		local later = SurfaceState.action(state, "tasks")
+		assert(
+			not later.ok and later.code == "client.surface_unavailable",
+			"P003-TEST-015 later service state"
+		)
+		local inspectAction = SurfaceState.action(state, "card_inspect")
+		assert(
+			not inspectAction.ok and inspectAction.code == "client.surface_read_only",
+			"P003-TEST-015 inspect action"
+		)
+		local invalidSelection = SurfaceState.selectCard(state, "foreign_card")
+		assert(
+			invalidSelection.selectedCardId == "card_1"
+				and invalidSelection.lastCode == "client.card_unavailable",
+			"P003-TEST-015 selection failure"
+		)
+		state = SurfaceState.applyMessage(state, {
+			ok = false,
+			code = "profile.read_only",
+		})
+		assert(state.phase == "read_only", "P003-TEST-015 read only phase")
+		local blocked = SurfaceState.action(state, "joker_stage")
+		assert(
+			not blocked.ok and blocked.code == "client.read_only",
+			"P003-TEST-015 read only action"
+		)
+		local malformed = SurfaceState.applyMessage(state, { ok = true })
+		assert(
+			malformed.lastCode == "client.invalid_server_message",
+			"P003-TEST-015 malformed message"
+		)
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()

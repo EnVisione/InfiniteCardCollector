@@ -5,6 +5,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ClientState = require(script.Parent.Parent.State.ClientState)
+local SurfaceState = require(script.Parent.Parent.State.SurfaceState)
 local PackRevealController = require(script.Parent.Parent.State.PackRevealController)
 local CardRenderer2D = require(script.Parent.Parent.Rendering.CardRenderer2D)
 local CardRenderer3D = require(script.Parent.Parent.Rendering.CardRenderer3D)
@@ -117,17 +118,39 @@ function ClientApp.start(launchContract: any)
 	title.TextSize = 24
 	title.LayoutOrder = 1
 
+	local surfaceNavigation = Instance.new("ScrollingFrame")
+	surfaceNavigation.Name = "SurfaceNavigation"
+	surfaceNavigation.BackgroundTransparency = 1
+	surfaceNavigation.BorderSizePixel = 0
+	surfaceNavigation.CanvasSize = UDim2.fromOffset(0, 0)
+	surfaceNavigation.AutomaticCanvasSize = Enum.AutomaticSize.X
+	surfaceNavigation.ScrollBarThickness = 4
+	surfaceNavigation.Size = UDim2.new(1, 0, 0, 44)
+	surfaceNavigation.LayoutOrder = 2
+	surfaceNavigation.Parent = background
+	local surfaceNavigationLayout = Instance.new("UIListLayout")
+	surfaceNavigationLayout.FillDirection = Enum.FillDirection.Horizontal
+	surfaceNavigationLayout.Padding = UDim.new(0, 6)
+	surfaceNavigationLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	surfaceNavigationLayout.Parent = surfaceNavigation
+	local surfaceButtons = {}
+	for _, definition in SurfaceState.definitions do
+		local button = makeButton(surfaceNavigation, "Surface_" .. definition.id, definition.title)
+		button.Size = UDim2.fromOffset(132, 40)
+		surfaceButtons[definition.id] = button
+	end
+
 	local status =
 		makeText(background, "Status", "Connecting to the server.", UDim2.new(1, 0, 0, 42))
-	status.LayoutOrder = 2
+	status.LayoutOrder = 3
 	local summary = makeText(background, "Summary", "No profile loaded.", UDim2.new(1, 0, 0, 42))
-	summary.LayoutOrder = 3
+	summary.LayoutOrder = 4
 
 	local actions = Instance.new("Frame")
 	actions.Name = "Actions"
 	actions.BackgroundTransparency = 1
 	actions.Size = UDim2.new(1, 0, 0, 44)
-	actions.LayoutOrder = 4
+	actions.LayoutOrder = 5
 	actions.Parent = background
 	local actionLayout = Instance.new("UIListLayout")
 	actionLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -148,7 +171,7 @@ function ClientApp.start(launchContract: any)
 	packSelector.AutomaticCanvasSize = Enum.AutomaticSize.X
 	packSelector.ScrollBarThickness = 4
 	packSelector.Size = UDim2.new(1, 0, 0, 44)
-	packSelector.LayoutOrder = 5
+	packSelector.LayoutOrder = 6
 	packSelector.Parent = background
 	local packSelectorLayout = Instance.new("UIListLayout")
 	packSelectorLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -178,7 +201,7 @@ function ClientApp.start(launchContract: any)
 	revealActions.AutomaticCanvasSize = Enum.AutomaticSize.X
 	revealActions.ScrollBarThickness = 4
 	revealActions.Size = UDim2.new(1, 0, 0, 44)
-	revealActions.LayoutOrder = 6
+	revealActions.LayoutOrder = 7
 	revealActions.Parent = background
 	local revealLayout = Instance.new("UIListLayout")
 	revealLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -205,7 +228,7 @@ function ClientApp.start(launchContract: any)
 	preview.BackgroundColor3 = Color3.fromRGB(25, 31, 45)
 	preview.BorderSizePixel = 0
 	preview.Size = UDim2.new(1, 0, 0, 150)
-	preview.LayoutOrder = 7
+	preview.LayoutOrder = 8
 	preview.Parent = background
 	local previewCorner = Instance.new("UICorner")
 	previewCorner.CornerRadius = UDim.new(0, 8)
@@ -301,8 +324,8 @@ function ClientApp.start(launchContract: any)
 	cards.CanvasSize = UDim2.fromOffset(0, 0)
 	cards.AutomaticCanvasSize = Enum.AutomaticSize.None
 	cards.ScrollBarThickness = 6
-	cards.Size = UDim2.new(1, 0, 1, -472)
-	cards.LayoutOrder = 8
+	cards.Size = UDim2.new(1, 0, 1, -526)
+	cards.LayoutOrder = 9
 	cards.Parent = background
 	local cardsCorner = Instance.new("UICorner")
 	cardsCorner.CornerRadius = UDim.new(0, 8)
@@ -317,6 +340,7 @@ function ClientApp.start(launchContract: any)
 	local clientAction = network:WaitForChild("ClientAction") :: RemoteEvent
 	local serverMessage = network:WaitForChild("ServerMessage") :: RemoteEvent
 	local state = ClientState.new()
+	local surfaceState = SurfaceState.new()
 	local revealState = PackRevealController.new()
 	local selectedPackId = "classic"
 	local requestRandom = Random.new()
@@ -508,10 +532,26 @@ function ClientApp.start(launchContract: any)
 	local function render()
 		local snapshot = state.snapshot
 		local reveal = PackRevealController.display(revealState)
+		local activeSurface = SurfaceState.project(surfaceState)
+		app:SetAttribute("ActiveSurfaceId", activeSurface.id)
+		app:SetAttribute("SurfaceState", activeSurface.status)
+		app:SetAttribute("SurfaceRevision", activeSurface.revision)
+		app:SetAttribute("SurfacePendingRecovery", activeSurface.pendingRecovery)
+		for surfaceId, button in surfaceButtons do
+			local surface = SurfaceState.project(surfaceState, surfaceId)
+			button:SetAttribute("SurfaceId", surface.id)
+			button:SetAttribute("SurfaceStatus", surface.status)
+			button:SetAttribute("SurfaceAvailable", surface.available)
+			button.BackgroundColor3 = if surfaceId == activeSurface.id
+				then Color3.fromRGB(73, 111, 174)
+				else Color3.fromRGB(43, 56, 78)
+		end
 		status.Text = string.format(
-			"%s. %s. Reveal %s %d of %d.",
+			"%s. %s. %s. %s. Reveal %s %d of %d.",
 			state.phase,
 			state.lastCode,
+			activeSurface.title,
+			activeSurface.description,
 			reveal.packId or "none",
 			reveal.revealedCount,
 			reveal.totalCount
@@ -521,7 +561,10 @@ function ClientApp.start(launchContract: any)
 			clearPreview()
 			previewText.Text =
 				"The authoritative 3D card preview appears after opening the Starter Pack."
-			summary.Text = "No authoritative profile snapshot is available."
+			summary.Text = string.format(
+				"%s. No authoritative profile snapshot is available.",
+				activeSurface.description
+			)
 			setEnabled(openButton, false)
 			setEnabled(equipButton, false)
 			setEnabled(scoreButton, false)
@@ -751,6 +794,7 @@ function ClientApp.start(launchContract: any)
 	serverMessage.OnClientEvent:Connect(function(message: any)
 		revealState = PackRevealController.applyMessage(revealState, message)
 		state = ClientState.applyMessage(state, message)
+		surfaceState = SurfaceState.applyMessage(surfaceState, message)
 		if
 			message.action == "bootstrap.request"
 			and message.ok
@@ -761,6 +805,13 @@ function ClientApp.start(launchContract: any)
 		end
 		render()
 	end)
+
+	for surfaceId, button in surfaceButtons do
+		button.Activated:Connect(function()
+			surfaceState = SurfaceState.navigate(surfaceState, surfaceId)
+			render()
+		end)
+	end
 
 	render()
 	send("bootstrap.request", {}, "bootstrap")
