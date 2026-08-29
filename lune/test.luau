@@ -10,6 +10,7 @@ local ArtifactCore = require("./lib/artifact-core")
 local Common = require("./lib/common")
 local DocsValidator = require("./lib/docs-validator")
 local Environment = require("./lib/environment")
+local Phase001Test = require("./phase001-test")
 local RuntimeGuard = require("./lib/runtime-guard")
 local SecretScanner = require("./lib/secret-scanner")
 local ToolVerifier = require("./lib/tool-verifier")
@@ -71,6 +72,8 @@ local function addTest(id: string, callback: () -> ())
 		run = callback,
 	})
 end
+
+Phase001Test.register(addTest, expectFailure)
 
 addTest("P000-TEST-001-project-map", function()
 	local project = serde.decode("json", fs.readFile("default.project.json"))
@@ -280,6 +283,20 @@ addTest("P000-TEST-010-mandatory-gate-negatives", function()
 	local validContents = "artifact fixture"
 	local sha256, sha512 = Common.hashContents(validContents)
 	ArtifactCore.assertHashes(validContents, sha256, sha512)
+	ArtifactCore.assertNoToolBoundary({
+		{ class_name = "Folder", path = "ReplicatedStorage/Shared/Config" },
+		{ class_name = "ModuleScript", path = "ReplicatedStorage/Shared/Config/LaunchConfig" },
+	})
+	expectFailure(function()
+		ArtifactCore.assertNoToolBoundary({
+			{ class_name = "Folder", path = "ReplicatedStorage/Shared/Tests" },
+		})
+	end, "P000-ARTIFACT-002")
+	expectFailure(function()
+		ArtifactCore.assertNoToolBoundary({
+			{ class_name = "Folder", path = "ServerStorage/Config" },
+		})
+	end, "P000-ARTIFACT-002")
 	expectFailure(function()
 		ArtifactCore.assertHashes(validContents .. " corrupted", sha256, sha512)
 	end, "P000-ARTIFACT-030")

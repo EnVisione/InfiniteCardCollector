@@ -105,7 +105,17 @@ function ArtifactCore.validateSourceMap(contents: string): { string }
 	visit(sourceMap)
 	table.sort(paths)
 	assert(paths[1] == "default.project.json", "P000-SOURCEMAP-006 project mapping missing")
-	assert(#paths == 4, "P000-SOURCEMAP-007 mapped file count mismatch")
+	local expectedPaths = { "default.project.json" }
+	for _, path in Common.listFiles("src") do
+		if path:match("%.luau$") then
+			table.insert(expectedPaths, path)
+		end
+	end
+	table.sort(expectedPaths)
+	assert(#paths == #expectedPaths, "P000-SOURCEMAP-007 mapped file count mismatch")
+	for index, path in expectedPaths do
+		assert(paths[index] == path, "P000-SOURCEMAP-008 mapped file inventory mismatch")
+	end
 	return paths
 end
 
@@ -142,12 +152,35 @@ function ArtifactCore.instanceInventory(contents: string): { any }
 		visit(child, "")
 	end
 
-	local inventoryText = ArtifactCore.canonicalJson(inventory)
-	local lowered = inventoryText:lower()
-	for _, forbidden in { "tool-storage", "tests", "lune", "config", "github", "provenance" } do
-		assert(not lowered:find(forbidden, 1, true), "P000-ARTIFACT-002 tool boundary leak")
-	end
+	ArtifactCore.assertNoToolBoundary(inventory)
 	return inventory
+end
+
+function ArtifactCore.assertNoToolBoundary(inventory: { any })
+	local forbiddenSegments = {
+		[".github"] = true,
+		github = true,
+		lune = true,
+		provenance = true,
+		tests = true,
+		["tool-storage"] = true,
+	}
+	local allowedConfigPath = "replicatedstorage/shared/config"
+	for _, entry in inventory do
+		assert(type(entry.path) == "string", "P000-ARTIFACT-002 tool boundary leak")
+		local loweredPath = entry.path:lower()
+		for segment in loweredPath:gmatch("[^/]+") do
+			assert(not forbiddenSegments[segment], "P000-ARTIFACT-002 tool boundary leak")
+			if segment == "config" then
+				assert(
+					loweredPath == allowedConfigPath
+						or loweredPath:sub(1, #allowedConfigPath + 1)
+							== allowedConfigPath .. "/",
+					"P000-ARTIFACT-002 tool boundary leak"
+				)
+			end
+		end
+	end
 end
 
 function ArtifactCore.assertDeterministicManifest(contents: string)

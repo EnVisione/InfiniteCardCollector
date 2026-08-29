@@ -46,6 +46,14 @@ A card's permanent identity is `Deck Set + Face Rank + Suit`. Edition forms are 
 
 The completion album tracks the 37,856 permanent card forms, 120 Jokers, 36 Arcana discoveries, and 12 Souls. Grade, Power Tier, Trait, and statistics are recorded as best observed values. Requiring every theoretical combination would create millions of mostly meaningless checklist entries and would make completion impossible.
 
+## Implemented Launch Boundary
+
+The current shared launch catalog uses `catalogVersion = 1` and enables only Classic, Radioactive, and Astral. It generates 156 base identities and 624 Normal, Foil, Golden, and Steel forms. It also enables all 11 Grades, all 11 Power Tiers, the first 12 Traits, the selected 24 Jokers, the selected 12 Arcana, and all 12 formations. Souls and every deferred content record remain disabled.
+
+The first executable `configVersion = 1` keeps identity separate from tuning. All three launch affinities use thresholds of 13, 26, 39, and 52 active cards with 5, 10, 15, and 25 percent strength. Three, four, and five card Sequence and Monosuit multipliers are `1.80x`, `2.80x`, and `4.00x`. Perfect Sum has a `2.50x` base plus the explicit `perfect_sum_accuracy` `1.10x` bonus. A stronger overlapping formation supplies the base while the declared accuracy bonus applies once.
+
+These values are verified shared contracts, not evidence of a playable economy or Formation Rush round. The implementation and evidence links are in the [Technical Overview](documentation.md).
+
 ## Face Ranks and Suits
 
 Each Deck Set contains exactly these fifty two identities.

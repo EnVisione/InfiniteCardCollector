@@ -29,14 +29,15 @@ The complete end goal expands to fifty two Deck Sets, 37,856 permanent card form
 - [Launch foundation and implementation specification](docs/implementation/launch-foundation.md)
 - [Development setup](docs/operations/development-setup.md)
 - [Phase 000 test procedure](docs/test/phase-000-toolchain.md)
+- [Phase 001 catalog and calculation test procedure](docs/test/phase-001-calculation-contracts.md)
 - [Toolchain troubleshooting](docs/troubleshooting/toolchain.md)
 - [GitHub wiki](https://github.com/EnVisione/InfiniteCardCollector/wiki)
 
 ## Development Status
 
-Phase 000 is active. The repository now contains a reproducible foundation toolchain, a minimum strict typed Luau project, deterministic repository tests, and reproducible Rojo artifact generation. It is still not a playable game. No catalogs, economy, profiles, networking, rewards, or other gameplay systems are implemented.
+Phase 000 is complete and Phase 001 is active. The repository contains the reproducible foundation toolchain plus strict typed launch catalogs, versioned balance and economy configuration, checked rational arithmetic, all twelve pure formation detectors, a data driven twenty four Joker registry, authoritative calculation traces, and client safe projections. It is still not a playable game. Profiles, persistent inventory, packs, remotes, UI, active rounds, trading, purchases, and publication are not implemented.
 
-The pinned tools are Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. Linux x86_64 local and clean environment verification pass. The complete command contract also passes on clean hosted Windows x86_64 and hosted Linux. The selected qualified Vinegar Studio route passes Phase 000 Studio acceptance by running the actual Windows Roblox Studio binary under Vinegar and Wine with the reviewed Rojo plugin and live MCP connection. This result does not claim official native Linux Studio support. Phase 000 remains open until final candidate reconciliation and repository integration finish.
+The pinned tools are Rojo v7.7.0, Rokit v1.2.0, StyLua v2.5.2, Selene v0.31.0, and Lune v0.10.5. Linux x86_64 local and clean environment verification pass. The complete command contract also passes on clean hosted Windows x86_64 and hosted Linux. The qualified Vinegar Studio route passed Phase 000 acceptance by running the actual Windows Roblox Studio binary under Vinegar and Wine with the reviewed Rojo plugin and live MCP connection. This result does not claim official native Linux Studio support. Phase 001 deterministic evidence is recorded in [the catalog and calculation evidence](docs/verification/phase-001-calculation-contracts.md).
 
 Start with the [development setup](docs/operations/development-setup.md). After bootstrapping the reviewed artifacts, run:
 

@@ -8,7 +8,7 @@ This rolling evidence record covers the reproducible repository foundation for `
 
 The reviewed Linux x86_64 foundation passes locally and from a fresh clone. The complete hosted contract passes on Linux x86_64 and clean Windows x86_64. The repository has exact tool resolution, a strict typed Luau boundary skeleton, deterministic formatting and linting, a deterministic Lune harness, safe environment defaults, source map validation, byte identical Rojo builds, canonical artifact metadata, SHA 256, SHA 512, documentation checks, secret checks, and bounded CI evidence.
 
-Phase 000 remains open. The selected qualified Vinegar Studio route passes. Final candidate reconciliation, final diff audit, pull request checks, independent review capability disposition, GitHub merge commit, signed `phase-000` tag, and post merge wiki synchronization are not yet complete.
+Phase 000 is complete. Pull request 14 merged through GitHub as merge commit `a869cd57d9e839b5b97fbad6077de29b6aeb268e`. `origin/main` contains that commit, and the signed annotated `phase-000` tag points to it and verifies with the registered EnVisione signing key. The selected qualified Vinegar Studio route and final repository synchronization passed before Phase 001 began.
 
 ## Verified Inputs
 

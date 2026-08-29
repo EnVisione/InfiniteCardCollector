@@ -36,11 +36,13 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 ## Testing
 
 - [Phase 000 toolchain test procedure](test/phase-000-toolchain.md)
+- [Phase 001 catalog and calculation test procedure](test/phase-001-calculation-contracts.md)
 
 ## Verification
 
 - [Phase 000 foundation evidence](verification/phase-000-foundation.md)
 - [Phase 000 tool provenance](verification/phase-000-tool-provenance.md)
+- [Phase 001 catalog and calculation evidence](verification/phase-001-calculation-contracts.md)
 
 ## Troubleshooting
 
