@@ -28,6 +28,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 ## Implementation
 
 - [Launch foundation and implementation specification](implementation/launch-foundation.md)
+- [Phase 002 runtime architecture](implementation/phase-002-runtime.md)
 
 ## Operations
 
@@ -37,16 +38,22 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 
 - [Phase 000 toolchain test procedure](test/phase-000-toolchain.md)
 - [Phase 001 catalog and calculation test procedure](test/phase-001-calculation-contracts.md)
+- [Phase 002 network and security tests](test/phase-002-network-and-security.md)
+- [Phase 002 profile and transaction tests](test/phase-002-profile-and-transactions.md)
+- [Phase 002 inventory and renderer tests](test/phase-002-inventory-and-rendering.md)
+- [Phase 002 blank account recovery workflow](test/phase-002-recovery-workflow.md)
 
 ## Verification
 
 - [Phase 000 foundation evidence](verification/phase-000-foundation.md)
 - [Phase 000 tool provenance](verification/phase-000-tool-provenance.md)
 - [Phase 001 catalog and calculation evidence](verification/phase-001-calculation-contracts.md)
+- [Phase 002 recoverable vertical slice evidence](verification/phase-002-recoverable-vertical-slice.md)
 
 ## Troubleshooting
 
 - [Toolchain and synchronization troubleshooting](troubleshooting/toolchain.md)
+- [Profile and recovery troubleshooting](troubleshooting/profile-and-recovery.md)
 
 ## External Navigation
 
@@ -58,7 +65,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 ## Documentation Rules
 
 - Describe shipped behavior as implemented only after code and verification exist.
-- Mark planned architecture and features as planned while the project remains preimplementation.
+- Mark planned architecture and features as planned until their implementation and required evidence pass.
 - Keep stable content IDs and collection counts synchronized with the content catalog.
 - Update this index whenever documentation is added, renamed, or removed.
 - Store implementation details under `docs/implementation/`, testing procedures under `docs/test/`, and verified build or release evidence under `docs/verification/` when those areas exist.
