@@ -23,6 +23,7 @@ local RandomService = require("../src/server/Random/RandomService")
 local CardViewModel = require("../src/shared/Rendering/CardViewModel")
 local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
+local PackRevealController = require("../src/client/State/PackRevealController")
 
 local Phase003Test = {}
 
@@ -284,6 +285,7 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 	end)
 
 	addTest("P003-TEST-008-deckset-pack-service", function()
+		local collection = CollectionService.new()
 		local currencyIds = {}
 		for _, currency in LaunchConfig.economy.currencies do
 			table.insert(currencyIds, currency.id)
@@ -300,7 +302,7 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			catalog = LaunchCatalog,
 			errors = ErrorRegistry,
 			inventoryStore = InventoryStore.new(),
-			collection = CollectionService.new(),
+			collection = collection,
 			uidFactory = function(_ownerUserId: number, kind: string): string
 				uidCounter += 1
 				return kind .. "_pack_" .. tostring(uidCounter)
@@ -313,7 +315,7 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			catalog = LaunchCatalog,
 			config = LaunchConfig,
 			inventory = inventory,
-			collection = CollectionService.new(),
+			collection = collection,
 			canonical = CanonicalValue,
 			errors = ErrorRegistry,
 			rollContract = RollContract,
@@ -331,6 +333,15 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			"P003-TEST-008 pending pack id"
 		)
 		assert(#result.tierRolls == 5, "P003-TEST-008 tier roll count")
+		assert(result.rarityOdds ~= nil and #result.rarityOdds == 11, "P003-TEST-008 rarity odds")
+		assert(#result.classifications == 5, "P003-TEST-008 classification count")
+		for _, classification in result.classifications do
+			assert(classification == "new", "P003-TEST-008 new classification")
+		end
+		assert(
+			#profile.pendingPacks.pack_request_00000001.classifications == 5,
+			"P003-TEST-008 saved classifications"
+		)
 		assert(
 			result.pityBefore == 0 and result.pityAfter == profile.pity["pack.classic"],
 			"P003-TEST-008 pity state"
@@ -557,6 +568,193 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 		end
 		assert(discoveredArcanaCount == 6, "P003-TEST-009 arcana protection threshold")
 		ProfileSchema.validate(profile)
+	end)
+
+	addTest("P003-TEST-010-pack-reveal-controller", function()
+		local initial = PackRevealController.new()
+		local snapshot = {
+			revision = 4,
+			writable = true,
+			pendingPacks = {},
+		}
+		local request = PackRevealController.openRequest(initial, snapshot, "classic")
+		assert(request.ok and request.payload.expectedRevision == 4, "P003-TEST-010 open request")
+		local invalidPack = PackRevealController.openRequest(initial, snapshot, "unknown")
+		assert(
+			not invalidPack.ok and invalidPack.code == "pack.invalid",
+			"P003-TEST-010 invalid pack"
+		)
+		local readOnly = PackRevealController.openRequest(initial, {
+			revision = 4,
+			writable = false,
+			pendingPacks = {},
+		}, "classic")
+		assert(not readOnly.ok and readOnly.code == "profile.read_only", "P003-TEST-010 read only")
+
+		local cards = {}
+		local cardClassifications = {}
+		for index = 1, 5 do
+			local instanceId = "card_reveal_" .. tostring(index)
+			table.insert(cards, {
+				instanceId = instanceId,
+				deckSetId = "classic",
+				rankId = "rank_" .. tostring(index),
+				suitId = "hearts",
+			})
+			table.insert(cardClassifications, "new")
+		end
+		local openMessage = {
+			action = "pack.open",
+			cards = cards,
+			catalogVersion = 1,
+			classifications = cardClassifications,
+			code = "pack.deck_set_committed",
+			currencyId = "cash",
+			itemOdds = {},
+			ok = true,
+			packId = "classic",
+			pityAfter = 1,
+			pityBefore = 0,
+			price = 500,
+			requestId = "pack_reveal_0001",
+			snapshot = {
+				pendingPacks = {
+					pack_reveal_0001 = {
+						cardInstanceIds = {
+							"card_reveal_1",
+							"card_reveal_2",
+							"card_reveal_3",
+							"card_reveal_4",
+							"card_reveal_5",
+						},
+						classifications = cardClassifications,
+						packId = "classic",
+						state = "committed",
+					},
+				},
+			},
+		}
+		local revealing = PackRevealController.applyMessage(initial, openMessage)
+		assert(revealing.phase == "revealing", "P003-TEST-010 revealing phase")
+		assert(
+			revealing.pendingRecovery and revealing.revealedCount == 0,
+			"P003-TEST-010 recovery state"
+		)
+		local one = PackRevealController.revealNext(revealing)
+		assert(one.revealedCount == 1 and one.phase == "revealing", "P003-TEST-010 one at a time")
+		local reduced = PackRevealController.setSettings(one, {
+			lowGraphics = true,
+			mutedAudio = true,
+			reducedMotion = true,
+		})
+		local reducedNext = PackRevealController.revealNext(reduced)
+		assert(
+			reducedNext.audioCue == nil and reducedNext.effectCue == "pack.static",
+			"P003-TEST-010 reduced effects"
+		)
+		local all = PackRevealController.revealAll(revealing)
+		assert(
+			all.phase == "complete" and all.revealedCount == 5 and all.revealAll,
+			"P003-TEST-010 reveal all"
+		)
+		local stepped = revealing
+		for _ = 1, 5 do
+			stepped = PackRevealController.revealNext(stepped)
+		end
+		assert(
+			stepped.phase == "complete" and stepped.revealedCount == all.revealedCount,
+			"P003-TEST-010 input parity"
+		)
+		local shown = PackRevealController.display(all)
+		assert(
+			shown.contents[1].classification == "new" and shown.pityAfter == 1,
+			"P003-TEST-010 display metadata"
+		)
+
+		local offersMessage = {
+			action = "pack.open",
+			code = "pack.offers_committed",
+			offers = {
+				{ id = "joker.one", displayName = "one", rarityId = "common" },
+				{ id = "joker.two", displayName = "two", rarityId = "rare" },
+				{ id = "joker.three", displayName = "three", rarityId = "epic" },
+			},
+			ok = true,
+			packId = "joker",
+			packOperationId = "offer_reveal_0001",
+			requestId = "offer_reveal_0001",
+			snapshot = {
+				pendingPacks = {
+					offer_reveal_0001 = {
+						offerIds = { "joker.one", "joker.two", "joker.three" },
+						packId = "joker",
+						state = "revealed",
+					},
+				},
+			},
+		}
+		local offers = PackRevealController.applyMessage(PackRevealController.new(), offersMessage)
+		local revealedOffers = PackRevealController.revealAll(offers)
+		local choiceRequest = PackRevealController.choiceRequest(revealedOffers, snapshot, 2)
+		assert(
+			choiceRequest.ok and choiceRequest.payload.choiceIndex == 2,
+			"P003-TEST-010 choice request"
+		)
+		local claimed = PackRevealController.applyMessage(revealedOffers, {
+			action = "pack.choose",
+			code = "pack.choice_claimed",
+			choiceId = "joker.two",
+			choiceIndex = 2,
+			grant = { instanceId = "joker_instance_1", jokerId = "joker.two" },
+			ok = true,
+			packOperationId = "offer_reveal_0001",
+			snapshot = {
+				revision = 5,
+				pendingPacks = {
+					offer_reveal_0001 = {
+						choiceId = "joker.two",
+						choiceIndex = 2,
+						state = "claimed",
+					},
+				},
+			},
+		})
+		assert(
+			claimed.phase == "claimed" and claimed.choiceId == "joker.two",
+			"P003-TEST-010 choice claim"
+		)
+		local malformed = PackRevealController.applyMessage(PackRevealController.new(), {
+			action = "pack.open",
+			code = "pack.deck_set_committed",
+			ok = true,
+			requestId = "missing",
+			snapshot = { pendingPacks = {} },
+		})
+		assert(
+			malformed.phase == "maintenance" and #malformed.contents == 0,
+			"P003-TEST-010 malformed safety"
+		)
+		local recovered = PackRevealController.hydrateSnapshot(PackRevealController.new(), {
+			cards = cards,
+			pendingPacks = {
+				pack_reveal_0001 = {
+					cardInstanceIds = {
+						"card_reveal_1",
+						"card_reveal_2",
+						"card_reveal_3",
+						"card_reveal_4",
+						"card_reveal_5",
+					},
+					classifications = cardClassifications,
+					packId = "classic",
+					state = "committed",
+				},
+			},
+		})
+		assert(
+			recovered.phase == "revealing" and recovered.pendingRecovery,
+			"P003-TEST-010 card recovery"
+		)
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()

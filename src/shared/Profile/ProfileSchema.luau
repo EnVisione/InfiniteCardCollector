@@ -77,6 +77,18 @@ local function validateDenseStringArray(
 	return seen
 end
 
+local function validateClassificationArray(value: any, maximum: number?, id: string)
+	assert(type(value) == "table", id)
+	local length = #value
+	local count = 0
+	for index, child in value do
+		assert(type(index) == "number" and index % 1 == 0 and index >= 1 and index <= length, id)
+		assertString(child, id)
+		count += 1
+	end
+	assert(count == length and (maximum == nil or length <= maximum), id)
+end
+
 local function validateIntegerMap(value: any, id: string)
 	assert(type(value) == "table", id)
 	for key, count in value do
@@ -412,6 +424,7 @@ function ProfileSchema.validate(profile: any): any
 			packId = true,
 			catalogVersion = true,
 			cardInstanceIds = true,
+			classifications = true,
 			resultReference = true,
 			offerIds = true,
 			choiceIndex = true,
@@ -439,6 +452,27 @@ function ProfileSchema.validate(profile: any): any
 			pendingCardOwners[uid] = operationId
 		end
 		assertString(pending.resultReference, "P002-PROFILE-062 pending result invalid")
+		if pending.classifications ~= nil then
+			assert(pending.offerIds == nil, "P003-PACK-030 card classifications on offer")
+			validateClassificationArray(
+				pending.classifications,
+				5,
+				"P003-PACK-031 pending classifications invalid"
+			)
+			assert(
+				#pending.classifications == #pending.cardInstanceIds,
+				"P003-PACK-032 pending classifications count invalid"
+			)
+			for _, classification in pending.classifications do
+				assert(
+					classification == "new"
+						or classification == "upgrade"
+						or classification == "duplicate"
+						or classification == "wishlist",
+					"P003-PACK-033 pending classification invalid"
+				)
+			end
+		end
 		if pending.offerIds ~= nil then
 			assert(
 				pending.packId == "joker" or pending.packId == "arcana",

@@ -5,6 +5,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ClientState = require(script.Parent.Parent.State.ClientState)
+local PackRevealController = require(script.Parent.Parent.State.PackRevealController)
 local CardRenderer2D = require(script.Parent.Parent.Rendering.CardRenderer2D)
 local CardRenderer3D = require(script.Parent.Parent.Rendering.CardRenderer3D)
 local ComponentPool = require(script.Parent.Parent.Rendering.ComponentPool)
@@ -139,12 +140,72 @@ function ClientApp.start(launchContract: any)
 	local scoreButton = makeButton(actions, "SubmitGuided", "Submit Guided Formation")
 	local refreshButton = makeButton(actions, "Refresh", "Refresh")
 
+	local packSelector = Instance.new("ScrollingFrame")
+	packSelector.Name = "PackSelector"
+	packSelector.BackgroundTransparency = 1
+	packSelector.BorderSizePixel = 0
+	packSelector.CanvasSize = UDim2.fromOffset(0, 0)
+	packSelector.AutomaticCanvasSize = Enum.AutomaticSize.X
+	packSelector.ScrollBarThickness = 4
+	packSelector.Size = UDim2.new(1, 0, 0, 44)
+	packSelector.LayoutOrder = 5
+	packSelector.Parent = background
+	local packSelectorLayout = Instance.new("UIListLayout")
+	packSelectorLayout.FillDirection = Enum.FillDirection.Horizontal
+	packSelectorLayout.Padding = UDim.new(0, 8)
+	packSelectorLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	packSelectorLayout.Parent = packSelector
+	local packButtons = {}
+	for _, definition in
+		{
+			{ id = "classic", text = "Classic" },
+			{ id = "radioactive", text = "Radioactive" },
+			{ id = "astral", text = "Astral" },
+			{ id = "joker", text = "Joker" },
+			{ id = "arcana", text = "Arcana" },
+		}
+	do
+		local button = makeButton(packSelector, "Pack_" .. definition.id, definition.text)
+		button.Size = UDim2.fromOffset(124, 40)
+		packButtons[definition.id] = button
+	end
+
+	local revealActions = Instance.new("ScrollingFrame")
+	revealActions.Name = "RevealActions"
+	revealActions.BackgroundTransparency = 1
+	revealActions.BorderSizePixel = 0
+	revealActions.CanvasSize = UDim2.fromOffset(0, 0)
+	revealActions.AutomaticCanvasSize = Enum.AutomaticSize.X
+	revealActions.ScrollBarThickness = 4
+	revealActions.Size = UDim2.new(1, 0, 0, 44)
+	revealActions.LayoutOrder = 6
+	revealActions.Parent = background
+	local revealLayout = Instance.new("UIListLayout")
+	revealLayout.FillDirection = Enum.FillDirection.Horizontal
+	revealLayout.Padding = UDim.new(0, 8)
+	revealLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	revealLayout.Parent = revealActions
+	local revealNextButton = makeButton(revealActions, "RevealNext", "Reveal Next")
+	local revealAllButton = makeButton(revealActions, "RevealAll", "Reveal All")
+	local skipButton = makeButton(revealActions, "SkipReveal", "Skip")
+	for _, button in { revealNextButton, revealAllButton, skipButton } do
+		button.Size = UDim2.fromOffset(124, 40)
+	end
+	local choiceButtons = {}
+	for index = 1, 3 do
+		local button =
+			makeButton(revealActions, "Choice" .. tostring(index), "Choice " .. tostring(index))
+		button.Size = UDim2.fromOffset(170, 40)
+		button.Visible = false
+		table.insert(choiceButtons, button)
+	end
+
 	local preview = Instance.new("Frame")
 	preview.Name = "CardPreview"
 	preview.BackgroundColor3 = Color3.fromRGB(25, 31, 45)
 	preview.BorderSizePixel = 0
 	preview.Size = UDim2.new(1, 0, 0, 150)
-	preview.LayoutOrder = 5
+	preview.LayoutOrder = 7
 	preview.Parent = background
 	local previewCorner = Instance.new("UICorner")
 	previewCorner.CornerRadius = UDim.new(0, 8)
@@ -196,9 +257,11 @@ function ClientApp.start(launchContract: any)
 	local previewPool = ComponentPool.new(function(kind: string): Model
 		local fixtureName = if string.sub(kind, 1, 5) == "card:"
 			then string.sub(kind, 6)
+			elseif kind == "pack:radioactive" then "RadioactivePackFixture"
+			elseif kind == "pack:astral" then "AstralPackFixture"
 			else "ClassicStarterPackFixture"
 		assert(
-			string.sub(kind, 1, 5) == "card:" or kind == "pack",
+			string.sub(kind, 1, 5) == "card:" or string.sub(kind, 1, 5) == "pack:",
 			"P002-CLIENT-003 preview kind invalid"
 		)
 		local template = presentationAssets:FindFirstChild(fixtureName)
@@ -238,8 +301,8 @@ function ClientApp.start(launchContract: any)
 	cards.CanvasSize = UDim2.fromOffset(0, 0)
 	cards.AutomaticCanvasSize = Enum.AutomaticSize.None
 	cards.ScrollBarThickness = 6
-	cards.Size = UDim2.new(1, 0, 1, -364)
-	cards.LayoutOrder = 6
+	cards.Size = UDim2.new(1, 0, 1, -472)
+	cards.LayoutOrder = 8
 	cards.Parent = background
 	local cardsCorner = Instance.new("UICorner")
 	cardsCorner.CornerRadius = UDim.new(0, 8)
@@ -254,6 +317,8 @@ function ClientApp.start(launchContract: any)
 	local clientAction = network:WaitForChild("ClientAction") :: RemoteEvent
 	local serverMessage = network:WaitForChild("ServerMessage") :: RemoteEvent
 	local state = ClientState.new()
+	local revealState = PackRevealController.new()
+	local selectedPackId = "classic"
 	local requestRandom = Random.new()
 
 	local function requestId(prefix: string): string
@@ -265,13 +330,15 @@ function ClientApp.start(launchContract: any)
 		)
 	end
 
-	local function send(actionId: string, payload: any, prefix: string)
+	local function send(actionId: string, payload: any, prefix: string): string
+		local request = requestId(prefix)
 		clientAction:FireServer({
 			version = 1,
 			action = actionId,
-			requestId = requestId(prefix),
+			requestId = request,
 			payload = payload,
 		})
+		return request
 	end
 
 	local function clearCardRows()
@@ -338,20 +405,22 @@ function ClientApp.start(launchContract: any)
 		)
 	end
 
-	local function renderPackPreview()
+	local function renderPackPreview(packId: string)
 		clearPreview()
-		local model = previewPool:acquire("pack") :: Model
-		local packAsset = specialContentAssets:get("pack", "classic")
-		assert(packAsset ~= nil, "P003-CLIENT-010 classic pack asset missing")
+		local model = previewPool:acquire("pack:" .. packId) :: Model
+		local packAsset = specialContentAssets:get("pack", packId)
+		assert(packAsset ~= nil, "P003-CLIENT-010 pack asset missing")
 		model.Name = "PackModel3D"
-		model:SetAttribute("AccessibleName", "Classic Starter Pack")
+		model:SetAttribute("AccessibleName", packAsset.displayName)
 		model:SetAttribute("AssetId", packAsset.assetId)
 		model:SetAttribute("FallbackAssetId", packAsset.fallbackAssetId)
 		model:SetAttribute("StaticFallback", true)
 		model.Parent = previewWorld
 		activePreview = model
-		previewText.Text =
-			"Classic Starter Pack\nFive unique Classic cards. The server commits ownership before this reveal."
+		previewText.Text = string.format(
+			"%s\nThe server commits ownership before this reveal.",
+			packAsset.displayName
+		)
 	end
 
 	local function activeIds(snapshot: any): { string }
@@ -423,9 +492,30 @@ function ClientApp.start(launchContract: any)
 		cards:SetAttribute("TotalItemCount", #snapshot.cards)
 	end
 
+	local function oddsText(values: any): string
+		if type(values) ~= "table" or #values == 0 then
+			return ""
+		end
+		local parts = {}
+		for _, value in values do
+			if type(value) == "table" and type(value.id) == "string" then
+				table.insert(parts, value.id .. " " .. tostring(value.weight))
+			end
+		end
+		return table.concat(parts, ", ")
+	end
+
 	local function render()
 		local snapshot = state.snapshot
-		status.Text = string.format("%s. %s.", state.phase, state.lastCode)
+		local reveal = PackRevealController.display(revealState)
+		status.Text = string.format(
+			"%s. %s. Reveal %s %d of %d.",
+			state.phase,
+			state.lastCode,
+			reveal.packId or "none",
+			reveal.revealedCount,
+			reveal.totalCount
+		)
 		clearCardRows()
 		if snapshot == nil then
 			clearPreview()
@@ -436,29 +526,75 @@ function ClientApp.start(launchContract: any)
 			setEnabled(equipButton, false)
 			setEnabled(scoreButton, false)
 			setEnabled(refreshButton, true)
+			for _packId, button in packButtons do
+				setEnabled(button, false)
+			end
+			setEnabled(revealNextButton, false)
+			setEnabled(revealAllButton, false)
+			setEnabled(skipButton, false)
 			return
 		end
 		local active = activeIds(snapshot)
 		summary.Text = string.format(
-			"Cash: %d    Cards: %d    Equipped: %d    Revision: %d    Storage: %s",
-			snapshot.currencies.cash,
+			"Cash: %d    Cards: %d    Equipped: %d    Revision: %d    Storage: %s%s",
+			snapshot.currencies.cash or 0,
 			#snapshot.cards,
 			#active,
 			snapshot.revision,
-			snapshot.storageMode
+			snapshot.storageMode,
+			if reveal.packId ~= nil
+				then string.format(
+					"    Pack price: %s %s",
+					tostring(reveal.price),
+					tostring(reveal.currencyId)
+				)
+				else ""
 		)
 		local lookup = buildActiveLookup(snapshot)
 		renderCardRows(snapshot, lookup)
-		if snapshot.cards[1] ~= nil then
+		local revealedCard = nil
+		local revealedCardIndex = nil
+		if reveal.kind == "card" then
+			for index, item in reveal.contents do
+				if item.revealed then
+					revealedCard = item.item
+					revealedCardIndex = index
+					break
+				end
+			end
+		end
+		if revealedCard ~= nil then
+			renderPreview(revealedCard, snapshot)
+			previewText.Text = string.format(
+				"%s\nClassification: %s\nRevealed %d of %d",
+				previewText.Text,
+				tostring(reveal.contents[revealedCardIndex].classification or "unclassified"),
+				reveal.revealedCount,
+				reveal.totalCount
+			)
+		elseif reveal.totalCount > 0 then
+			clearPreview()
+			local odds = oddsText(reveal.rarityOdds or reveal.itemOdds)
+			previewText.Text = string.format(
+				"%s\nRevealed %d of %d.\n%s%s",
+				tostring(reveal.packId),
+				reveal.revealedCount,
+				reveal.totalCount,
+				if odds ~= "" then "Exact odds weights: " .. odds .. "." else "",
+				if reveal.pityBefore ~= nil
+					then string.format(" Pity %d to %d.", reveal.pityBefore, reveal.pityAfter)
+					else ""
+			)
+		elseif snapshot.cards[1] ~= nil then
 			renderPreview(snapshot.cards[1], snapshot)
-			local revealState = starterRevealState(snapshot)
-			if revealState == "committed" then
+			local starterState = starterRevealState(snapshot)
+			if starterState == "committed" then
 				previewText.Text = "Starter Pack Reveal Pending\n" .. previewText.Text
-			elseif revealState == "acknowledged" then
+			elseif starterState == "acknowledged" then
 				previewText.Text = "Starter Pack Reveal Acknowledged\n" .. previewText.Text
 			end
 		else
-			renderPackPreview()
+			renderPackPreview(selectedPackId)
 		end
 		local unequipped = false
 		for _, card in snapshot.cards do
@@ -471,6 +607,49 @@ function ClientApp.start(launchContract: any)
 		setEnabled(equipButton, snapshot.writable and unequipped)
 		setEnabled(scoreButton, snapshot.writable and #active >= 4)
 		setEnabled(refreshButton, true)
+		local packBlocked = reveal.phase == "revealing"
+			or (reveal.phase == "complete" and reveal.kind == "offer")
+		for _packId, button in packButtons do
+			setEnabled(button, snapshot.writable and not packBlocked)
+		end
+		setEnabled(revealNextButton, reveal.phase == "revealing")
+		setEnabled(revealAllButton, reveal.phase == "revealing")
+		setEnabled(skipButton, reveal.phase == "revealing")
+		for index, button in choiceButtons do
+			local item = reveal.contents[index]
+			button.Visible = reveal.kind == "offer" and item ~= nil
+			if item ~= nil then
+				button.Text = string.format(
+					"Choose %d. %s",
+					index,
+					tostring(item.item.displayName or item.item.id)
+				)
+			end
+			setEnabled(button, reveal.phase == "complete")
+		end
+	end
+
+	local function applyLocalFailure(action: string, code: string)
+		revealState = PackRevealController.applyMessage(revealState, {
+			action = action,
+			code = code,
+			ok = false,
+		})
+		render()
+	end
+
+	local function openPack(packId: string)
+		local snapshot = state.snapshot
+		if snapshot == nil then
+			return
+		end
+		local request = PackRevealController.openRequest(revealState, snapshot, packId)
+		if not request.ok then
+			applyLocalFailure("pack.open", request.code)
+			return
+		end
+		selectedPackId = packId
+		send("pack.open", request.payload, "pack")
 	end
 
 	cards:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
@@ -479,6 +658,42 @@ function ClientApp.start(launchContract: any)
 			renderCardRows(snapshot, buildActiveLookup(snapshot))
 		end
 	end)
+
+	for packId, button in packButtons do
+		button.Activated:Connect(function()
+			openPack(packId)
+		end)
+	end
+
+	revealNextButton.Activated:Connect(function()
+		revealState = PackRevealController.revealNext(revealState)
+		render()
+	end)
+
+	revealAllButton.Activated:Connect(function()
+		revealState = PackRevealController.revealAll(revealState)
+		render()
+	end)
+
+	skipButton.Activated:Connect(function()
+		revealState = PackRevealController.skip(revealState)
+		render()
+	end)
+
+	for index, button in choiceButtons do
+		button.Activated:Connect(function()
+			local snapshot = state.snapshot
+			if snapshot == nil then
+				return
+			end
+			local request = PackRevealController.choiceRequest(revealState, snapshot, index)
+			if not request.ok then
+				applyLocalFailure("pack.choose", request.code)
+				return
+			end
+			send("pack.choose", request.payload, "choice")
+		end)
+	end
 
 	openButton.Activated:Connect(function()
 		local snapshot = state.snapshot
@@ -534,7 +749,16 @@ function ClientApp.start(launchContract: any)
 	end)
 
 	serverMessage.OnClientEvent:Connect(function(message: any)
+		revealState = PackRevealController.applyMessage(revealState, message)
 		state = ClientState.applyMessage(state, message)
+		if
+			message.action == "bootstrap.request"
+			and message.ok
+			and type(message.snapshot) == "table"
+		then
+			revealState = PackRevealController.setSettings(revealState, message.snapshot.settings)
+			revealState = PackRevealController.hydrateSnapshot(revealState, message.snapshot)
+		end
 		render()
 	end)
 

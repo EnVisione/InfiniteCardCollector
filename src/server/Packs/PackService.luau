@@ -131,12 +131,14 @@ local function offerCandidates(
 	return result
 end
 
-local function projectOffer(kind: string, record: any): any
+local function projectOffer(kind: string, record: any, owned: { [string]: boolean }): any
 	if kind == "joker" then
 		return {
 			id = record.id,
 			displayName = record.displayName,
 			rarityId = record.rarityId,
+			owned = owned[record.id] == true,
+			classification = if owned[record.id] == true then "duplicate" else "new",
 		}
 	end
 	return {
@@ -144,7 +146,44 @@ local function projectOffer(kind: string, record: any): any
 		displayName = record.displayName,
 		categoryId = record.categoryId,
 		targetId = record.targetId,
+		owned = owned[record.id] == true,
+		classification = if owned[record.id] == true then "duplicate" else "new",
 	}
+end
+
+local function tierOrder(catalog: any): { [string]: number }
+	local result = {}
+	for index, tier in catalog.powerTiers do
+		result[tier.id] = index
+	end
+	return result
+end
+
+local function classifyCard(
+	profile: any,
+	inventory: any,
+	identity: any,
+	powerTierId: string,
+	orders: { [string]: number }
+): string
+	local ownedIdentity = false
+	local wishlist = false
+	local bestTier = 0
+	for _, card in inventory:listCards(profile) do
+		if card.identityId == identity.id then
+			ownedIdentity = true
+			wishlist = wishlist or card.flags.wishlist == true
+			bestTier = math.max(bestTier, orders[card.powerTierId] or 0)
+		end
+	end
+	if wishlist then
+		return "wishlist"
+	elseif not ownedIdentity then
+		return "new"
+	elseif (orders[powerTierId] or 0) > bestTier then
+		return "upgrade"
+	end
+	return "duplicate"
 end
 
 function PackService.new(dependencies: any): any
@@ -180,6 +219,7 @@ function PackService.new(dependencies: any): any
 		}
 	end
 	local offerDefinitions = {}
+	local powerTierOrders = tierOrder(dependencies.catalog)
 	for id, definition in offerPackDefinitions do
 		local configuredPrice = dependencies.config.economy.packPrices[id]
 		assert(
@@ -281,6 +321,19 @@ function PackService.new(dependencies: any): any
 			table.insert(tierRolls, roll)
 		end
 
+		local classifications = {}
+		for index, identity in selected do
+			table.insert(
+				classifications,
+				classifyCard(
+					profile,
+					dependencies.inventory,
+					identity,
+					tierRolls[index].selectedId,
+					powerTierOrders
+				)
+			)
+		end
 		profile.currencies[definition.currencyId] -= definition.price
 		local cards = {}
 		local cardInstanceIds = {}
@@ -296,20 +349,25 @@ function PackService.new(dependencies: any): any
 				return created
 			end
 			table.insert(cardInstanceIds, created.card.uid)
-			table.insert(cards, dependencies.inventory:projectCard(created.card))
+			local projected = dependencies.inventory:projectCard(created.card)
+			projected.classification = classifications[index]
+			table.insert(cards, projected)
 		end
 		profile.pity[pityKey] = pity
 		local resultReference = dependencies.canonical.encode({
 			cardInstanceIds = cardInstanceIds,
 			catalogVersion = dependencies.catalog.catalogVersion,
+			classifications = classifications,
 			packId = packId,
 			pityAfter = pity,
+			rarityOdds = copy(dependencies.config.odds.powerTiers),
 		})
 		profile.pendingPacks[operationId] = {
 			state = "committed",
 			packId = packId,
 			catalogVersion = dependencies.catalog.catalogVersion,
 			cardInstanceIds = cardInstanceIds,
+			classifications = classifications,
 			resultReference = resultReference,
 		}
 		return {
@@ -320,6 +378,8 @@ function PackService.new(dependencies: any): any
 			currencyId = definition.currencyId,
 			price = definition.price,
 			cards = cards,
+			classifications = copy(classifications),
+			rarityOdds = copy(dependencies.config.odds.powerTiers),
 			tierRolls = copy(tierRolls),
 			pityBefore = inputPity,
 			pityAfter = pity,
@@ -351,6 +411,9 @@ function PackService.new(dependencies: any): any
 
 		local selectedIds = {}
 		local selected = {}
+		local owned = if packId == "joker"
+			then ownedJokerSet(profile)
+			else discoveredArcanaSet(profile)
 		local rolls = {}
 		local pityBefore = 0
 		local pityAfter = 0
@@ -358,7 +421,6 @@ function PackService.new(dependencies: any): any
 			local pityKey = definition.pityKey :: string
 			pityBefore = profile.pity[pityKey] or 0
 			pityAfter = pityBefore
-			local owned = ownedJokerSet(profile)
 			local pityRule = dependencies.config.odds.pity[definition.pityRuleId :: string]
 			for index = 1, 3 do
 				local roll = dependencies.rollContract.rollWithPity(
@@ -424,7 +486,7 @@ function PackService.new(dependencies: any): any
 		local offers = {}
 		for _, record in selected do
 			table.insert(offerIds, record.id)
-			table.insert(offers, projectOffer(packId, record))
+			table.insert(offers, projectOffer(packId, record, owned))
 		end
 		local itemOdds = nil
 		if packId == "arcana" then
