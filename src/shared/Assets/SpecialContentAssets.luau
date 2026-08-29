@@ -169,7 +169,16 @@ function SpecialContentAssets.build(catalog: any): any
 		if type(joker.handlerId) == "string" then
 			table.insert(extraReferences, "handler." .. joker.handlerId)
 		end
-		table.insert(jokerAssets, contentRecord("joker", joker, extraReferences))
+		local asset = contentRecord("joker", joker, extraReferences)
+		asset.rarityId = joker.rarityId
+		asset.stageIds = if type(joker.stages) == "table" then table.clone(joker.stages) else {}
+		if type(joker.handlerId) == "string" then
+			asset.handlerId = joker.handlerId
+		end
+		if type(joker.conflicts) == "table" then
+			asset.conflicts = table.clone(joker.conflicts)
+		end
+		table.insert(jokerAssets, asset)
 	end
 	local arcanaAssets = {}
 	for _, item in arcana do
@@ -180,7 +189,13 @@ function SpecialContentAssets.build(catalog: any): any
 		if type(item.handlerId) == "string" then
 			table.insert(extraReferences, "handler." .. item.handlerId)
 		end
-		table.insert(arcanaAssets, contentRecord("arcana", item, extraReferences))
+		local asset = contentRecord("arcana", item, extraReferences)
+		asset.categoryId = item.categoryId
+		asset.targetId = item.targetId
+		if type(item.handlerId) == "string" then
+			asset.handlerId = item.handlerId
+		end
+		table.insert(arcanaAssets, asset)
 	end
 
 	local packs = {}
@@ -211,18 +226,24 @@ function SpecialContentAssets.build(catalog: any): any
 				id = family.category .. "." .. record.id,
 				assetId = record.iconAssetId,
 				fallbackAssetId = "fallback.icon." .. family.category .. "." .. record.id,
+				sourceIdentity = "source.icon." .. family.category .. "." .. record.id,
+				builtIdentity = "assetbundle.icon." .. family.category .. "." .. record.id,
 				references = { record.assetId },
 			})
 			table.insert(thumbnails, {
 				id = family.category .. "." .. record.id,
 				assetId = record.thumbnailAssetId,
 				fallbackAssetId = "fallback.thumbnail." .. family.category .. "." .. record.id,
+				sourceIdentity = "source.thumbnail." .. family.category .. "." .. record.id,
+				builtIdentity = "assetbundle.thumbnail." .. family.category .. "." .. record.id,
 				references = { record.assetId },
 			})
 			table.insert(metadata, {
 				id = family.category .. "." .. record.id,
 				assetId = record.metadataAssetId,
 				fallbackAssetId = "fallback.metadata." .. family.category .. "." .. record.id,
+				sourceIdentity = "source.metadata." .. family.category .. "." .. record.id,
+				builtIdentity = "assetbundle.metadata." .. family.category .. "." .. record.id,
 				references = { record.assetId, record.fallbackAssetId },
 			})
 		end

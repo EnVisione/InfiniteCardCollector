@@ -436,6 +436,12 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 				and jokerAsset.fallbackAssetId == "fallback.joker.packstorm",
 			"P003-TEST-005 special joker asset"
 		)
+		assert(
+			jokerAsset.rarityId == "legendary"
+				and jokerAsset.handlerId == "joker_success_counter_intent"
+				and #jokerAsset.stageIds == 1,
+			"P003-TEST-005 special joker metadata"
+		)
 		local arcanaAsset = special:get("arcana", "regrader")
 		assert(
 			arcanaAsset ~= nil
@@ -443,12 +449,29 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 				and arcanaAsset.fallbackAssetId == "fallback.arcana.regrader",
 			"P003-TEST-005 special arcana asset"
 		)
+		assert(
+			arcanaAsset.categoryId == "grade"
+				and arcanaAsset.targetId == "choice"
+				and arcanaAsset.handlerId == "arcana_choose_nonregressing_grade",
+			"P003-TEST-005 special arcana metadata"
+		)
 		local packAsset = special:get("pack", "astral")
 		assert(
 			packAsset ~= nil
 				and packAsset.assetId == "asset.pack.astral"
 				and packAsset.fallbackAssetId == "fallback.pack.astral",
 			"P003-TEST-005 special pack asset"
+		)
+		assert(
+			packAsset.category == "deck_set" and packAsset.deckSetId == "astral",
+			"P003-TEST-005 special pack metadata"
+		)
+		local iconAsset = special:get("icon", "joker.packstorm")
+		assert(
+			iconAsset ~= nil
+				and iconAsset.assetId == "asset.icon.joker.packstorm"
+				and iconAsset.builtIdentity == "assetbundle.icon.joker.packstorm",
+			"P003-TEST-005 special icon metadata"
 		)
 		assert(special:get("joker", "fifth_law") == nil, "P003-TEST-005 disabled joker hidden")
 		assert(special:get("joker", "missing") == nil, "P003-TEST-005 unknown joker hidden")
