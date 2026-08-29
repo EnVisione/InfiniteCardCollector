@@ -86,7 +86,7 @@ local actions = {
 		expectedRevision = revision(),
 		packId = stableId(),
 	}, true, true),
-	policy("pack.choose", "durable_idempotent", false, nil, 1024, 2, 1, 5, {
+	policy("pack.choose", "durable_idempotent", true, "pack_choose", 1024, 2, 1, 5, {
 		choiceIndex = scalar("integer", { min = 1, max = 12 }),
 		expectedRevision = revision(),
 		packOperationId = requestReference(),

@@ -413,9 +413,17 @@ function ProfileSchema.validate(profile: any): any
 			catalogVersion = true,
 			cardInstanceIds = true,
 			resultReference = true,
+			offerIds = true,
+			choiceIndex = true,
+			choiceId = true,
+			grantedJokerInstanceId = true,
+			grantedArcanaId = true,
 		}, "P002-PROFILE-097 pending field invalid")
 		assert(
-			pending.state == "committed" or pending.state == "acknowledged",
+			pending.state == "committed"
+				or pending.state == "acknowledged"
+				or pending.state == "revealed"
+				or pending.state == "claimed",
 			"P002-PROFILE-057 pending state invalid"
 		)
 		assertString(pending.packId, "P002-PROFILE-058 pending pack id invalid")
@@ -431,6 +439,62 @@ function ProfileSchema.validate(profile: any): any
 			pendingCardOwners[uid] = operationId
 		end
 		assertString(pending.resultReference, "P002-PROFILE-062 pending result invalid")
+		if pending.offerIds ~= nil then
+			assert(
+				pending.packId == "joker" or pending.packId == "arcana",
+				"P003-PACK-028 pending offer pack invalid"
+			)
+			local offerIds = validateDenseStringArray(
+				pending.offerIds,
+				3,
+				"P003-PACK-015 pending offer ids invalid"
+			)
+			assert(#pending.offerIds == 3, "P003-PACK-016 pending offer count invalid")
+			if pending.choiceIndex ~= nil then
+				assertInteger(pending.choiceIndex, 1, "P003-PACK-017 pending choice index invalid")
+				assert(
+					pending.choiceIndex <= #pending.offerIds,
+					"P003-PACK-018 pending choice index invalid"
+				)
+			end
+			if pending.choiceId ~= nil then
+				assertString(pending.choiceId, "P003-PACK-019 pending choice id invalid")
+				assert(
+					offerIds[pending.choiceId] == true,
+					"P003-PACK-020 pending choice id invalid"
+				)
+			end
+			assert(
+				(pending.choiceIndex == nil) == (pending.choiceId == nil),
+				"P003-PACK-027 pending choice fields mismatch"
+			)
+			if pending.state == "claimed" then
+				assert(
+					pending.choiceIndex ~= nil and pending.choiceId ~= nil,
+					"P003-PACK-021 claimed choice missing"
+				)
+			end
+		else
+			assert(
+				pending.state ~= "claimed"
+					and pending.choiceIndex == nil
+					and pending.choiceId == nil
+					and pending.grantedJokerInstanceId == nil
+					and pending.grantedArcanaId == nil,
+				"P003-PACK-029 non offer pending state invalid"
+			)
+		end
+		if pending.grantedJokerInstanceId ~= nil then
+			assertString(pending.grantedJokerInstanceId, "P003-PACK-023 granted joker invalid")
+			assert(
+				profile.jokers[pending.grantedJokerInstanceId] ~= nil,
+				"P003-PACK-024 granted joker missing"
+			)
+		end
+		if pending.grantedArcanaId ~= nil then
+			assertString(pending.grantedArcanaId, "P003-PACK-025 granted arcana invalid")
+			assert(pending.offerIds ~= nil, "P003-PACK-026 granted arcana offers missing")
+		end
 	end
 	for operationId, receipt in profile.processedOperations do
 		assertString(operationId, "P002-PROFILE-063 receipt id invalid")

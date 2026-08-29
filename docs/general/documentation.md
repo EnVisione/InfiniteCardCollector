@@ -131,13 +131,13 @@ The runtime targets Roblox and uses strict typed Luau for shared domain modules,
 
 ### Module Map
 
-- `src/shared/Network/` owns the frozen 24 action registry, 44 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
+- `src/shared/Network/` owns the frozen 24 action registry, 46 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
 - `src/shared/Profile/` owns the readable profile domain, compact codec, canonical values, migration registry, and storage policy.
 - `src/shared/Rendering/` owns the shared card presentation model.
 - `src/server/Storage/` owns memory and Roblox adapters, the profile lifecycle, and the inventory storage interface.
 - `src/server/Transactions/` owns exact once profile mutation, versioned receipts, replay barriers, compaction, response recovery, and shutdown drain.
 - `src/server/Inventory/` owns card and Joker creation, collection history, flags, locks, eligibility, conservation, and the 52 slot deck.
-- `src/server/Packs/` owns the recoverable Classic Starter Pack slice and the server-authoritative Classic, Radioactive, and Astral Deck Set Pack service.
+- `src/server/Packs/` owns the recoverable Classic Starter Pack slice, server-authoritative Classic, Radioactive, and Astral Deck Set Packs, and saved Joker and Arcana offer packs.
 - `src/server/Formation/` owns the guided orchestration that calls the Phase 001 calculation contract without saving directly.
 - `src/server/Network/` owns token buckets and the fail closed gateway.
 - `src/server/Projection/` owns bounded client snapshots and binder pages.
@@ -227,7 +227,7 @@ lune run ci
 
 That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
 
-The combined suite now passes 60 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, and the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, and pending results.
+The combined suite now passes 61 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, and pending results, and server-authoritative Joker and Arcana offer packs with saved choices and exact grants.
 
 The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
 

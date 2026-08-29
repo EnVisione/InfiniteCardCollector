@@ -161,7 +161,12 @@ function Phase002Runtime.start(serverRoot: Instance)
 		end,
 		reconcile = function(profile: any): (boolean, string?)
 			for _, pending in profile.pendingPacks do
-				if pending.state ~= "committed" and pending.state ~= "acknowledged" then
+				if
+					pending.state ~= "committed"
+					and pending.state ~= "acknowledged"
+					and pending.state ~= "revealed"
+					and pending.state ~= "claimed"
+				then
 					return false, ErrorRegistry.codes.profileReadOnly
 				end
 			end
@@ -200,6 +205,7 @@ function Phase002Runtime.start(serverRoot: Instance)
 		catalog = LaunchCatalog,
 		config = LaunchConfig,
 		inventory = inventory,
+		collection = collection,
 		canonical = CanonicalValue,
 		errors = ErrorRegistry,
 		rollContract = RollContract,
@@ -288,6 +294,7 @@ function Phase002Runtime.start(serverRoot: Instance)
 		if
 			payload.packId ~= "classic_starter"
 			and packService:definition(payload.packId) == nil
+			and packService:offerDefinition(payload.packId) == nil
 		then
 			return { ok = false, code = ErrorRegistry.codes.packInvalid, action = "pack.open" }
 		end
@@ -298,7 +305,15 @@ function Phase002Runtime.start(serverRoot: Instance)
 			expectedRevision = payload.expectedRevision,
 			resultReference = requestId,
 			apply = function(profile: any): any
-				if payload.packId ~= "classic_starter" then
+				if payload.packId == "joker" or payload.packId == "arcana" then
+					return packService:openOffers(
+						profile,
+						player.UserId,
+						requestId,
+						payload.packId,
+						RandomService.new(seedFor(player.UserId, requestId))
+					)
+				elseif payload.packId ~= "classic_starter" then
 					return packService:open(
 						profile,
 						player.UserId,
@@ -316,6 +331,34 @@ function Phase002Runtime.start(serverRoot: Instance)
 			end,
 		})
 		return withSnapshot(userKey, outcome, "pack.open")
+	end
+
+	routes.pack_choose = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "pack.choose",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "pack.choose",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			resultReference = payload.packOperationId,
+			apply = function(profile: any): any
+				return packService:chooseOffer(
+					profile,
+					player.UserId,
+					requestId,
+					payload.packOperationId,
+					payload.choiceIndex
+				)
+			end,
+		})
+		return withSnapshot(userKey, outcome, "pack.choose")
 	end
 
 	routes.deck_equip = function(userKey: string, payload: any, requestId: string): any

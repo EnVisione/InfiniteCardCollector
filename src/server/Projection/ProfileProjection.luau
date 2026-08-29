@@ -26,6 +26,12 @@ function ProfileProjection.snapshot(
 			packId = pending.packId,
 			catalogVersion = pending.catalogVersion,
 			cardInstanceIds = table.clone(pending.cardInstanceIds),
+			offerIds = if pending.offerIds ~= nil then table.clone(pending.offerIds) else nil,
+			choiceIndex = pending.choiceIndex,
+			choiceId = pending.choiceId,
+			grantedJokerInstanceId = pending.grantedJokerInstanceId,
+			grantedArcanaId = pending.grantedArcanaId,
+			resultReference = pending.resultReference,
 		}
 	end
 	return {

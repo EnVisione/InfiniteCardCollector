@@ -313,6 +313,7 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			catalog = LaunchCatalog,
 			config = LaunchConfig,
 			inventory = inventory,
+			collection = CollectionService.new(),
 			canonical = CanonicalValue,
 			errors = ErrorRegistry,
 			rollContract = RollContract,
@@ -381,6 +382,181 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			"P003-TEST-008 second deck set"
 		)
 		assert(CanonicalValue.encode(profile) ~= before, "P003-TEST-008 committed mutation")
+	end)
+
+	addTest("P003-TEST-009-offer-pack-service", function()
+		local collection = CollectionService.new()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		profile.currencies.joker_tickets = 20
+		profile.currencies.arcana_dust = 700
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = collection,
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_offer_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local packs = PackService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			collection = collection,
+			canonical = CanonicalValue,
+			errors = ErrorRegistry,
+			rollContract = RollContract,
+		})
+		local jokerResult =
+			packs:openOffers(profile, 42, "joker_pack_request_0001", "joker", RandomService.new(31))
+		assert(jokerResult.ok and #jokerResult.offers == 3, "P003-TEST-009 joker offer count")
+		assert(profile.currencies.joker_tickets == 10, "P003-TEST-009 joker price")
+		assert(
+			jokerResult.rarityOdds ~= nil and #jokerResult.rarityOdds == 6,
+			"P003-TEST-009 rarity odds"
+		)
+		assert(jokerResult.pityBefore == 0, "P003-TEST-009 pity before")
+		local offerIds = {}
+		for _, offer in jokerResult.offers do
+			assert(offerIds[offer.id] == nil, "P003-TEST-009 duplicate joker offer")
+			offerIds[offer.id] = true
+		end
+		local pending = profile.pendingPacks.joker_pack_request_0001
+		assert(
+			pending.state == "committed" and #pending.offerIds == 3,
+			"P003-TEST-009 saved joker offers"
+		)
+		ProfileSchema.validate(profile)
+		local chosen = jokerResult.offerIds[2]
+		local choice = packs:chooseOffer(
+			profile,
+			42,
+			"joker_choice_request_0001",
+			"joker_pack_request_0001",
+			2
+		)
+		assert(choice.ok and choice.choiceId == chosen, "P003-TEST-009 joker choice")
+		assert(
+			profile.pendingPacks.joker_pack_request_0001.state == "claimed",
+			"P003-TEST-009 joker claimed"
+		)
+		assert(
+			profile.pendingPacks.joker_pack_request_0001.grantedJokerInstanceId ~= nil,
+			"P003-TEST-009 joker grant"
+		)
+		assert(
+			profile.jokers[profile.pendingPacks.joker_pack_request_0001.grantedJokerInstanceId].jokerId
+				== chosen,
+			"P003-TEST-009 chosen joker owned"
+		)
+		ProfileSchema.validate(profile)
+		local replayBefore = CanonicalValue.encode(profile)
+		local replay = packs:chooseOffer(
+			profile,
+			42,
+			"joker_choice_request_0002",
+			"joker_pack_request_0001",
+			2
+		)
+		assert(
+			not replay.ok and replay.code == ErrorRegistry.codes.replayConflict,
+			"P003-TEST-009 choice replay"
+		)
+		assert(
+			CanonicalValue.encode(profile) == replayBefore,
+			"P003-TEST-009 choice replay mutation"
+		)
+
+		local arcanaResult = packs:openOffers(
+			profile,
+			42,
+			"arcana_pack_request_0001",
+			"arcana",
+			RandomService.new(41)
+		)
+		assert(arcanaResult.ok and #arcanaResult.offers == 3, "P003-TEST-009 arcana offer count")
+		assert(
+			arcanaResult.itemOdds ~= nil and #arcanaResult.itemOdds == 12,
+			"P003-TEST-009 arcana item odds"
+		)
+		local arcanaIds = {}
+		for _, offer in arcanaResult.offers do
+			assert(arcanaIds[offer.id] == nil, "P003-TEST-009 duplicate arcana offer")
+			arcanaIds[offer.id] = true
+		end
+		local invalidBefore = CanonicalValue.encode(profile)
+		local invalidChoice = packs:chooseOffer(
+			profile,
+			42,
+			"arcana_choice_request_0001",
+			"arcana_pack_request_0001",
+			4
+		)
+		assert(
+			not invalidChoice.ok and invalidChoice.code == ErrorRegistry.codes.packChoiceInvalid,
+			"P003-TEST-009 invalid arcana choice"
+		)
+		assert(
+			CanonicalValue.encode(profile) == invalidBefore,
+			"P003-TEST-009 invalid choice mutation"
+		)
+		local arcanaChoice = packs:chooseOffer(
+			profile,
+			42,
+			"arcana_choice_request_0002",
+			"arcana_pack_request_0001",
+			1
+		)
+		assert(
+			arcanaChoice.ok and arcanaChoice.grant.stackCount == 1,
+			"P003-TEST-009 arcana choice"
+		)
+		assert(profile.arcanaStacks[arcanaChoice.choiceId] == 1, "P003-TEST-009 arcana stack")
+		ProfileSchema.validate(profile)
+		for index = 2, 6 do
+			local operationId = "arcana_pack_request_000" .. tostring(index)
+			local opened =
+				packs:openOffers(profile, 42, operationId, "arcana", RandomService.new(41 + index))
+			assert(opened.ok and #opened.offers == 3, "P003-TEST-009 protected arcana offer count")
+			for _, offer in opened.offers do
+				assert(
+					profile.discovery.arcana[offer.id] ~= true,
+					"P003-TEST-009 protected arcana duplicate"
+				)
+			end
+			local selectedId = opened.offerIds[1]
+			local selected = packs:chooseOffer(
+				profile,
+				42,
+				"arcana_choice_request_000" .. tostring(index + 1),
+				operationId,
+				1
+			)
+			assert(
+				selected.ok and selected.choiceId == selectedId,
+				"P003-TEST-009 protected arcana choice"
+			)
+		end
+		local discoveredArcanaCount = 0
+		for _ in profile.discovery.arcana do
+			discoveredArcanaCount += 1
+		end
+		assert(discoveredArcanaCount == 6, "P003-TEST-009 arcana protection threshold")
+		ProfileSchema.validate(profile)
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()
