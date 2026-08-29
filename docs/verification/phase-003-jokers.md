@@ -6,4 +6,4 @@ The deterministic suite passed 68 tests, including `P003-TEST-014-joker-service-
 
 The two enabled Joker routes are `joker.equip` and `joker.unequip`. Both use the existing expected revision and durable transaction boundary and return an authoritative profile snapshot. Older version 1 Joker records that omit the new progression fields receive safe defaults during validation.
 
-The rebuilt phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `7a8626f22fdad320625a0a48ae1d25ae0b7ff25f1777807bd310df053dd40876` and SHA 512 `95b13af153491b31562cd044b359f08f7c39eb4ace96b03eac567303d1f52f534e99c0d4f544cb9fe64bfdd5bebbb54d91c1ce4ea8f712aa3acc1271c99caf53`.
+The rebuilt phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `61592e59255550bd02f768d5ee3f1bdfde61e5c36e871685ca196a51ac2f4ab3` and SHA 512 `7645ff0cc10b140e9dab53444b082727ebdd49fbaa2ce392526a976a4ac286f54b1480fdd9991195bbaaafb3c047b1f70eaafccf5b821a99e98c8a388c7cc9bb`.
