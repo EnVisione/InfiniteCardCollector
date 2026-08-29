@@ -245,6 +245,8 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			assert(record.launchEnabled == true, "P003-TEST-005 enabled identity")
 			assert(record.assetContractId == "identity." .. record.id, "P003-TEST-005 asset id")
 			assert(record.visualSystemId == record.deckSetId, "P003-TEST-005 visual system")
+			assert(record.rankAssetId == "rank." .. record.rankId, "P003-TEST-005 rank asset")
+			assert(record.suitAssetId == "suit." .. record.suitId, "P003-TEST-005 suit asset")
 			assert(
 				record.fallbackAssetId == "fallback.frame." .. record.deckSetId,
 				"P003-TEST-005 fallback"
@@ -270,6 +272,46 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			table.isfrozen(LaunchDeckSetAssets.visualSystems),
 			"P003-TEST-005 visual systems immutable"
 		)
+		assert(
+			LaunchDeckSetAssets.visualSystem("classic").style.framePattern == "ivory_stock",
+			"P003-TEST-005 classic style"
+		)
+		assert(
+			LaunchDeckSetAssets.visualSystem("radioactive").style.framePattern == "hazard_stripes",
+			"P003-TEST-005 radioactive style"
+		)
+		assert(
+			LaunchDeckSetAssets.visualSystem("astral").style.framePattern == "star_maps",
+			"P003-TEST-005 astral style"
+		)
+		assert(LaunchDeckSetAssets.visualSystem("future") == nil, "P003-TEST-005 unknown style")
+	end)
+
+	addTest("P003-TEST-006-deckset-fixture-project", function()
+		local project = serde.decode("json", fs.readFile("default.project.json"))
+		local assets = project.tree.ServerStorage.Assets
+		local cardFrames = assets.CardFrames
+		local expectedFrames = {
+			{ "ClassicFrameFixture", "ClassicFrame" },
+			{ "RadioactiveFrameFixture", "RadioactiveFrame" },
+			{ "AstralFrameFixture", "AstralFrame" },
+		}
+		for _, fixture in expectedFrames do
+			local model = cardFrames[fixture[1]]
+			assert(model["$className"] == "Model", "P003-TEST-006 frame model")
+			assert(model[fixture[2]]["$className"] == "Part", "P003-TEST-006 frame part")
+			assert(model.CardFace["$className"] == "Part", "P003-TEST-006 face part")
+			assert(model.RankMark["$className"] == "Part", "P003-TEST-006 rank part")
+		end
+		local packModels = assets.PackModels
+		for _, fixtureName in
+			{ "ClassicStarterPackFixture", "RadioactivePackFixture", "AstralPackFixture" }
+		do
+			local model = packModels[fixtureName]
+			assert(model["$className"] == "Model", "P003-TEST-006 pack model")
+			assert(model.PackBody["$className"] == "Part", "P003-TEST-006 pack body")
+			assert(model.PackSeal["$className"] == "Part", "P003-TEST-006 pack seal")
+		end
 	end)
 end
 

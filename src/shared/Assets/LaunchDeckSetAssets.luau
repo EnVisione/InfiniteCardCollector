@@ -8,6 +8,8 @@ local visualSystems = {
 		displayName = "Classic",
 		frameAssetId = "frame.classic",
 		frameFixtureName = "ClassicFrameFixture",
+		rankAssetPrefix = "rank.",
+		suitAssetPrefix = "suit.",
 		packAssetId = "pack.classic",
 		revealSoundAssetId = "sound.reveal.classic",
 		binderPageAssetId = "surface.binder.classic",
@@ -26,6 +28,8 @@ local visualSystems = {
 		displayName = "Radioactive",
 		frameAssetId = "frame.radioactive",
 		frameFixtureName = "RadioactiveFrameFixture",
+		rankAssetPrefix = "rank.",
+		suitAssetPrefix = "suit.",
 		packAssetId = "pack.radioactive",
 		revealSoundAssetId = "sound.reveal.radioactive",
 		binderPageAssetId = "surface.binder.radioactive",
@@ -44,6 +48,8 @@ local visualSystems = {
 		displayName = "Astral",
 		frameAssetId = "frame.astral",
 		frameFixtureName = "AstralFrameFixture",
+		rankAssetPrefix = "rank.",
+		suitAssetPrefix = "suit.",
 		packAssetId = "pack.astral",
 		revealSoundAssetId = "sound.reveal.astral",
 		binderPageAssetId = "surface.binder.astral",
@@ -115,6 +121,8 @@ function LaunchDeckSetAssets.buildIdentityRecords(catalog: any): { any }
 						launchEnabled = true,
 						visualSystemId = system.id,
 						frameAssetId = system.frameAssetId,
+						rankAssetId = system.rankAssetPrefix .. rank.id,
+						suitAssetId = system.suitAssetPrefix .. suit.id,
 						packAssetId = system.packAssetId,
 						revealSoundAssetId = system.revealSoundAssetId,
 						binderPageAssetId = system.binderPageAssetId,
@@ -145,5 +153,9 @@ function LaunchDeckSetAssets.buildIdentityRecords(catalog: any): { any }
 end
 
 LaunchDeckSetAssets.visualSystems = deepFreeze(visualSystems)
+
+function LaunchDeckSetAssets.visualSystem(deckSetId: string): any
+	return visualSystemsById[deckSetId]
+end
 
 return table.freeze(LaunchDeckSetAssets)

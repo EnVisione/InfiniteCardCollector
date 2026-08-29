@@ -238,7 +238,7 @@ function DocsValidator.validate()
 			"receipt version 1",
 			"1,000,000 encoded bytes",
 			"1,500,000 bytes",
-			"57 tests",
+			"58 tests",
 		}
 	do
 		assert(
