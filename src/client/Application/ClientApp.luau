@@ -10,6 +10,8 @@ local CardRenderer3D = require(script.Parent.Parent.Rendering.CardRenderer3D)
 local ComponentPool = require(script.Parent.Parent.Rendering.ComponentPool)
 local PreloadManifest = require(script.Parent.Parent.Rendering.PreloadManifest)
 local VirtualizedBinder = require(script.Parent.Parent.Rendering.VirtualizedBinder)
+local LaunchDeckSetAssets = require(ReplicatedStorage.Shared.Assets.LaunchDeckSetAssets)
+local PresentationResolver = require(ReplicatedStorage.Shared.Assets.PresentationResolver)
 local CardViewModel = require(ReplicatedStorage.Shared.Rendering.CardViewModel)
 
 local ClientApp = {}
@@ -170,25 +172,48 @@ function ClientApp.start(launchContract: any)
 	)
 	previewText.Position = UDim2.fromOffset(144, 8)
 	previewText.TextYAlignment = Enum.TextYAlignment.Center
+	local cardFixtureParts = {}
+	for _, system in LaunchDeckSetAssets.visualSystems do
+		cardFixtureParts[system.frameFixtureName] = {
+			framePartName = system.framePartName,
+			facePartName = "CardFace",
+			rankMarkPartName = "RankMark",
+		}
+		cardFixtureParts[system.fallbackFixtureName] = {
+			framePartName = system.fallbackFramePartName,
+			facePartName = "CardFace",
+			rankMarkPartName = system.fallbackMarkPartName,
+		}
+	end
 
 	local previewPool = ComponentPool.new(function(kind: string): Model
-		local fixtureName = if kind == "card"
-			then "ClassicFrameFixture"
+		local fixtureName = if string.sub(kind, 1, 5) == "card:"
+			then string.sub(kind, 6)
 			else "ClassicStarterPackFixture"
-		assert(kind == "card" or kind == "pack", "P002-CLIENT-003 preview kind invalid")
+		assert(
+			string.sub(kind, 1, 5) == "card:" or kind == "pack",
+			"P002-CLIENT-003 preview kind invalid"
+		)
 		local template = presentationAssets:FindFirstChild(fixtureName)
 		assert(template ~= nil and template:IsA("Model"), "P002-CLIENT-006 fixture invalid")
 		local model = template:Clone()
-		if kind == "card" then
-			local frame = model:FindFirstChild("ClassicFrame") :: Part
-			local face = model:FindFirstChild("CardFace") :: Part
-			local rankMark = model:FindFirstChild("RankMark") :: Part
+		if string.sub(kind, 1, 5) == "card:" then
+			local parts = cardFixtureParts[fixtureName]
+			assert(parts ~= nil, "P003-CLIENT-007 card fixture contract missing")
+			local frame = model:FindFirstChild(parts.framePartName) :: Part
+			local face = model:FindFirstChild(parts.facePartName) :: Part
+			local rankMark = model:FindFirstChild(parts.rankMarkPartName) :: Part
+			assert(
+				frame ~= nil and face ~= nil and rankMark ~= nil,
+				"P003-CLIENT-008 card fixture parts missing"
+			)
 			model.PrimaryPart = frame
 			face.CFrame = CFrame.new(0, 0, 0.18)
 			rankMark.CFrame = CFrame.new(-1.35, 2.05, 0.3)
 		else
 			local body = model:FindFirstChild("PackBody") :: Part
 			local seal = model:FindFirstChild("PackSeal") :: Part
+			assert(body ~= nil and seal ~= nil, "P002-CLIENT-007 pack fixture parts missing")
 			model.PrimaryPart = body
 			seal.CFrame = CFrame.new(0, 0, 0.28)
 		end
@@ -261,7 +286,9 @@ function ClientApp.start(launchContract: any)
 		clearPreview()
 		local viewModel = CardViewModel.build(launchContract.clientCatalog, card, snapshot.settings)
 		local descriptor = CardRenderer3D.render(viewModel)
-		local model = previewPool:acquire("card") :: Model
+		local presentation =
+			PresentationResolver.card(launchContract.clientCatalog, card, LaunchDeckSetAssets)
+		local model = previewPool:acquire("card:" .. presentation.fixtureName) :: Model
 		model.Name = "CardModel3D"
 		model:SetAttribute("AdapterVersion", descriptor.adapterVersion)
 		model:SetAttribute("AccessibleName", descriptor.accessibleName)
@@ -269,21 +296,30 @@ function ClientApp.start(launchContract: any)
 		model:SetAttribute("SemanticLayerCount", #descriptor.semanticLayers)
 		model:SetAttribute("Animated", viewModel.settings.animated)
 		model:SetAttribute("Flashing", viewModel.settings.flashing)
-		local frame = model:FindFirstChild("ClassicFrame") :: Part
-		local face = model:FindFirstChild("CardFace") :: Part
-		local rankMark = model:FindFirstChild("RankMark") :: Part
-		frame.Color = if viewModel.settings.lowGraphics
-			then Color3.fromRGB(92, 98, 112)
-			else Color3.fromRGB(164, 132, 66)
-		face.Color = Color3.fromRGB(235, 232, 220)
-		rankMark.Color = if card.suitId == "hearts" or card.suitId == "diamonds"
-			then Color3.fromRGB(190, 56, 67)
-			else Color3.fromRGB(40, 45, 55)
+		model:SetAttribute("VisualSystemId", presentation.visualSystemId)
+		model:SetAttribute("StaticFallback", presentation.fallback)
+		local frame = model:FindFirstChild(presentation.framePartName) :: Part
+		local face = model:FindFirstChild(presentation.facePartName) :: Part
+		local rankMark = model:FindFirstChild(presentation.rankMarkPartName) :: Part
+		assert(
+			frame ~= nil and face ~= nil and rankMark ~= nil,
+			"P003-CLIENT-009 resolved card parts missing"
+		)
+		if viewModel.settings.lowGraphics then
+			frame.Color = Color3.fromRGB(92, 98, 112)
+		end
+		if presentation.rankMarkMode == "suit" then
+			rankMark.Color = if card.suitId == "hearts" or card.suitId == "diamonds"
+				then Color3.fromRGB(190, 56, 67)
+				else Color3.fromRGB(40, 45, 55)
+		end
 		model.Parent = previewWorld
 		activePreview = model
 		previewText.Text = string.format(
-			"3D Preview\n%s\nLayers: %d    Motion: %s    Flash: %s",
+			"3D Preview\n%s\nSystem: %s%s\nLayers: %d    Motion: %s    Flash: %s",
 			descriptor.accessibleName,
+			presentation.visualSystemId,
+			if presentation.fallback then " fallback" else "",
 			#descriptor.semanticLayers,
 			if viewModel.settings.animated then "on" else "static",
 			if viewModel.settings.flashing then "on" else "static"

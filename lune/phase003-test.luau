@@ -6,6 +6,7 @@ local serde = require("@lune/serde")
 local AssetManifest = require("../src/shared/Assets/AssetManifest")
 local LaunchCatalog = require("../src/shared/Catalogs/LaunchCatalog")
 local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
+local PresentationResolver = require("../src/shared/Assets/PresentationResolver")
 
 local Phase003Test = {}
 
@@ -284,6 +285,14 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			LaunchDeckSetAssets.visualSystem("astral").style.framePattern == "star_maps",
 			"P003-TEST-005 astral style"
 		)
+		assert(
+			LaunchDeckSetAssets.visualSystem("radioactive").framePartName == "RadioactiveFrame",
+			"P003-TEST-005 registered frame part"
+		)
+		assert(
+			LaunchDeckSetAssets.visualSystem("astral").packFixtureName == "AstralPackFixture",
+			"P003-TEST-005 registered pack fixture"
+		)
 		assert(LaunchDeckSetAssets.visualSystem("future") == nil, "P003-TEST-005 unknown style")
 		assert(
 			#LaunchDeckSetAssets.rankPresentations == 13,
@@ -328,6 +337,38 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 				"P003-TEST-005 suit presentation fallback"
 			)
 		end
+		local radioactive = PresentationResolver.card(LaunchCatalog, {
+			deckSetId = "radioactive",
+		}, LaunchDeckSetAssets)
+		assert(
+			radioactive.fixtureName == "RadioactiveFrameFixture",
+			"P003-TEST-005 resolver fixture"
+		)
+		assert(radioactive.framePartName == "RadioactiveFrame", "P003-TEST-005 resolver frame")
+		assert(radioactive.rankMarkMode == "asset", "P003-TEST-005 resolver rank mode")
+		assert(not radioactive.fallback, "P003-TEST-005 resolver themed")
+		local unknown =
+			PresentationResolver.card(LaunchCatalog, { deckSetId = "future" }, LaunchDeckSetAssets)
+		assert(
+			unknown.fixtureName == "ClassicFallbackFixture",
+			"P003-TEST-005 resolver unknown fallback"
+		)
+		assert(
+			unknown.fallback and unknown.rankMarkPartName == "FallbackMark",
+			"P003-TEST-005 resolver fallback"
+		)
+		local disabled = PresentationResolver.card(
+			{ deckSets = { { id = "astral", launchEnabled = false } } },
+			{
+				deckSetId = "astral",
+			},
+			LaunchDeckSetAssets
+		)
+		assert(
+			disabled.fixtureName == "AstralFallbackFixture",
+			"P003-TEST-005 resolver disabled fallback"
+		)
+		assert(disabled.fallback, "P003-TEST-005 resolver disabled state")
 	end)
 
 	addTest("P003-TEST-006-deckset-fixture-project", function()

@@ -175,7 +175,7 @@ A valid calculation applies its configured Cash reward inside the same transacti
 
 Missing or disabled presentation data creates a neutral readable placeholder and `Content Unavailable` status. It does not invent ownership or hide the failure.
 
-`CardRenderer2D` and `CardRenderer3D` preserve identical semantic layers and accessible names. The client currently clones the Rojo mapped Classic fixture from the bounded presentation folder, while the Radioactive and Astral fixtures are published for the Phase 003 asset and renderer work. `ComponentPool` recycles card and pack models. `VirtualizedBinder` renders only the visible window with overscan. `PreloadManifest` still permits exactly the Classic card and Starter Pack fixtures until dynamic Deck Set selection is implemented.
+`CardRenderer2D` and `CardRenderer3D` preserve identical semantic layers and accessible names. The client resolves each enabled card through the registered Deck Set visual system and clones its mapped frame fixture from the bounded presentation folder. Unknown or disabled data uses the matching neutral fallback fixture. `ComponentPool` recycles card and pack models. `VirtualizedBinder` renders only the visible window with overscan. `PreloadManifest` still permits exactly the Classic card and Starter Pack fixtures because the complete dynamic preload policy is owned by the remaining Phase 003 presentation work.
 
 Low graphics, reduced motion, and reduced flash independently disable nonessential animation or flashing without removing semantic layers. The current Classic fixture uses a static material fallback and readable labels.
 
