@@ -255,7 +255,7 @@ function DocsValidator.validate()
 			"8d05b334e07b07e84e565547091e697de3f528bc0b0db4429d12a399bc7e9762",
 			"request.replay_conflict",
 			"Static low graphics",
-			"Required isolated evidence remains absent",
+			"The isolated Roblox gate is now exercised",
 		}
 	do
 		assert(
