@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": 1,
+  "catalogVersion": 1,
+  "artifactVersion": "phase-003-contract",
+  "allowedKinds": [
+    "audio",
+    "effect",
+    "fallback",
+    "image",
+    "interface",
+    "metadata",
+    "model",
+    "world"
+  ],
+  "requiredEntryFields": [
+    "assetVersion",
+    "builtIdentity",
+    "builtSha256",
+    "builtSha512",
+    "byteBudget",
+    "byteSize",
+    "enabled",
+    "fallbackId",
+    "instanceBudget",
+    "instanceCount",
+    "id",
+    "kind",
+    "memoryBudgetBytes",
+    "memoryBytes",
+    "poolGroup",
+    "preloadGroup",
+    "provenance",
+    "references",
+    "sourceIdentity",
+    "sourceSha256",
+    "sourceSha512"
+  ],
+  "budgets": {
+    "maximumEntryBytes": 4194304,
+    "maximumEntryMemoryBytes": 16777216,
+    "maximumEntryInstances": 128,
+    "maximumPreloadBytes": 8388608,
+    "maximumPreloadInstances": 256
+  },
+  "preloadGroups": [
+    {
+      "id": "opening_table",
+      "maxBytes": 0,
+      "maxInstances": 0
+    }
+  ],
+  "poolGroups": [
+    {
+      "id": "card",
+      "maxBytes": 0,
+      "maxInstances": 0
+    }
+  ],
+  "entries": []
+}
