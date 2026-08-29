@@ -142,6 +142,19 @@ All values live in one versioned server configuration module. Clients receive di
 | Active Soul limit | 0 at launch, schema maximum 1 |
 | Server size | 8 players initially |
 
+### Phase 001 Calculation Tuning
+
+The first executable configuration uses `catalogVersion = 1` and `configVersion = 1`. These are balance values rather than stable inventory identity.
+
+- All three launch affinities use active deck thresholds of 13, 26, 39, and 52 cards with 5, 10, 15, and 25 percent strength.
+- Sequence and Monosuit use `1.80x`, `2.80x`, and `4.00x` for three, four, and five submitted cards.
+- Perfect Sum keeps its `2.50x` base and declares `perfect_sum_accuracy` as an explicit `1.10x` stackable bonus. If another matching formation has the stronger base, that base wins and the accuracy bonus still applies once.
+- Trusted arithmetic uses checked integers and rational multipliers with half up rounding. A result above `999999999999999` fails closed before a trusted score is returned.
+- Personal active boosts apply before server event boosts. Mode modifiers apply afterward, followed by named component caps.
+- The same opponent can grant one full eligible social reward and two reduced rewards at 25 percent. The third repeat and later repeats grant no reward under the launch configuration.
+
+The complete executable stage, cap, odds, pity, and reason contract is documented in [Technical Overview](../general/documentation.md) and verified by [Phase 001 Catalog and Calculation Tests](../test/phase-001-calculation-contracts.md).
+
 ### Currency Sources and Sinks
 
 | Currency | Launch sources | Launch sinks |

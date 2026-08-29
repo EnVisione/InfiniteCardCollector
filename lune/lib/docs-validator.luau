@@ -12,9 +12,11 @@ local requiredDocuments = {
 	"docs/general/documentation.md",
 	"docs/operations/development-setup.md",
 	"docs/test/phase-000-toolchain.md",
+	"docs/test/phase-001-calculation-contracts.md",
 	"docs/troubleshooting/toolchain.md",
 	"docs/verification/phase-000-foundation.md",
 	"docs/verification/phase-000-tool-provenance.md",
+	"docs/verification/phase-001-calculation-contracts.md",
 }
 
 local exactCommands = {
@@ -133,6 +135,19 @@ function DocsValidator.validate()
 		readme:find("No Roblox place, Luau source tree, executable build toolchain", 1, true) == nil,
 		"P000-DOCS-008 obsolete readme claim"
 	)
+	for _, phrase in
+		{
+			"Phase 000 is complete and Phase 001 is active",
+			"strict typed launch catalogs",
+			"still not a playable game",
+			"qualified Vinegar Studio route",
+		}
+	do
+		assert(
+			readme:find(phrase, 1, true) ~= nil,
+			"P001-DOCS-001 readme contract missing, " .. phrase
+		)
+	end
 
 	local overview = fs.readFile("docs/general/documentation.md")
 	assert(
@@ -143,6 +158,53 @@ function DocsValidator.validate()
 		overview:find("There are no valid build or test commands yet", 1, true) == nil,
 		"P000-DOCS-010 obsolete overview claim"
 	)
+	for _, phrase in
+		{
+			"Implemented Phase 001 Shared Contracts",
+			"catalogVersion = 1",
+			"configVersion = 1",
+			"perfect_sum_accuracy",
+			"half up rounding",
+			"client safe projection",
+		}
+	do
+		assert(
+			overview:find(phrase, 1, true) ~= nil,
+			"P001-DOCS-002 overview contract missing, " .. phrase
+		)
+	end
+
+	local phase001Test = fs.readFile("docs/test/phase-001-calculation-contracts.md")
+	for _, phrase in
+		{
+			"test summary, 27 passed, 0 failed",
+			"tests/phase001/expected-hashes.json",
+			"rojo serve default.project.json --address 127.0.0.1 --port 34872",
+			"Phase001FormationId",
+			"Evidence Invalidation and Recovery",
+		}
+	do
+		assert(
+			phase001Test:find(phrase, 1, true) ~= nil,
+			"P001-DOCS-003 test contract missing, " .. phrase
+		)
+	end
+
+	local phase001Evidence = fs.readFile("docs/verification/phase-001-calculation-contracts.md")
+	for _, phrase in
+		{
+			"27 tests",
+			"276 Joker pairs",
+			"5.55 to 1",
+			"Studio comparison",
+			"Candidate and Integration Closure",
+		}
+	do
+		assert(
+			phase001Evidence:find(phrase, 1, true) ~= nil,
+			"P001-DOCS-004 evidence contract missing, " .. phrase
+		)
+	end
 
 	local staleStudioClaims = {
 		"native Roblox Studio on a Roblox supported operating system remains a mandatory Phase 000 gate",
