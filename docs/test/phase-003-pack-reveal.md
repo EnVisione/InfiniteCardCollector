@@ -12,9 +12,8 @@ Run the complete suite with:
 ROKIT_ROOT="$PWD/build/rokit" PATH="$PWD/build/rokit/bin:$PATH" lune run test
 ```
 
-Expected result is 62 passed and 0 failed.
+Expected result is 63 passed and 0 failed.
 
 ## Studio acceptance
 
 In the local Vinegar Studio artifact, confirm that the client can select Classic, Radioactive, Astral, Joker, and Arcana pack surfaces. Opening remains server authoritative. The reveal controls expose Reveal Next, Reveal All, and Skip. Offer packs expose exactly three choices after reveal completion. A reconnect or bootstrap response with a pending pack reconstructs the pending surface from the snapshot and never fabricates card fields or offer metadata.
-

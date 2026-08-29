@@ -39,7 +39,7 @@ The platform bootstrap scripts download archives to temporary storage, verify si
 - `ServerStorage/Assets` contains three themed card frame fixtures, three neutral fallback fixtures, and three Deck Set pack fixtures. The fixtures are bounded procedural verification assets, not the complete reviewed launch media bundle.
 - `StarterGui/App/AppRoot` is a scale based transparent GUI root.
 
-The shared bootstrap contract contains immutable foundation metadata. The server and client bootstraps preserve the Phase 001 authoritative and projected calculation comparison. The server then starts the Phase 002 runtime, and the client starts the minimal application. The runtime creates one action remote, one message remote, profile and transaction services, inventory and deck services, the Starter Pack and guided Formation routes, player lifecycle, heartbeat work, bounded shutdown, and sanitized presentation fixtures. Trading, purchases, general pack routes, timed rounds, tasks, duels, and public release remain closed.
+The shared bootstrap contract contains immutable foundation metadata. The server and client bootstraps preserve the Phase 001 authoritative and projected calculation comparison. The server then starts the Phase 002 runtime, and the client starts the minimal application. The runtime creates one action remote, one message remote, profile, transaction, inventory, deck, pack, and progression services, the Starter Pack, Grade Ink, and guided Formation routes, player lifecycle, heartbeat work, bounded shutdown, and sanitized presentation fixtures. Trading, purchases, timed rounds, tasks, duels, and public release remain closed.
 
 StyLua covers every tracked Luau file in `src/` and `lune/`. Selene uses the committed, normalized `roblox.yml` standard library with `roblox-std-source = "pinned"`, so ordinary linting performs no standard library update. The Lune harness provides deterministic test IDs and ordering, repository bounded paths, supervised child process timeouts, isolated generated fixtures, stable error IDs, and nonzero failure exits.
 
@@ -131,13 +131,14 @@ The runtime targets Roblox and uses strict typed Luau for shared domain modules,
 
 ### Module Map
 
-- `src/shared/Network/` owns the frozen 24 action registry, 46 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
+- `src/shared/Network/` owns the frozen 24 action registry, 50 stable errors, exact schemas, resource bounds, and deterministic envelope validation.
 - `src/shared/Profile/` owns the readable profile domain, compact codec, canonical values, migration registry, and storage policy.
 - `src/shared/Rendering/` owns the shared card presentation model.
 - `src/server/Storage/` owns memory and Roblox adapters, the profile lifecycle, and the inventory storage interface.
 - `src/server/Transactions/` owns exact once profile mutation, versioned receipts, replay barriers, compaction, response recovery, and shutdown drain.
 - `src/server/Inventory/` owns card and Joker creation, collection history, flags, locks, eligibility, conservation, and the 52 slot deck.
 - `src/server/Packs/` owns the recoverable Classic Starter Pack slice, server-authoritative Classic, Radioactive, and Astral Deck Set Packs, and saved Joker and Arcana offer packs.
+- `src/server/Progression/ProgressionService.luau` owns deterministic Grade Ink progress, monotonic F through LR promotion, saved Tier preservation, explicit Trait choice and replacement, lock and favorite eligibility, Trait Essence costs, and sanitized progression traces.
 - `src/client/State/PackRevealController.luau` owns the client presentation state for committed pack results. It only reveals server supplied contents, exposes exact odds and pity metadata, supports staged reveal, reveal all, skip, one choice, reduced motion and static fallback cues, and hydrates pending records without inventing content.
 - `src/server/Formation/` owns the guided orchestration that calls the Phase 001 calculation contract without saving directly.
 - `src/server/Network/` owns token buckets and the fail closed gateway.
@@ -164,7 +165,7 @@ An unavailable service, malformed profile, foreign session, failed storage retry
 
 ### Network and Authority
 
-The launch action inventory is frozen at 24 IDs. Phase 002 enables bootstrap, Starter Pack open, deck equip, deck unequip, inventory flags, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
+The launch action inventory is frozen at 24 IDs. Phase 003 enables bootstrap, pack open, pack choice, deck equip, deck unequip, inventory flags, Grade Ink application, guided Formation submit, and binder page. Later actions validate their frozen schema and return `feature.unavailable`.
 
 The gateway validates envelope shape, exact action schema, encoded size, depth, node count, finite numbers, bounds, rate, availability, profile state, writable state, authorization, and route result in deterministic order. Every safe correlatable rejection returns the original request and action identity.
 
@@ -184,7 +185,7 @@ Shutdown closes new transactions, drains active work, flushes dirty profiles, an
 
 ### Inventory and Recoverable Slice
 
-Card and Joker UIDs are opaque, server generated, and collision checked against current and pending ownership. Provenance is immutable. Discovery is permanent. Removal protects favorites, wishlists, locks, equipped cards, and the last copy.
+Card and Joker UIDs are opaque, server generated, and collision checked against current and pending ownership. Provenance is immutable. Discovery is permanent. Removal protects favorites, wishlists, locks, equipped cards, and the last copy. Progression uses the same transaction boundary, preserves saved Power Tier and provenance, promotes Grade from cumulative XP without lowering it, and requires explicit replacement confirmation for an existing Trait. Grade Ink and Trait Essence changes return a compact trace and version pair.
 
 The deck contains exactly 52 rank and suit slots. Equip validates owner, content, lock, UID uniqueness, slot identity, occupancy, and expected profile revision. It changes only loadout references.
 
@@ -200,7 +201,7 @@ Client state rejects lower revisions and malformed messages. Read only and maint
 
 ## Planned Runtime Beyond Phase 003
 
-Later phases implement the full asset catalog, responsive interaction surfaces, timed Formation Rush rounds, tasks, progression, Joker and Arcana mutation, Friend Clash, trading journals, analytics, live operations, release verification, and controlled public access. Reserved action IDs are not evidence that those services exist.
+Later phases implement the full asset catalog, responsive interaction surfaces, timed Formation Rush rounds, tasks, Arcana mutation, Joker mutation, Friend Clash, trading journals, analytics, live operations, release verification, and controlled public access. Reserved action IDs are not evidence that those services exist.
 
 Inventory currently occupies one compact profile document behind `InventoryStore`. Before realistic profiles approach platform limits, a journaled sharding migration must replace the physical layout without changing gameplay service APIs.
 
@@ -228,13 +229,13 @@ lune run ci
 
 That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
 
-The combined suite now passes 62 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, classifications, and pending results, a client staged reveal controller with recovery and input parity, and server-authoritative Joker and Arcana offer packs with saved choices and exact grants.
+The combined suite now passes 63 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, three Deck Set visual identity records for all 156 base identities, the server-authoritative Deck Set Pack service with five card grants, configured Tier rolls, pity, provenance, classifications, and pending results, a client staged reveal controller with recovery and input parity, server-authoritative Joker and Arcana offer packs with saved choices and exact grants, and nonregressing Grade Ink and Trait progression with saved Tier preservation.
 
-The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
+The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, Grade Ink route readiness, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
 
 Phase 003 entry and asset contract evidence is recorded in [the Phase 003 entry packet](../verification/phase-003-entry.md), [the Phase 003 asset contract record](../verification/phase-003-asset-contract.md), and [the Phase 003 manifest snapshot](../verification/phase-003-asset-manifest.json). [The Deck Set identity evidence](../verification/phase-003-deckset-identities.md) records the three visual systems, 156 base identity records, and nine procedural fixtures. [The compositional card asset evidence](../verification/phase-003-composition.md) records the 624 form registry and semantic renderer references. [The special content asset evidence](../verification/phase-003-special-content.md) records the launch Joker, Arcana, pack, surface, and presentation identity families. [The pack reveal evidence](../verification/phase-003-pack-reveal.md) records server classifications, client staged reveal, exact odds and pity presentation, one-choice handling, malformed response safety, and pending recovery. The version 1 manifest validator now freezes source and built identities, hashes, provenance, review, fallbacks, references, preload groups, pool groups, and measured budgets before new launch assets are produced. It does not claim that the complete launch bundle exists.
 
-Later gameplay phases must extend verification to cover general pack pity, one card Arcana application, permanent Edition unlocks, Grade progression, timed rounds, tasks, multi client Friend Clash, trade settlement failure injection, touch, controller, mobile layout, broader performance, and production release gates.
+Later gameplay phases must extend verification to cover general pack pity, one card Arcana application, permanent Edition unlocks, timed rounds, tasks, multi client Friend Clash, trade settlement failure injection, touch, controller, mobile layout, broader performance, and production release gates.
 
 Do not claim a feature is complete before its specified deterministic checks and manual Roblox Studio paths pass.
 
@@ -248,5 +249,5 @@ Update the root README when setup, supported tools, public behavior, or release 
 - Phase 003 remains incomplete until the full launch asset, pack, progression, Joker, responsive surface, accessibility, Studio, isolated recovery, and integration gates pass.
 - InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
-- General packs, progression, timed rounds, tasks, duels, trading, purchases, analytics, and end scale inventory sharding are designed but unimplemented.
+- General packs, Arcana, Joker mutation, timed rounds, tasks, duels, trading, purchases, analytics, and end scale inventory sharding are designed but unimplemented. Grade and Trait progression is implemented for the current Phase 003 scope.
 - Popularity cannot be guaranteed; onboarding and retention targets require soft launch evidence.

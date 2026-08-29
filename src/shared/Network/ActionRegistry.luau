@@ -114,7 +114,7 @@ local actions = {
 		expectedRevision = revision(),
 		instanceId = stableId(64),
 	}, true, true),
-	policy("grade.apply_ink", "durable_idempotent", false, nil, 1024, 2, 1, 5, {
+	policy("grade.apply_ink", "durable_idempotent", true, "grade_apply_ink", 1024, 2, 1, 5, {
 		amount = scalar("integer", { min = 1, max = 1000000 }),
 		expectedRevision = revision(),
 		instanceId = stableId(64),

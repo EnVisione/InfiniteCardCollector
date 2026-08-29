@@ -29,6 +29,7 @@ local InventoryService = require(Server.Inventory.InventoryService)
 local NetworkGateway = require(Server.Network.NetworkGateway)
 local TokenBuckets = require(Server.Network.TokenBuckets)
 local PackService = require(Server.Packs.PackService)
+local ProgressionService = require(Server.Progression.ProgressionService)
 local StarterPackService = require(Server.Packs.StarterPackService)
 local ProfileProjection = require(Server.Projection.ProfileProjection)
 local RandomService = require(Server.Random.RandomService)
@@ -209,6 +210,12 @@ function Phase002Runtime.start(serverRoot: Instance)
 		canonical = CanonicalValue,
 		errors = ErrorRegistry,
 		rollContract = RollContract,
+	})
+	local progression = ProgressionService.new({
+		catalog = LaunchCatalog,
+		config = LaunchConfig,
+		inventory = inventory,
+		errors = ErrorRegistry,
 	})
 	local guidedFormation = GuidedFormationService.new({
 		inventory = inventory,
@@ -440,6 +447,32 @@ function Phase002Runtime.start(serverRoot: Instance)
 			end,
 		})
 		return withSnapshot(userKey, outcome, "inventory.set_flags")
+	end
+
+	routes.grade_apply_ink = function(userKey: string, payload: any, requestId: string): any
+		local player = playersByKey[userKey]
+		if player == nil then
+			return {
+				ok = false,
+				code = ErrorRegistry.codes.permissionDenied,
+				action = "grade.apply_ink",
+			}
+		end
+		local outcome = transactions:execute(userKey, {
+			id = requestId,
+			kind = "grade.apply_ink",
+			payload = payload,
+			expectedRevision = payload.expectedRevision,
+			apply = function(profile: any): any
+				return progression:applyGradeInk(
+					profile,
+					player.UserId,
+					payload.instanceId,
+					payload.amount
+				)
+			end,
+		})
+		return withSnapshot(userKey, outcome, "grade.apply_ink")
 	end
 
 	routes.guided_formation = function(userKey: string, payload: any, requestId: string): any

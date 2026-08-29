@@ -8,7 +8,7 @@ The client constructs this registry once from the projected catalog and records 
 
 ## Verification
 
-The deterministic suite passes 62 tests, including special content count, fallback, disabled lookup, deterministic manifest inventory, offer pack assertions, and pack reveal state assertions. The current phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `49b29059bbd2a37132adb87d7c8ffddefde7e95fbcb14d42cfb97414a96e8764` and SHA 512 `4c0cb6c27039cc6193d5acda1b3bdb7a04fff5004dd35f11a1273c20b07b7640bbc125ea174c8c2bca5709b29671d2f966dbb63c185273a6c258d587d7596c5c`. Formatting, Selene, documentation, secret, artifact, and CI gates remain required and are rerun after every artifact-affecting change.
+The deterministic suite passes 63 tests, including special content count, fallback, disabled lookup, deterministic manifest inventory, offer pack assertions, pack reveal state assertions, and progression state assertions. The current phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `60f5b042faa658dbf48ea1dc39d50739c2f0fcafb6c364a8b7655805874677ba` and SHA 512 `1cacec062a6735af6a15707cc5bf26d94e2c434ef6733f0a9f8e78a32a2e456cf9b91e952359f41c77c982d43071ae565427d1dd74fa033c3e33ad39a0646122`. Formatting, Selene, documentation, secret, artifact, and CI gates remain required and are rerun after every artifact-affecting change.
 
 ## Remaining work
 

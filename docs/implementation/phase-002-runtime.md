@@ -40,7 +40,7 @@ All keys use the internal prefix `profile_v1:` followed by the numeric user ID s
 
 The action and envelope versions are 1. Every envelope contains exactly `version`, `action`, `requestId`, and `payload`. Request IDs contain 16 through 64 ASCII letters, digits, or underscores. Stable IDs use lowercase letters, digits, underscores, periods, and colons within the field specific bound.
 
-The complete registry contains 24 actions. Eight routes are currently available. The other 16 preserve their launch schemas and return `feature.unavailable` after validation and rate limiting. Phase 003 adds earned Deck Set opening and saved Joker or Arcana choices over the original network contract.
+The complete registry contains 24 actions. Nine routes are currently available. The other 15 preserve their launch schemas and return `feature.unavailable` after validation and rate limiting. Phase 003 adds earned Deck Set opening, saved Joker or Arcana choices, and server-authoritative Grade Ink progression over the original network contract.
 
 | Action | Mode | Profile | Writable | Rate bucket | Phase 002 route |
 | --- | --- | --- | --- | --- | --- |
@@ -52,7 +52,7 @@ The complete registry contains 24 actions. Eight routes are currently available.
 | `joker.equip` | Durable idempotent | Yes | Yes | 4, plus 1 every 4 seconds | Unavailable. |
 | `joker.unequip` | Durable idempotent | Yes | Yes | 4, plus 1 every 4 seconds | Unavailable. |
 | `arcana.apply` | Durable idempotent | Yes | Yes | 2, plus 1 every 5 seconds | Unavailable. |
-| `grade.apply_ink` | Durable idempotent | Yes | Yes | 2, plus 1 every 5 seconds | Unavailable. |
+| `grade.apply_ink` | Durable idempotent | Yes | Yes | 2, plus 1 every 5 seconds | Available through ProgressionService. |
 | `inventory.set_flags` | Durable idempotent | Yes | Yes | 8, plus 2 every 2 seconds | Available. |
 | `formation.start` | Ephemeral idempotent | Yes | No | 3, plus 1 every 5 seconds | Unavailable. |
 | `formation.redraw` | Ephemeral idempotent | Yes | No | 4, plus 1 every 3 seconds | Unavailable. |

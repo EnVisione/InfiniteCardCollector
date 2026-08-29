@@ -243,6 +243,7 @@ function InventoryService.new(dependencies: any): any
 			slotKey = card.slotKey,
 			editionId = card.editionId,
 			gradeId = card.gradeId,
+			gradeExperience = card.gradeExperience,
 			powerTierId = card.powerTierId,
 			traitId = card.traitId,
 			favorite = card.flags.favorite,

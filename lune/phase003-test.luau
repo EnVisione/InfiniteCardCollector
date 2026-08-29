@@ -24,6 +24,7 @@ local CardViewModel = require("../src/shared/Rendering/CardViewModel")
 local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
+local ProgressionService = require("../src/server/Progression/ProgressionService")
 
 local Phase003Test = {}
 
@@ -755,6 +756,134 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			recovered.phase == "revealing" and recovered.pendingRecovery,
 			"P003-TEST-010 card recovery"
 		)
+	end)
+
+	addTest("P003-TEST-011-progression-service", function()
+		local collection = CollectionService.new()
+		local currencyIds = {}
+		for _, currency in LaunchConfig.economy.currencies do
+			table.insert(currencyIds, currency.id)
+		end
+		local profile = ProfileSchema.newBlank(
+			currencyIds,
+			100,
+			LaunchCatalog.catalogVersion,
+			LaunchConfig.configVersion
+		)
+		profile.currencies.grade_ink = 20000
+		profile.currencies.trait_essence = 10
+		local uidCounter = 0
+		local inventory = InventoryService.new({
+			catalog = LaunchCatalog,
+			errors = ErrorRegistry,
+			inventoryStore = InventoryStore.new(),
+			collection = collection,
+			uidFactory = function(_ownerUserId: number, kind: string): string
+				uidCounter += 1
+				return kind .. "_progression_" .. tostring(uidCounter)
+			end,
+			clock = function(): number
+				return 100
+			end,
+		})
+		local created = inventory:createCard(
+			profile,
+			42,
+			"classic:ace:hearts",
+			{ powerTierId = "zenith" },
+			{ originType = "fixture", originId = "progression" }
+		)
+		assert(created.ok, "P003-TEST-011 card created")
+		local progression = ProgressionService.new({
+			catalog = LaunchCatalog,
+			config = LaunchConfig,
+			inventory = inventory,
+			errors = ErrorRegistry,
+		})
+		local card = created.card
+		local thresholds = { 0, 10, 30, 70, 150, 300, 600, 1200, 2400, 4800, 9600 }
+		local previousGradeIndex = 1
+		for index, threshold in thresholds do
+			local current = card.gradeExperience
+			local amount = math.max(1, threshold - current)
+			if threshold == 0 then
+				assert(current == 0 and card.gradeId == "f", "P003-TEST-011 zero threshold")
+			else
+				local result = progression:applyGradeInk(profile, 42, card.uid, amount)
+				assert(result.ok, "P003-TEST-011 threshold result " .. tostring(index))
+			end
+			assert(
+				card.gradeExperience >= threshold,
+				"P003-TEST-011 threshold xp " .. tostring(index)
+			)
+			assert(card.gradeId ~= nil, "P003-TEST-011 threshold grade " .. tostring(index))
+			local gradeIndex = index
+			for candidateIndex, grade in LaunchCatalog.grades do
+				if grade.id == card.gradeId then
+					gradeIndex = candidateIndex
+				end
+			end
+			assert(gradeIndex >= previousGradeIndex, "P003-TEST-011 grade monotonic")
+			previousGradeIndex = gradeIndex
+		end
+		assert(card.gradeId == "lr", "P003-TEST-011 lr promotion")
+		assert(card.powerTierId == "zenith", "P003-TEST-011 tier preserved")
+		assert(card.gradeExperience == 9600, "P003-TEST-011 lr xp")
+		card.gradeExperience = LaunchConfig.gameplayCaps.grade_experience
+		local atCap = progression:applyGradeInk(profile, 42, card.uid, 1)
+		assert(
+			not atCap.ok and atCap.code == ErrorRegistry.codes.gradeAtCap,
+			"P003-TEST-011 grade cap"
+		)
+		assert(profile.currencies.grade_ink == 10400, "P003-TEST-011 capped spend")
+
+		card.gradeId = "f"
+		card.gradeExperience = 0
+		local choices = progression:eligibleTraitIds(profile, 42, card.uid)
+		assert(choices.ok and #choices.traitIds == 12, "P003-TEST-011 trait choices")
+		local chosen = progression:chooseTrait(profile, 42, card.uid, "fortune")
+		assert(chosen.ok and card.traitId == "fortune", "P003-TEST-011 trait choice")
+		assert(
+			chosen.cost == 1 and profile.currencies.trait_essence == 9,
+			"P003-TEST-011 trait cost"
+		)
+		local unconfirmed = progression:chooseTrait(profile, 42, card.uid, "fierce")
+		assert(
+			not unconfirmed.ok and unconfirmed.code == ErrorRegistry.codes.traitReplacementRequired,
+			"P003-TEST-011 replacement confirmation"
+		)
+		local replaced = progression:chooseTrait(profile, 42, card.uid, "fierce", {
+			replace = true,
+			expectedTraitId = "fortune",
+		})
+		assert(replaced.ok and card.traitId == "fierce", "P003-TEST-011 trait replacement")
+		assert(
+			card.powerTierId == "zenith" and card.gradeExperience == 0,
+			"P003-TEST-011 replacement preservation"
+		)
+		local stale = progression:chooseTrait(profile, 42, card.uid, "guardian", {
+			replace = true,
+			expectedTraitId = "fortune",
+		})
+		assert(
+			not stale.ok and stale.code == ErrorRegistry.codes.staleState,
+			"P003-TEST-011 stale trait"
+		)
+		card.locks.progression = true
+		local beforeLocked = CanonicalValue.encode(profile)
+		local locked = progression:applyGradeInk(profile, 42, card.uid, 1)
+		assert(
+			not locked.ok and locked.code == ErrorRegistry.codes.instanceLocked,
+			"P003-TEST-011 locked grade"
+		)
+		local lockedTrait = progression:chooseTrait(profile, 42, card.uid, "guardian", true)
+		assert(
+			not lockedTrait.ok and lockedTrait.code == ErrorRegistry.codes.instanceLocked,
+			"P003-TEST-011 locked trait"
+		)
+		assert(CanonicalValue.encode(profile) == beforeLocked, "P003-TEST-011 locked no mutation")
+		card.locks.progression = nil
+		ProfileSchema.validate(profile)
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()

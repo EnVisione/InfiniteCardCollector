@@ -39,16 +39,16 @@ Protected plan files and `docs/plan/goal.md` have no Phase 002 execution diff.
 
 | Report | SHA 256 |
 | --- | --- |
-| Actions and errors | `c8bef331e4681bf350cdf51eceb8425b87b4452679ba8183f9142d620d4e2e8a` |
+| Actions and errors | `b19a524d3845670a8fb6f8df9d28a88183adfb87f2fabcceaf5d67e84b57ccd6` |
 | Failure stages | `c0686124dd4d6ad7588f475ec909b33db37bc25fceb5a137bc7aa514b2168535` |
 | Migrations | `87d1bb9db7e635352b4bf6c0ce05a35a1e42bccea6d9a280b609a45a49a540f2` |
 | Profile sizes | `c321df047d7257d29dc7aaf8b34b62dd291945714dff4f6120f49995387e8c60` |
-| Recovery | `cd9cd17907d045b054cbecd7dd24f55550c5c1b6109b077c7fa697d759aac0d7` |
+| Recovery | `3826e97c8c78e48c4c30357bb7e9e2df8b09b68667f536a645d401f2652229bf` |
 | Renderer | `2c067a309e254dd84bbe6df1f25de2f25ae92e5ea115930be229076d89381d11` |
 
 ## Action and Error Inventory
 
-The generated network report contains 24 actions, 8 currently available handlers, and 46 stable error codes. The Phase 003 pack extension adds earned pack opening, saved choices, `pack.insufficient_currency`, `pack.choice_invalid`, and `pack.choice_unavailable` while preserving the versioned action and validation contracts. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
+The generated network report contains 24 actions, 9 currently available handlers, and 50 stable error codes. The Phase 003 pack and progression extension adds earned pack opening, saved choices, Grade Ink application, `pack.insufficient_currency`, `pack.choice_invalid`, `pack.choice_unavailable`, and progression validation while preserving the versioned action and validation contracts. Every action records mode, exact schema, maximum encoded bytes, maximum depth, maximum nodes, profile and writable requirements, rate capacity, refill amount, refill period, availability, and handler ID.
 
 The complete hostile matrix constructs a valid minimum payload and invalid shape or boundary payloads for all 24 actions. Gateway tests prove deterministic validation, independent token buckets, unavailable route handling, readiness, writable state, authorization, protected routing, safe request correlation, and no mutation on rejection.
 
