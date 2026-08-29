@@ -10,4 +10,4 @@ Run the focused and complete checks from the repository root:
 ROKIT_ROOT="$PWD/build/rokit" PATH="$PWD/build/rokit/bin:$PATH" build/rokit/bin/lune run test
 ```
 
-Expected result is 67 passing tests with no failures.
+Expected result is 68 passing tests with no failures.

@@ -25,6 +25,7 @@ local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
 local PackRevealController = require("../src/client/State/PackRevealController")
 local SurfaceState = require("../src/client/State/SurfaceState")
+local InteractionState = require("../src/client/State/InteractionState")
 local ProgressionService = require("../src/server/Progression/ProgressionService")
 local ArcanaService = require("../src/server/Progression/ArcanaService")
 local JokerService = require("../src/server/Inventory/JokerService")
@@ -1406,6 +1407,70 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 		assert(
 			malformed.lastCode == "client.invalid_server_message",
 			"P003-TEST-015 malformed message"
+		)
+	end)
+
+	addTest("P003-TEST-016-input-and-responsive-state", function()
+		local state = InteractionState.new()
+		assert(state.breakpoint == "desktop" and state.uiScale == 1, "P003-TEST-016 defaults")
+		assert(
+			InteractionState.resolveAction("keyboard", "Return") == "activate"
+				and InteractionState.resolveAction("controller", "ButtonB") == "back"
+				and InteractionState.resolveAction("touch", "SwipeLeft") == "next",
+			"P003-TEST-016 semantic actions"
+		)
+		state = InteractionState.setDevice(state, "controller")
+		assert(state.device == "controller", "P003-TEST-016 device")
+		state = InteractionState.setViewport(state, 500, 800)
+		assert(
+			state.breakpoint == "phone" and state.uiScale == 0.9,
+			"P003-TEST-016 phone breakpoint"
+		)
+		state = InteractionState.setSettings(state, {
+			reducedMotion = true,
+			reducedFlash = true,
+			lowGraphics = true,
+			colorAssistance = true,
+			revealSound = false,
+			uiScale = 120,
+		})
+		assert(
+			state.settings.reducedMotion
+				and state.settings.reducedFlash
+				and state.settings.lowGraphics
+				and state.settings.colorAssistance
+				and state.uiScale == 1.08,
+			"P003-TEST-016 settings and scale"
+		)
+		state = InteractionState.setFocusOrder(state, { "first", "second", "third" })
+		assert(state.focusedId == "first", "P003-TEST-016 focus first")
+		state = InteractionState.moveFocus(state, 1)
+		state = InteractionState.moveFocus(state, 1)
+		state = InteractionState.moveFocus(state, 1)
+		assert(state.focusedId == "first", "P003-TEST-016 focus wraps")
+		state = InteractionState.applyMessage(state, {
+			ok = true,
+			code = "bootstrap.ready",
+			snapshot = {
+				writable = true,
+				settings = { uiScale = 100, reducedMotion = false },
+			},
+		})
+		assert(state.phase == "ready" and state.uiScale == 0.9, "P003-TEST-016 snapshot state")
+		local invalidDevice = InteractionState.setDevice(state, "vr")
+		assert(
+			invalidDevice.device == "controller"
+				and invalidDevice.lastCode == "client.input_device_invalid",
+			"P003-TEST-016 invalid device"
+		)
+		state = InteractionState.applyMessage(state, { ok = false, code = "storage.unavailable" })
+		assert(state.phase == "maintenance", "P003-TEST-016 maintenance state")
+		local projected = InteractionState.project(state)
+		assert(
+			projected.breakpoint == "phone"
+				and projected.settings.reducedMotion == false
+				and projected.phase == "maintenance",
+			"P003-TEST-016 projection"
 		)
 	end)
 

@@ -1,11 +1,14 @@
 --!strict
 
 local ContentProvider = game:GetService("ContentProvider")
+local GuiService = game:GetService("GuiService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UserInputService = game:GetService("UserInputService")
 
 local ClientState = require(script.Parent.Parent.State.ClientState)
 local SurfaceState = require(script.Parent.Parent.State.SurfaceState)
+local InteractionState = require(script.Parent.Parent.State.InteractionState)
 local PackRevealController = require(script.Parent.Parent.State.PackRevealController)
 local CardRenderer2D = require(script.Parent.Parent.Rendering.CardRenderer2D)
 local CardRenderer3D = require(script.Parent.Parent.Rendering.CardRenderer3D)
@@ -71,6 +74,11 @@ function ClientApp.start(launchContract: any)
 	assert(rootValue ~= nil and rootValue:IsA("Frame"), "P002-CLIENT-002 root missing")
 	local root = rootValue :: Frame
 	root:ClearAllChildren()
+	local interactionState = InteractionState.new()
+	local appScale = Instance.new("UIScale")
+	appScale.Name = "AppScale"
+	appScale.Scale = interactionState.uiScale
+	appScale.Parent = root
 	local presentationAssets = ReplicatedStorage:WaitForChild("PresentationAssets", 30)
 	assert(presentationAssets ~= nil, "P002-CLIENT-004 presentation assets missing")
 	local preloadInstances = PreloadManifest.resolve(presentationAssets)
@@ -137,7 +145,28 @@ function ClientApp.start(launchContract: any)
 	for _, definition in SurfaceState.definitions do
 		local button = makeButton(surfaceNavigation, "Surface_" .. definition.id, definition.title)
 		button.Size = UDim2.fromOffset(132, 40)
+		button.Selectable = true
 		surfaceButtons[definition.id] = button
+	end
+	local surfaceFocusOrder = {}
+	for _, definition in SurfaceState.definitions do
+		table.insert(surfaceFocusOrder, "Surface_" .. definition.id)
+	end
+	interactionState = InteractionState.setFocusOrder(interactionState, surfaceFocusOrder)
+
+	local function syncViewport()
+		local size = root.AbsoluteSize
+		if size.X <= 0 or size.Y <= 0 then
+			return
+		end
+		if
+			interactionState.viewport.width == size.X
+			and interactionState.viewport.height == size.Y
+		then
+			return
+		end
+		interactionState = InteractionState.setViewport(interactionState, size.X, size.Y)
+		appScale.Scale = interactionState.uiScale
 	end
 
 	local status =
@@ -537,6 +566,11 @@ function ClientApp.start(launchContract: any)
 		app:SetAttribute("SurfaceState", activeSurface.status)
 		app:SetAttribute("SurfaceRevision", activeSurface.revision)
 		app:SetAttribute("SurfacePendingRecovery", activeSurface.pendingRecovery)
+		app:SetAttribute("InputDevice", interactionState.device)
+		app:SetAttribute("Breakpoint", interactionState.breakpoint)
+		app:SetAttribute("UIScale", interactionState.uiScale)
+		app:SetAttribute("FocusedSurfaceId", interactionState.focusedId or "")
+		appScale.Scale = interactionState.uiScale
 		for surfaceId, button in surfaceButtons do
 			local surface = SurfaceState.project(surfaceState, surfaceId)
 			button:SetAttribute("SurfaceId", surface.id)
@@ -795,6 +829,7 @@ function ClientApp.start(launchContract: any)
 		revealState = PackRevealController.applyMessage(revealState, message)
 		state = ClientState.applyMessage(state, message)
 		surfaceState = SurfaceState.applyMessage(surfaceState, message)
+		interactionState = InteractionState.applyMessage(interactionState, message)
 		if
 			message.action == "bootstrap.request"
 			and message.ok
@@ -813,6 +848,51 @@ function ClientApp.start(launchContract: any)
 		end)
 	end
 
+	local function deviceForInput(inputType: any): string?
+		local name = inputType.Name
+		if string.sub(name, 1, 7) == "Gamepad" then
+			return "controller"
+		elseif name == "Touch" then
+			return "touch"
+		elseif name == "Keyboard" then
+			return "keyboard"
+		elseif string.find(name, "Mouse", 1, true) ~= nil then
+			return "mouse"
+		end
+		return nil
+	end
+
+	root:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		syncViewport()
+		render()
+	end)
+	UserInputService.LastInputTypeChanged:Connect(function(inputType)
+		local device = deviceForInput(inputType)
+		if device ~= nil then
+			interactionState = InteractionState.setDevice(interactionState, device)
+			render()
+		end
+	end)
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if gameProcessed then
+			return
+		end
+		local actionId = InteractionState.resolveAction(interactionState.device, input.KeyCode.Name)
+		if actionId == "next" or actionId == "previous" then
+			interactionState =
+				InteractionState.moveFocus(interactionState, if actionId == "next" then 1 else -1)
+			if interactionState.focusedId ~= nil and interactionState.device == "controller" then
+				local focusedButton =
+					surfaceButtons[interactionState.focusedId:gsub("^Surface_", "")]
+				if focusedButton ~= nil then
+					GuiService.SelectedObject = focusedButton
+				end
+			end
+			render()
+		end
+	end)
+
+	syncViewport()
 	render()
 	send("bootstrap.request", {}, "bootstrap")
 end

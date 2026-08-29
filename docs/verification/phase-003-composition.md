@@ -8,7 +8,7 @@
 
 ## Verification
 
-The deterministic suite passes 67 tests, including the Phase 003 Deck Set, composition count, form reachability, missing-layer fallback, manifest inventory, offer pack, pack reveal, progression, Arcana, protected salvage, Joker loadout, and surface state assertions. Formatting and Selene checks pass, and all nine CI gates pass. The current phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `b3d060e94887e5225266379de0ae628ea5ef741f935463a2cea7c8a15daf19fe` and SHA 512 `46a82d6af3eb72e2a7f650574e5a676716b97c1668fa4721a046977b6424b8809fa3e557a49c108f0ed995ae913af7475872aaa2338b688071744b931a1ba91c`. The connected Vinegar Studio client restarted with no server or client console output. A client Luau check confirmed 624 forms, `asset.form.astral:ace:spades:golden`, `asset.edition.golden`, and `asset.status.favorite` for a composed card.
+The deterministic suite passes 68 tests, including the Phase 003 Deck Set, composition count, form reachability, missing-layer fallback, manifest inventory, offer pack, pack reveal, progression, Arcana, protected salvage, Joker loadout, surface state, and input state assertions. Formatting and Selene checks pass, and all nine CI gates pass. The current phase artifact is `build/infinite-card-collector.rbxlx` with SHA 256 `7a8626f22fdad320625a0a48ae1d25ae0b7ff25f1777807bd310df053dd40876` and SHA 512 `95b13af153491b31562cd044b359f08f7c39eb4ace96b03eac567303d1f52f534e99c0d4f544cb9fe64bfdd5bebbb54d91c1ce4ea8f712aa3acc1271c99caf53`. The connected Vinegar Studio client restarted with no server or client console output. A client Luau check confirmed 624 forms, `asset.form.astral:ace:spades:golden`, `asset.edition.golden`, and `asset.status.favorite` for a composed card.
 
 ## Remaining work
 
