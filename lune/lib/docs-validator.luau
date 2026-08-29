@@ -144,9 +144,9 @@ function DocsValidator.validate()
 	)
 	for _, phrase in
 		{
-			"Phase 000 and Phase 001 are integrated and signed",
-			"Phase 002 is active",
-			"local Phase 002 vertical slice",
+			"Phase 000, Phase 001, and Phase 002 are integrated and signed",
+			"Phase 003 is active",
+			"Phase 003 entry evidence",
 			"qualified Vinegar route",
 		}
 	do

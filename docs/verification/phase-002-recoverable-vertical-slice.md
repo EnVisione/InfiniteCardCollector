@@ -2,15 +2,15 @@
 
 ## Scope
 
-This rolling record covers `CORE-REQ-004` through `CORE-REQ-008` and `P002-TASK-001` through `P002-TASK-015`. It records the active Phase 002 branch implementation, deterministic evidence, local Vinegar Studio execution, and remaining isolated Roblox prerequisite.
+This completed record covers `CORE-REQ-004` through `CORE-REQ-008` and `P002-TASK-001` through `P002-TASK-015`. It records the Phase 002 branch implementation, deterministic evidence, local Vinegar Studio execution, isolated Roblox recovery, GitHub integration, signed tagging, and wiki synchronization.
 
-It does not claim Phase 002 integration, public release, production DataStore readiness, general pack opening, progression, tasks, duels, trading, commerce, or analytics.
+It does not claim general pack opening, progression, tasks, duels, trading, commerce, analytics, or public release.
 
 ## Current Result
 
 The Phase 002 candidate implements network contract version 1, profile and compact codec version 1, receipt and replay barrier version 1, renderer version 1, one writable session model, bounded retry and shutdown, exact once transactions, card and Joker ownership boundaries, the 52 slot deck, a recoverable Classic Starter Pack, one guided Monosuit reward, and one shared 2D and 3D renderer foundation.
 
-The deterministic repository suite passes 52 tests with 0 failures. StyLua and Selene are clean. Rojo builds the mapped card and pack fixtures. Local Vinegar Studio passes the complete in memory vertical slice and an empty console.
+The deterministic repository suite passes 52 tests with 0 failures. StyLua and Selene are clean. Rojo builds the mapped card and pack fixtures. Local and isolated Vinegar Studio pass the complete vertical slice and an empty project console.
 
 The isolated Roblox gate is now exercised against the owner authorized private universe and place listed below. The published candidate remains private and the prior place version was preserved. This evidence is limited to the authorized test account and does not establish production readiness.
 
@@ -257,7 +257,7 @@ The run proves real `UpdateAsync` writes, committed reveal recovery, acknowledge
 
 ## Completion Gates
 
-Phase 002 remains incomplete until all of these pass against one unchanged candidate:
+Phase 002 completion gates passed against one unchanged candidate:
 
 1. Two complete local CI runs.
 2. Final deterministic report hashes.
@@ -268,9 +268,11 @@ Phase 002 remains incomplete until all of these pass against one unchanged candi
 7. Secret and full diff inspection.
 8. Phase issue, milestone, and roadmap synchronization.
 9. Required GitHub checks and private independent review capability disposition.
-10. Pull request merge commit on `main`.
-11. Signed annotated `phase-002` tag on the merged commit.
-12. Postmerge wiki synchronization.
+10. Pull request 16 merge commit `1ae97cfcec79427ff7849d83d0ecd39e31aebf72` on `main`.
+11. Signed annotated `phase-002` tag on that merge commit.
+12. Postmerge wiki synchronization at commit `7a231b6a0d09dbc855252852eda7e78017b3f552`.
+
+Phase 002 is complete and integrated. The next mandatory phase is `CORE-PHASE-003`; see [the Phase 003 entry packet](phase-003-entry.md).
 
 ## Evidence Invalidation
 

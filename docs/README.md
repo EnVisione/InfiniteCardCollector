@@ -49,6 +49,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 000 tool provenance](verification/phase-000-tool-provenance.md)
 - [Phase 001 catalog and calculation evidence](verification/phase-001-calculation-contracts.md)
 - [Phase 002 recoverable vertical slice evidence](verification/phase-002-recoverable-vertical-slice.md)
+- [Phase 003 entry and baseline evidence](verification/phase-003-entry.md)
 
 ## Troubleshooting
 

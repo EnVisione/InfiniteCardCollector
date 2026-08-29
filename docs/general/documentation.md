@@ -2,7 +2,7 @@
 
 ## Status
 
-InfiniteCardCollector is a Roblox game project with integrated Phase 000 and Phase 001 foundations and an active Phase 002 recoverable vertical slice. The repository contains deterministic development commands, a verified Linux tool bootstrap, reproducible Rojo generation, exact launch catalogs, versioned configuration, pure calculations, a versioned network boundary, compact profiles, session leases, exact once transactions, owned cards, a 52 slot deck, one recoverable Starter Pack, one guided reward, and a minimal authoritative client interface. It is locally playable for verification but is not published or ready for players.
+InfiniteCardCollector is a Roblox game project with integrated Phase 000, Phase 001, and Phase 002 foundations and an active Phase 003 launch collection and interface phase. The repository contains deterministic development commands, a verified Linux tool bootstrap, reproducible Rojo generation, exact launch catalogs, versioned configuration, pure calculations, a versioned network boundary, compact profiles, session leases, exact once transactions, owned cards, a 52 slot deck, one recoverable Starter Pack, one guided reward, and a minimal authoritative client interface. It is playable for verification but is not published or ready for players.
 
 ## Product Boundary
 
@@ -23,7 +23,7 @@ Use this order when documents disagree:
 7. Implemented source and passing tests after implementation begins.
 8. This technical overview and the root README.
 
-Phase 000 and Phase 001 are integrated and signed. Phase 002 is active on its sequential phase branch. Its deterministic and local Vinegar Studio paths pass, while the owner authorized isolated Roblox DataStore interruption and rejoin gate remains required. The future plan does not authorize deferred content for the initial release.
+Phase 000, Phase 001, and Phase 002 are integrated and signed. Phase 003 is active on its sequential phase branch. Its inherited deterministic and isolated Vinegar Studio recovery paths pass. The Phase 003 entry packet freezes the current plan identities, launch counts, toolchain, isolated environment, artifact, and evidence topology before content implementation. The future plan does not authorize deferred content for the initial release.
 
 ## Implemented Foundation
 
@@ -196,7 +196,7 @@ The client clones the two Rojo mapped fixture models through a component pool, p
 
 Client state rejects lower revisions and malformed messages. Read only and maintenance responses retain presentation but remove writable authority.
 
-## Planned Runtime Beyond Phase 002
+## Planned Runtime Beyond Phase 003
 
 Later phases implement the full asset catalog, responsive interaction surfaces, timed Formation Rush rounds, tasks, progression, Joker and Arcana mutation, Friend Clash, trading journals, analytics, live operations, release verification, and controlled public access. Reserved action IDs are not evidence that those services exist.
 
@@ -240,8 +240,8 @@ Update the root README when setup, supported tools, public behavior, or release 
 
 ## Known Limitations
 
-- The repository contains a local playable foundation slice, not a complete game loop or public experience.
-- Phase 002 remains incomplete until isolated DataStore interruption and rejoin, final artifact and CI, pull request checks, review disposition, merge, signed tag, and wiki gates pass.
+- The repository contains a local playable foundation slice and an active Phase 003 entry baseline, not a complete game loop or public experience.
+- Phase 003 remains incomplete until the full launch asset, pack, progression, Joker, responsive surface, accessibility, Studio, isolated recovery, and integration gates pass.
 - InfiniteCardCollector is the selected public name, but its final trademark, Roblox experience search, logo, icon, and asset clearance remain release prerequisites.
 - Balance values are starting hypotheses and require live analytics.
 - General packs, progression, timed rounds, tasks, duels, trading, purchases, analytics, and end scale inventory sharding are designed but unimplemented.

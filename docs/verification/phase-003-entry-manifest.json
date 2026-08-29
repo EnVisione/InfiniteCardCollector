@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "phaseId": "CORE-PHASE-003",
+  "taskId": "P003-TASK-001",
+  "sourceCommit": "2f446b6c8167089eaa6f75f6a3d632b7004f2c04",
+  "branch": "envy/core-phase-003",
+  "repository": {
+    "remote": "https://github.com/EnVisione/InfiniteCardCollector.git",
+    "defaultBranch": "main",
+    "visibility": "public",
+    "originMain": "2f446b6c8167089eaa6f75f6a3d632b7004f2c04",
+    "cleanTrackedTree": true
+  },
+  "immutableGoal": {
+    "path": "docs/plan/goal.md",
+    "sha256": "fbe125681fc52b42131aa7aa1f4f61902d33c7912adc982ebcb7dbd87cff2f69",
+    "creationPlanSha256": "6171fe53ca75fe6d1df7cf9fbfc0fd224af0dadbaa99380dcce4300a5ce7d880",
+    "creationPlanSetSha256": "c83f9327d887f8befea060a75fdea8568383ced1bfbfc305ce863119add5af8b",
+    "status": "unchanged"
+  },
+  "planSet": {
+    "master": {
+      "path": "docs/general/plan.md",
+      "sha256": "55e38a51c424446cb10f2b52482eb44b3bbec1c70570b0cb4d2d3395b640c3a8"
+    },
+    "index": {
+      "path": "docs/general/plan.index.json",
+      "sha256": "105f457e336198dc54dbeb538e7abc9c5be8d98448e26a7fd2cc2b414015eacf"
+    },
+    "handoff": {
+      "path": "docs/general/plan.handoff.json",
+      "sha256": "644ced76eaac5a3b8d73e76b469f029c8a577376ac3000da77c9d1b9b2ec6542",
+      "declaredPlanSetSha256": "4b7b03e8d70b5f5650e265f115d15878329742409825b07cd515079882556b3c"
+    },
+    "registeredPhases": {
+      "CORE-PHASE-000": "02c5bdbaa5a1ab8bd8317a6843793b8641338a49fdea588b4071f9ea3301d0a9",
+      "CORE-PHASE-001": "590f41f756b5ad5f82f27032dd72370cadeebe3a5505e3dfb614d6db146b6da3",
+      "CORE-PHASE-002": "857d74e9895ca042589ee442b7d67b652aad21e550a69e8117f45b6e940cb25e",
+      "CORE-PHASE-003": "d7d192861e83198d8ac7794eae46b219004e6152639fdc8be2fc3f57d2894dbd",
+      "CORE-PHASE-004": "c456b127231b153b878a4b68597e45212acfbef72a8ed77e4967bc1a433ea9e5",
+      "CORE-PHASE-005": "095fafe9d8eeb535e64abdadf7b4f7a5cd5d0b3bf6efd2edcbfb719c24e9ed20",
+      "CORE-PHASE-006": "7078da6f9535cd4ea2e35515a72e27d3f793d1d43e07b35141b15e8008efe194",
+      "CORE-PHASE-007": "85803a59fb05eeb086e70c2db53cc49d094a4982b3ee8dd6ce0c71128f058bb8",
+      "CORE-PHASE-008": "75614048330c39b8261f486baa99f842c532861d4b36d43e25b9d0dc548d5d34",
+      "CORE-PHASE-009": "dae639d23400e5e78500723576ce867283abdbf035e8a6306fd1fe141260b3e9"
+    },
+    "classification": "authorized_plan_digest_drift_preserved_goal"
+  },
+  "upstream": {
+    "phase002": {
+      "pullRequest": 16,
+      "mergeCommit": "1ae97cfcec79427ff7849d83d0ecd39e31aebf72",
+      "signedTag": "phase-002",
+      "signedTagTarget": "1ae97cfcec79427ff7849d83d0ecd39e31aebf72",
+      "tagSignature": "verified",
+      "provenancePullRequest": 17,
+      "provenanceMergeCommit": "2f446b6c8167089eaa6f75f6a3d632b7004f2c04",
+      "requiredChecks": "passed",
+      "reviewDisposition": "private_independent_review_unavailable_nonblocking",
+      "runtimeEvidence": "docs/verification/phase-002-recoverable-vertical-slice.md"
+    }
+  },
+  "launchCounts": {
+    "deckSets": 3,
+    "baseIdentities": 156,
+    "editions": 4,
+    "permanentForms": 624,
+    "grades": 11,
+    "powerTiers": 11,
+    "traits": 12,
+    "jokers": 24,
+    "arcana": 12,
+    "formations": 12,
+    "enabledSouls": 0,
+    "jokerRarityDistribution": {
+      "common": 8,
+      "uncommon": 5,
+      "rare": 4,
+      "epic": 3,
+      "legendary": 2,
+      "mythic": 2
+    }
+  },
+  "versions": {
+    "catalog": 1,
+    "configuration": 1,
+    "fixture": 1,
+    "action": 1,
+    "envelope": 1,
+    "profileSchema": 1,
+    "profileCodec": 1,
+    "receipt": 1,
+    "renderer": 1
+  },
+  "toolchain": {
+    "rokit": "1.2.0",
+    "rojo": "7.7.0",
+    "stylua": "2.5.2",
+    "selene": "0.31.0",
+    "lune": "0.10.5",
+    "rojoAddress": "127.0.0.1:34872"
+  },
+  "commands": {
+    "verifyTools": "passed",
+    "format": "passed",
+    "lint": "passed",
+    "tests": "52 passed, 0 failed",
+    "phase002Evidence": "passed, six stable report hashes",
+    "artifact": {
+      "status": "passed",
+      "sha256": "20ec34e1787dc2f0594681899a8e7b6a27012f07d66b4458129ff27f2f2e7b35",
+      "sha512": "54f3d00835ad32cfaa86a275921394819367c592a9134954b7baecc02ba90b387fce8b76d8fe4aff8e9bafa49b1a11b8464ebd7d538a9d5422f6e2ce5c9e4438",
+      "size": 312867
+    },
+    "documentation": "passed, 33 markdown files",
+    "secrets": "passed, 139 repository paths",
+    "ci": "passed, nine gates"
+  },
+  "environment": {
+    "route": "qualified-vinegar",
+    "vinegar": "1.9.4",
+    "wine": "11.16",
+    "robloxStudioDeployment": "version-268c7d941ba34c1a",
+    "robloxClient": "0.736.0.7361346",
+    "rojoPlugin": "7.7.0, sha256 214e5ad84ccdc88f873e0467b6724e4ea9ada8ea340fcb9d4397cb899a67c83f",
+    "mcp": "connected",
+    "universeId": 1808549145,
+    "placeId": 5183598846,
+    "studioApiAccess": "saved",
+    "storageMode": "isolated_data_store",
+    "studioRuntimePlaceVersion": 0
+  },
+  "sourceAssets": {
+    "phaseOwnedSourceDirectory": "absent",
+    "phaseOwnedSourceRecords": 0,
+    "existingMappedFixtureModels": 2,
+    "status": "proposed_assets_not_yet_produced"
+  },
+  "artifactInputs": {
+    "projectMapSha256": "1a465cef38b2d3d8f8d32c6ad9578203ddba634592064f73d119ada84fb0f477",
+    "sourceMapSha256": "7b3e63a9875512b7a9e91ecf885972bbacfe5117c9ed974f0979b4466dc39f21",
+    "instanceInventorySha256": "1948dd6c603625dbb5875de1c2558be1fba489791bdac0e49fc248e38884586c",
+    "normalizedSourceInputSha256": "de0570babbc25f61efb63f0dd779f1030419c27d16c3b97511f35a7050a910a9",
+    "mappedFixtureModels": [
+      "ClassicFrameFixture",
+      "ClassicStarterPackFixture"
+    ]
+  },
+  "evidenceTopology": {
+    "verified": [
+      "docs/verification/phase-000-foundation.md",
+      "docs/verification/phase-001-calculation-contracts.md",
+      "docs/verification/phase-002-recoverable-vertical-slice.md",
+      "docs/test/phase-002-recovery-workflow.md",
+      "build/artifact-manifest.json"
+    ],
+    "nextTask": "P003-TASK-002",
+    "pendingPhase003Tasks": [
+      "P003-TASK-002",
+      "P003-TASK-003",
+      "P003-TASK-004",
+      "P003-TASK-005",
+      "P003-TASK-006",
+      "P003-TASK-007",
+      "P003-TASK-008",
+      "P003-TASK-009",
+      "P003-TASK-010",
+      "P003-TASK-011",
+      "P003-TASK-012",
+      "P003-TASK-013",
+      "P003-TASK-014",
+      "P003-TASK-015",
+      "P003-TASK-016",
+      "P003-TASK-017"
+    ]
+  }
+}
