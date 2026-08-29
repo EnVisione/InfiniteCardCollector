@@ -46,6 +46,8 @@ The responsive captures use the local artifact and these device simulator preset
 
 The game declares `LandscapeSensor`, so portrait evidence is outside the supported orientation contract. Reset the device simulator to its default state after the run.
 
+The Studio simulator uses internal device IDs `iphone_17_pro`, `ipad_pro_M5_13in`, and `average_laptop`, not the display names. Activate a mobile preset with `SetDeviceAsync` before calling `SetOrientationAsync`. The simulator orientation API accepts `LandscapeLeft`, `LandscapeRight`, or `Portrait`; `LandscapeSensor` is a game orientation declaration and is not a valid simulator argument. Do not send an orientation request for the desktop preset.
+
 ## Isolated recovery gate
 
 The exact private DataStore workflow remains mandatory. Run the pack, progression, Joker, disconnect, shutdown, rejoin, and recovery matrix in the owner authorized isolated place, compare stable profile, receipt, pending state, ownership, discovery, pity, trace, and revision hashes, and record the result under `docs/verification/`. Local memory evidence cannot substitute for this gate.

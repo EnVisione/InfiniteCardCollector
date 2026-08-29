@@ -16,6 +16,8 @@ The local Starter Pack flow committed five cards, showed five virtualized rows, 
 
 The phone capture `phase003_phone_landscape_action_fit` exposed and then verified the fix for the prior constrained layout defect. The foundation panel is now a vertical ScrollingFrame, action labels wrap in responsive buttons, and the minimum card viewport is 180 logical pixels before UI scale. The tablet capture `phase003_tablet_landscape` and desktop capture `phase003_desktop_landscape` show readable controls and contained navigation overflow. The simulator was reset to its default state after capture.
 
+The simulator request contract was also verified. Mobile activation uses internal IDs `iphone_17_pro` and `ipad_pro_M5_13in`, followed by `SetOrientationAsync(Enum.ScreenOrientation.LandscapeLeft)` or `LandscapeRight`. The earlier invalid `LandscapeSensor` argument is rejected by the simulator API because it is a game declaration rather than an accepted simulator value. Desktop runs omit the orientation call. The corrected requests succeed and the Studio console remains empty.
+
 ## Hosted result
 
 GitHub Actions foundation run `33248089623` passed on the current candidate. Linux job `99088933296` and Windows job `99088933206` both completed successfully.
