@@ -21,7 +21,7 @@ The Rojo project maps these boundaries:
 | `ServerStorage.Assets.PackModels` | `default.project.json` | Server controlled Classic Starter Pack fixture. |
 | `StarterGui.App.AppRoot` | `default.project.json` | Responsive screen root populated by `ClientApp`. |
 
-`Bootstrap.server.luau` first preserves the Phase 001 shared calculation checks, then starts `Phase002Runtime`. The runtime publishes the three sanitized Deck Set card frame fixtures and their three pack fixtures to `ReplicatedStorage.PresentationAssets`, creates one `ClientAction` and one `ServerMessage` remote, chooses its storage adapter, constructs services, attaches player lifecycle and heartbeat work, and registers a bounded shutdown callback.
+`Bootstrap.server.luau` first preserves the Phase 001 shared calculation checks, then starts `Phase002Runtime`. The runtime publishes the three sanitized Deck Set card frame fixtures, their three neutral fallback fixtures, and their three pack fixtures to `ReplicatedStorage.PresentationAssets`, creates one `ClientAction` and one `ServerMessage` remote, chooses its storage adapter, constructs services, attaches player lifecycle and heartbeat work, and registers a bounded shutdown callback.
 
 `ClientBootstrap.client.luau` preserves the Phase 001 client projection check, then starts `ClientApp`. The application requests bootstrap state, displays only server projections, and enables mutation controls only while the snapshot is writable.
 

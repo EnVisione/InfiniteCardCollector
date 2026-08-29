@@ -150,6 +150,81 @@
                 "Size": [3.5, 0.12, 0.1]
               }
             }
+          },
+          "ClassicFallbackFixture": {
+            "$className": "Model",
+            "FallbackFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.24, 0.27, 0.32],
+                "Material": "SmoothPlastic",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "FallbackMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.72, 0.75, 0.8],
+                "Material": "SmoothPlastic",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            }
+          },
+          "RadioactiveFallbackFixture": {
+            "$className": "Model",
+            "FallbackFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.24, 0.27, 0.32],
+                "Material": "SmoothPlastic",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "FallbackMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.72, 0.75, 0.8],
+                "Material": "SmoothPlastic",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            }
+          },
+          "AstralFallbackFixture": {
+            "$className": "Model",
+            "FallbackFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.24, 0.27, 0.32],
+                "Material": "SmoothPlastic",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "FallbackMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.72, 0.75, 0.8],
+                "Material": "SmoothPlastic",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            }
           }
         },
         "JokerProps": {

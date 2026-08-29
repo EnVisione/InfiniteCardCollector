@@ -346,6 +346,14 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			assert(model.CardFace["$className"] == "Part", "P003-TEST-006 face part")
 			assert(model.RankMark["$className"] == "Part", "P003-TEST-006 rank part")
 		end
+		for _, fixtureName in
+			{ "ClassicFallbackFixture", "RadioactiveFallbackFixture", "AstralFallbackFixture" }
+		do
+			local model = cardFrames[fixtureName]
+			assert(model["$className"] == "Model", "P003-TEST-006 fallback model")
+			assert(model.FallbackFrame["$className"] == "Part", "P003-TEST-006 fallback frame")
+			assert(model.FallbackMark["$className"] == "Part", "P003-TEST-006 fallback mark")
+		end
 		local packModels = assets.PackModels
 		for _, fixtureName in
 			{ "ClassicStarterPackFixture", "RadioactivePackFixture", "AstralPackFixture" }

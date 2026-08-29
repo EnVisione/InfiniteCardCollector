@@ -25,7 +25,7 @@ The suite must report `P003-TEST-005-deckset-identity-assets`, `P003-TEST-006-de
 
 ## Presentation fixtures
 
-The Rojo project maps one original procedural frame model and one pack model for each launch Deck Set. Classic uses ivory stock and red or black ink. Radioactive uses hazard stripes, warning accents, and neon green. Astral uses a violet nebula palette, silver marks, and constellation accents. `Phase002Runtime` publishes all six fixtures to the bounded client folder. The current client still selects the Classic fixture until the dynamic renderer task consumes the visual system records.
+The Rojo project maps one original procedural frame model, one neutral fallback model, and one pack model for each launch Deck Set. Classic uses ivory stock and red or black ink. Radioactive uses hazard stripes, warning accents, and neon green. Astral uses a violet nebula palette, silver marks, and constellation accents. `Phase002Runtime` publishes all nine fixtures to the bounded client folder. The current client still selects the Classic fixture until the dynamic renderer task consumes the visual system records.
 
 ## Evidence limits
 
