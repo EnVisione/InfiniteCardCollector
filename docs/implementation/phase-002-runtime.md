@@ -21,7 +21,7 @@ The Rojo project maps these boundaries:
 | `ServerStorage.Assets.PackModels` | `default.project.json` | Server controlled Classic Starter Pack fixture. |
 | `StarterGui.App.AppRoot` | `default.project.json` | Responsive screen root populated by `ClientApp`. |
 
-`Bootstrap.server.luau` first preserves the Phase 001 shared calculation checks, then starts `Phase002Runtime`. The runtime publishes only the two sanitized presentation fixtures to `ReplicatedStorage.PresentationAssets`, creates one `ClientAction` and one `ServerMessage` remote, chooses its storage adapter, constructs services, attaches player lifecycle and heartbeat work, and registers a bounded shutdown callback.
+`Bootstrap.server.luau` first preserves the Phase 001 shared calculation checks, then starts `Phase002Runtime`. The runtime publishes the three sanitized Deck Set card frame fixtures and their three pack fixtures to `ReplicatedStorage.PresentationAssets`, creates one `ClientAction` and one `ServerMessage` remote, chooses its storage adapter, constructs services, attaches player lifecycle and heartbeat work, and registers a bounded shutdown callback.
 
 `ClientBootstrap.client.luau` preserves the Phase 001 client projection check, then starts `ClientApp`. The application requests bootstrap state, displays only server projections, and enables mutation controls only while the snapshot is writable.
 
@@ -175,7 +175,7 @@ A valid calculation applies its configured Cash reward inside the same transacti
 
 Missing or disabled presentation data creates a neutral readable placeholder and `Content Unavailable` status. It does not invent ownership or hide the failure.
 
-`CardRenderer2D` and `CardRenderer3D` preserve identical semantic layers and accessible names. The client clones the Rojo mapped Classic fixture from the bounded presentation folder. `ComponentPool` recycles card and pack models. `VirtualizedBinder` renders only the visible window with overscan. `PreloadManifest` permits exactly the Classic card and Starter Pack fixtures.
+`CardRenderer2D` and `CardRenderer3D` preserve identical semantic layers and accessible names. The client currently clones the Rojo mapped Classic fixture from the bounded presentation folder, while the Radioactive and Astral fixtures are published for the Phase 003 asset and renderer work. `ComponentPool` recycles card and pack models. `VirtualizedBinder` renders only the visible window with overscan. `PreloadManifest` still permits exactly the Classic card and Starter Pack fixtures until dynamic Deck Set selection is implemented.
 
 Low graphics, reduced motion, and reduced flash independently disable nonessential animation or flashing without removing semantic layers. The current Classic fixture uses a static material fallback and readable labels.
 

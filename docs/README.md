@@ -43,6 +43,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 002 inventory and renderer tests](test/phase-002-inventory-and-rendering.md)
 - [Phase 002 blank account recovery workflow](test/phase-002-recovery-workflow.md)
 - [Phase 003 asset contract tests](test/phase-003-assets.md)
+- [Phase 003 Deck Set asset tests](test/phase-003-decksets.md)
 
 ## Verification
 
@@ -53,6 +54,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 003 entry and baseline evidence](verification/phase-003-entry.md)
 - [Phase 003 asset contract evidence](verification/phase-003-asset-contract.md)
 - [Phase 003 asset manifest snapshot](verification/phase-003-asset-manifest.json)
+- [Phase 003 Deck Set identity evidence](verification/phase-003-deckset-identities.md)
 
 ## Troubleshooting
 

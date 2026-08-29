@@ -17,7 +17,7 @@ lune run docs
 lune run secrets
 ```
 
-The suite must report `P003-TEST-001-asset-schema-and-budget`, `P003-TEST-002-asset-negative-fixtures`, `P003-TEST-003-invalidation-reasons`, and `P003-TEST-004-empty-launch-contract` as passed. The full command contract must remain green.
+The suite must report `P003-TEST-001-asset-schema-and-budget`, `P003-TEST-002-asset-negative-fixtures`, `P003-TEST-003-invalidation-reasons`, `P003-TEST-004-empty-launch-contract`, and `P003-TEST-005-deckset-identity-assets` as passed. The full command contract must remain green.
 
 ## Contract checks
 

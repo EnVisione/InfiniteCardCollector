@@ -56,6 +56,100 @@
                 "Size": [0.72, 0.72, 0.1]
               }
             }
+          },
+          "RadioactiveFrameFixture": {
+            "$className": "Model",
+            "RadioactiveFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.14, 0.2, 0.08],
+                "Material": "Metal",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "CardFace": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.9, 0.95, 0.78],
+                "Material": "SmoothPlastic",
+                "Size": [3.72, 5.32, 0.12]
+              }
+            },
+            "RankMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.1, 0.25, 0.08],
+                "Material": "Neon",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            },
+            "HazardStripe": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.65, 0.95, 0.08],
+                "Material": "Neon",
+                "Size": [3.8, 0.3, 0.14]
+              }
+            }
+          },
+          "AstralFrameFixture": {
+            "$className": "Model",
+            "AstralFrame": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.22, 0.12, 0.45],
+                "Material": "Neon",
+                "Size": [4.2, 5.8, 0.24]
+              }
+            },
+            "CardFace": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.09, 0.07, 0.18],
+                "Material": "SmoothPlastic",
+                "Size": [3.72, 5.32, 0.12]
+              }
+            },
+            "RankMark": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.75, 0.75, 0.95],
+                "Material": "Neon",
+                "Size": [0.72, 0.72, 0.1]
+              }
+            },
+            "Constellation": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.45, 0.3, 0.9],
+                "Material": "Neon",
+                "Size": [3.5, 0.12, 0.1]
+              }
+            }
           }
         },
         "JokerProps": {
@@ -84,6 +178,56 @@
                 "CastShadow": false,
                 "Color": [0.643, 0.518, 0.259],
                 "Material": "SmoothPlastic",
+                "Size": [3.2, 0.7, 0.12]
+              }
+            }
+          },
+          "RadioactivePackFixture": {
+            "$className": "Model",
+            "PackBody": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.14, 0.2, 0.08],
+                "Material": "Metal",
+                "Size": [3.8, 5.2, 0.4]
+              }
+            },
+            "PackSeal": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.65, 0.95, 0.08],
+                "Material": "Neon",
+                "Size": [3.2, 0.7, 0.12]
+              }
+            }
+          },
+          "AstralPackFixture": {
+            "$className": "Model",
+            "PackBody": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.22, 0.12, 0.45],
+                "Material": "Neon",
+                "Size": [3.8, 5.2, 0.4]
+              }
+            },
+            "PackSeal": {
+              "$className": "Part",
+              "$properties": {
+                "Anchored": true,
+                "CanCollide": false,
+                "CastShadow": false,
+                "Color": [0.75, 0.75, 0.95],
+                "Material": "Neon",
                 "Size": [3.2, 0.7, 0.12]
               }
             }

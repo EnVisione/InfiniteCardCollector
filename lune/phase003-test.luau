@@ -4,6 +4,8 @@ local fs = require("@lune/fs")
 local serde = require("@lune/serde")
 
 local AssetManifest = require("../src/shared/Assets/AssetManifest")
+local LaunchCatalog = require("../src/shared/Catalogs/LaunchCatalog")
+local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
 
 local Phase003Test = {}
 
@@ -225,6 +227,48 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 				and snapshot.budgets.maximumPreloadInstances
 					== AssetManifest.budgets.maximumPreloadInstances,
 			"P003-TEST-004 snapshot budgets"
+		)
+	end)
+
+	addTest("P003-TEST-005-deckset-identity-assets", function()
+		local records = LaunchDeckSetAssets.buildIdentityRecords(LaunchCatalog)
+		assert(#records == 156, "P003-TEST-005 identity count")
+		assert(
+			table.isfrozen(records) and table.isfrozen(records[1]),
+			"P003-TEST-005 immutable records"
+		)
+		local deckSetCounts = {}
+		local slotCounts = {}
+		for _, record in records do
+			deckSetCounts[record.deckSetId] = (deckSetCounts[record.deckSetId] or 0) + 1
+			slotCounts[record.slotKey] = (slotCounts[record.slotKey] or 0) + 1
+			assert(record.launchEnabled == true, "P003-TEST-005 enabled identity")
+			assert(record.assetContractId == "identity." .. record.id, "P003-TEST-005 asset id")
+			assert(record.visualSystemId == record.deckSetId, "P003-TEST-005 visual system")
+			assert(
+				record.fallbackAssetId == "fallback.frame." .. record.deckSetId,
+				"P003-TEST-005 fallback"
+			)
+			assert(record.provenance.origin == "original", "P003-TEST-005 provenance origin")
+			assert(record.provenance.reviewState == "reviewed", "P003-TEST-005 review state")
+			assert(#record.references == 5, "P003-TEST-005 reference count")
+			for index = 2, #record.references do
+				assert(
+					record.references[index - 1] < record.references[index],
+					"P003-TEST-005 reference order"
+				)
+			end
+		end
+		assert(deckSetCounts.classic == 52, "P003-TEST-005 classic count")
+		assert(deckSetCounts.radioactive == 52, "P003-TEST-005 radioactive count")
+		assert(deckSetCounts.astral == 52, "P003-TEST-005 astral count")
+		for _, count in slotCounts do
+			assert(count == 3, "P003-TEST-005 slot coverage")
+		end
+		assert(#LaunchDeckSetAssets.visualSystems == 3, "P003-TEST-005 visual system count")
+		assert(
+			table.isfrozen(LaunchDeckSetAssets.visualSystems),
+			"P003-TEST-005 visual systems immutable"
 		)
 	end)
 end

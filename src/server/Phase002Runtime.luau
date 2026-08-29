@@ -57,7 +57,11 @@ local function publishPresentationFixtures()
 	for _, fixture in
 		{
 			cardFrames:WaitForChild("ClassicFrameFixture"),
+			cardFrames:WaitForChild("RadioactiveFrameFixture"),
+			cardFrames:WaitForChild("AstralFrameFixture"),
 			packModels:WaitForChild("ClassicStarterPackFixture"),
+			packModels:WaitForChild("RadioactivePackFixture"),
+			packModels:WaitForChild("AstralPackFixture"),
 		}
 	do
 		local existing = presentation:FindFirstChild(fixture.Name)
