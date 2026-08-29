@@ -143,6 +143,7 @@ The runtime targets Roblox and uses strict typed Luau for shared domain modules,
 - `src/server/Projection/` owns bounded client snapshots and binder pages.
 - `src/client/State/` owns presentation only correlated message state.
 - `src/client/Rendering/` owns 2D and 3D adapters, the component pool, bounded preload, and binder virtualization.
+- `src/shared/Assets/AssetManifestBuilder.luau` owns deterministic manifest normalization and built bundle inventory generation. It requires importer supplied hashes and provenance before an entry can be released.
 - `src/client/Application/` owns the minimal local interface and narrow intent submission.
 
 The complete service and data flow is documented in [Phase 002 runtime architecture](../implementation/phase-002-runtime.md).
@@ -226,7 +227,7 @@ lune run ci
 
 That gate verifies tool integrity, formatting, linting, deterministic tests, source map generation, two build reproducibility, documentation, secrets, and artifact integrity. The generated candidate files remain ignored under `build/`. See [development setup](../operations/development-setup.md) for each direct command and its failure recovery.
 
-The combined suite now passes 58 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, and three Deck Set visual identity records for all 156 base identities.
+The combined suite now passes 59 tests. Phase 001 coverage includes catalog counts, stable IDs, all formation detectors, deterministic scoring, exact odds and pity records, Joker combinations, safe arithmetic, economy projections, and active to passive balance. Phase 002 adds every action schema, hostile inputs, rates, profiles, migrations, size boundaries, sessions, retry, safe mode, shutdown, transactions, receipts, failure injection, inventory, deck, Starter Pack recovery, guided reward, client authority, renderer semantics, pooling, virtualization, preload, and deterministic evidence hashes. Phase 003 adds the versioned asset manifest schema, provenance and fallback validation, budget enforcement, deterministic invalidation fixtures, the manifest build inventory boundary, and three Deck Set visual identity records for all 156 base identities.
 
 The current local Vinegar Studio path passes the blank pack fixture, committed reveal, acknowledgement, four deck edits, guided reward, exact replay, request conflict, hostile correlation, normal rendering, static low graphics rendering, and a clean console. The owner authorized isolated DataStore interruption and rejoin workflow remains mandatory.
 

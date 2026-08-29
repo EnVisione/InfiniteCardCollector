@@ -14,9 +14,11 @@ Enabled entries must have reviewed provenance and a resolvable fallback. The fal
 
 The current schema limits one entry to 4 MiB of bytes, 16 MiB of memory, and 128 instances. Preload groups declare their own maximum bytes and instances, capped at 8 MiB and 256 instances. Pool groups declare live instance limits. Measured entry values must remain at or below their own budgets, and group totals must remain within group limits. These are contract limits, not evidence that the full launch bundle has been built.
 
+`AssetManifestBuilder.build` is now the deterministic boundary for source records entering a release manifest. It copies and sorts the records, delegates schema, fallback, provenance, reference, and budget validation to `AssetManifest`, and emits a stable bundle inventory containing each built hash and aggregate byte, memory, and instance totals. It requires source and built hashes supplied by the importer and never fabricates provenance.
+
 ## Deterministic fixtures
 
-The five Phase 003 asset tests cover a reviewed original model with a static fallback, malformed hashes, an over budget entry, an unresolved fallback, an unreviewed enabled entry, changed built content, changed budget, an unchanged manifest, and all three visual systems with 156 base identity records. The empty launch contract records catalog version 1 and artifact version `phase-003-contract` with no asset entries, accurately reflecting the source inventory at phase entry.
+The seven Phase 003 asset tests cover a reviewed original model with a static fallback, malformed hashes, an over budget entry, an unresolved fallback, an unreviewed enabled entry, changed built content, changed budget, an unchanged manifest, all three visual systems with 156 base identity records, and deterministic build inventory ordering and totals. The empty launch contract records catalog version 1 and artifact version `phase-003-contract` with no asset entries, accurately reflecting the source inventory at phase entry.
 
 The contract snapshot is recorded in [`phase-003-asset-manifest.json`](phase-003-asset-manifest.json). The task 002 contract artifact check produced SHA 256 `f20a845c6571f343ede897c353cec117051dccfbaf7da7d52a805cfc7807bea5` and SHA 512 `2145014966e17af753ffa4e551c76fc8794e5eb3f383381ac046aec459c62b4da2dd4bc46a6262132fb176f1495d8006170ddffb21b2208f41a45b79aa8eb99b`. The later Deck Set fixture commit intentionally invalidates that artifact and records its replacement in [the Deck Set identity evidence](phase-003-deckset-identities.md).
 

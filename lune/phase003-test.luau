@@ -4,6 +4,7 @@ local fs = require("@lune/fs")
 local serde = require("@lune/serde")
 
 local AssetManifest = require("../src/shared/Assets/AssetManifest")
+local AssetManifestBuilder = require("../src/shared/Assets/AssetManifestBuilder")
 local LaunchCatalog = require("../src/shared/Catalogs/LaunchCatalog")
 local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
 local PresentationResolver = require("../src/shared/Assets/PresentationResolver")
@@ -234,6 +235,42 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 					== AssetManifest.budgets.maximumPreloadInstances,
 			"P003-TEST-004 snapshot budgets"
 		)
+	end)
+
+	addTest("P003-TEST-007-asset-build-inventory", function()
+		local source = validManifest()
+		local built = AssetManifestBuilder.build({
+			artifactVersion = source.artifactVersion,
+			catalogVersion = source.catalogVersion,
+			entries = { source.entries[2], source.entries[1] },
+			poolGroups = source.poolGroups,
+			preloadGroups = source.preloadGroups,
+		})
+		assert(
+			table.isfrozen(built) and table.isfrozen(built.inventory),
+			"P003-TEST-007 immutable result"
+		)
+		assert(table.isfrozen(built.inventory.entries[1]), "P003-TEST-007 entry immutable")
+		assert(built.manifest.entries[1].id == "card.classic.frame", "P003-TEST-007 sorted entries")
+		assert(built.inventory.totalBytes == 1536, "P003-TEST-007 byte inventory")
+		assert(built.inventory.totalMemoryBytes == 24576, "P003-TEST-007 memory inventory")
+		assert(built.inventory.totalInstances == 2, "P003-TEST-007 instance inventory")
+		assert(
+			built.inventory.entries[1].builtSha256 == hash("a", 64),
+			"P003-TEST-007 hash inventory"
+		)
+		local duplicateEntry = copy(source.entries[1])
+		duplicateEntry.builtSha256 = hash("9", 64)
+		local duplicate = {
+			artifactVersion = source.artifactVersion,
+			catalogVersion = source.catalogVersion,
+			entries = { source.entries[1], duplicateEntry, source.entries[2] },
+			poolGroups = source.poolGroups,
+			preloadGroups = source.preloadGroups,
+		}
+		expectFailure(function()
+			AssetManifestBuilder.build(duplicate)
+		end, "P003-ASSET-069")
 	end)
 
 	addTest("P003-TEST-005-deckset-identity-assets", function()

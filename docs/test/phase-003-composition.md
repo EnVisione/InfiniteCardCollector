@@ -17,7 +17,7 @@ lune run docs
 lune run secrets
 ```
 
-The suite must report `P003-TEST-005-deckset-identity-assets` and a total of 58 passing tests. The full command contract must remain green.
+The suite must report `P003-TEST-005-deckset-identity-assets` and a total of 59 passing tests. The full command contract must remain green.
 
 ## Registry checks
 
