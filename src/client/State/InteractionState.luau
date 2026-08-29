@@ -4,6 +4,11 @@ local InteractionState = {}
 
 InteractionState.version = 1
 
+InteractionState.layout = table.freeze({
+	fixedContentHeight = 526,
+	minimumCardViewportHeight = 180,
+})
+
 local breakpoints = {
 	{ id = "phone", maxWidth = 599, scale = 0.9 },
 	{ id = "tablet", maxWidth = 1023, scale = 0.96 },
@@ -135,6 +140,16 @@ function InteractionState.setViewport(state: any, width: number, height: number)
 	nextState.uiScale = breakpoint.scale * (nextState.settings.uiScale / 100)
 	nextState.lastCode = "client.viewport_changed"
 	return bump(nextState)
+end
+
+function InteractionState.cardViewportHeight(height: number): number
+	if not finiteNumber(height) or height <= 0 then
+		return InteractionState.layout.minimumCardViewportHeight
+	end
+	return math.max(
+		InteractionState.layout.minimumCardViewportHeight,
+		height - InteractionState.layout.fixedContentHeight
+	)
 end
 
 function InteractionState.setSettings(state: any, settings: any): any

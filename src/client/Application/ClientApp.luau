@@ -49,6 +49,7 @@ local function makeButton(parent: Instance, name: string, text: string): TextBut
 	button.Text = text
 	button.TextColor3 = Color3.fromRGB(255, 255, 255)
 	button.TextSize = 15
+	button.TextWrapped = true
 	button.Parent = parent
 	local corner = Instance.new("UICorner")
 	corner.CornerRadius = UDim.new(0, 8)
@@ -97,11 +98,16 @@ function ClientApp.start(launchContract: any)
 		end
 	end)
 
-	local background = Instance.new("Frame")
+	local background = Instance.new("ScrollingFrame")
 	background.Name = "FoundationPanel"
 	background.AnchorPoint = Vector2.new(0.5, 0.5)
 	background.BackgroundColor3 = Color3.fromRGB(18, 23, 34)
 	background.BorderSizePixel = 0
+	background.CanvasSize = UDim2.fromOffset(0, 0)
+	background.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	background.ScrollingDirection = Enum.ScrollingDirection.Y
+	background.ScrollBarThickness = 6
+	background.Active = true
 	background.Position = UDim2.fromScale(0.5, 0.5)
 	background.Size = UDim2.new(1, -32, 1, -32)
 	background.Parent = root
@@ -191,6 +197,9 @@ function ClientApp.start(launchContract: any)
 	local equipButton = makeButton(actions, "EquipNext", "Equip Next Card")
 	local scoreButton = makeButton(actions, "SubmitGuided", "Submit Guided Formation")
 	local refreshButton = makeButton(actions, "Refresh", "Refresh")
+	for _, button in { openButton, equipButton, scoreButton, refreshButton } do
+		button.Size = UDim2.new(0.18, 0, 0, 44)
+	end
 
 	local packSelector = Instance.new("ScrollingFrame")
 	packSelector.Name = "PackSelector"
@@ -353,7 +362,7 @@ function ClientApp.start(launchContract: any)
 	cards.CanvasSize = UDim2.fromOffset(0, 0)
 	cards.AutomaticCanvasSize = Enum.AutomaticSize.None
 	cards.ScrollBarThickness = 6
-	cards.Size = UDim2.new(1, 0, 1, -526)
+	cards.Size = UDim2.new(1, 0, 0, InteractionState.cardViewportHeight(root.AbsoluteSize.Y))
 	cards.LayoutOrder = 9
 	cards.Parent = background
 	local cardsCorner = Instance.new("UICorner")
@@ -864,6 +873,7 @@ function ClientApp.start(launchContract: any)
 
 	root:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		syncViewport()
+		cards.Size = UDim2.new(1, 0, 0, InteractionState.cardViewportHeight(root.AbsoluteSize.Y))
 		render()
 	end)
 	UserInputService.LastInputTypeChanged:Connect(function(inputType)

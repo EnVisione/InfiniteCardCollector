@@ -1426,6 +1426,12 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			state.breakpoint == "phone" and state.uiScale == 0.9,
 			"P003-TEST-016 phone breakpoint"
 		)
+		assert(
+			InteractionState.cardViewportHeight(402) == 180
+				and InteractionState.cardViewportHeight(768) == 242
+				and InteractionState.cardViewportHeight(-1) == 180,
+			"P003-TEST-016 constrained card viewport"
+		)
 		state = InteractionState.setSettings(state, {
 			reducedMotion = true,
 			reducedFlash = true,
