@@ -247,10 +247,13 @@ The owner authorized the private universe `1808549145` and private place `518359
 | Hostile payload | An extra field returned `network.unknown_field` and did not mutate the profile. |
 | Stale revision | A formation request using revision 5 after revision 6 returned `state.stale` and did not mutate the profile. |
 | Dirty shutdown and release | Stopping Studio Play mode completed the real server close path and returned to Edit mode without a console error. |
-| Exact rejoin | A new Play session returned `bootstrap.ready`, revision 6, cash 62, five cards, four equipped cards, pending state `acknowledged`, writable true, and `isolated_data_store`. |
-| Presentation | Screen capture `ScreenCapture_2` showed the private test UI with cash 62, five cards, four equipped cards, revision 6, isolated storage, acknowledged reveal, and readable card rows. |
+| Concurrent lease collision | A second `ProfileStore` writer used the same DataStore key while the primary session was healthy and returned `session.conflict` with no profile mutation. |
+| Expired lease recovery | The authorized probe moved the stored heartbeat beyond the session expiry window. A new writer reclaimed the profile successfully, then released its temporary lease. |
+| Response loss and replay | The first response for a new formation request was intentionally ignored. Retrying the same request returned `formation.reward_committed` at revision 7 with reward cash 62, and the profile advanced only once. |
+| Exact rejoin | After the probes and a clean Play stop, a new Play session returned `bootstrap.ready`, revision 7, cash 124, five cards, four equipped cards, pending state `acknowledged`, writable true, and `isolated_data_store`. |
+| Presentation | Screen capture `ScreenCapture_3` showed the private test UI with cash 124, five cards, four equipped cards, revision 7, isolated storage, acknowledged reveal, and readable card rows. |
 
-The run proves real `UpdateAsync` writes, committed reveal recovery, acknowledgement, deck edits, reward replay, rejection correlation, shutdown release, and exact rejoin for the authorized private test. Healthy concurrent collision, expired lease recovery, and injected response loss remain separate follow-up checks because the current run used one authenticated Studio session.
+The run proves real `UpdateAsync` writes, committed reveal recovery, acknowledgement, deck edits, reward replay, rejection correlation, healthy concurrent collision rejection, expired lease recovery, ignored response replay, shutdown release, and exact rejoin for the authorized private test.
 
 ## Completion Gates
 
