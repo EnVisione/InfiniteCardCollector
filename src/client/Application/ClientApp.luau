@@ -13,6 +13,7 @@ local VirtualizedBinder = require(script.Parent.Parent.Rendering.VirtualizedBind
 local LaunchDeckSetAssets = require(ReplicatedStorage.Shared.Assets.LaunchDeckSetAssets)
 local PresentationResolver = require(ReplicatedStorage.Shared.Assets.PresentationResolver)
 local ComposedCardAssets = require(ReplicatedStorage.Shared.Assets.ComposedCardAssets)
+local SpecialContentAssets = require(ReplicatedStorage.Shared.Assets.SpecialContentAssets)
 local CardViewModel = require(ReplicatedStorage.Shared.Rendering.CardViewModel)
 
 local ClientApp = {}
@@ -72,6 +73,10 @@ function ClientApp.start(launchContract: any)
 	assert(presentationAssets ~= nil, "P002-CLIENT-004 presentation assets missing")
 	local preloadInstances = PreloadManifest.resolve(presentationAssets)
 	local composedCardAssets = ComposedCardAssets.build(launchContract.clientCatalog)
+	local specialContentAssets = SpecialContentAssets.build(launchContract.clientCatalog)
+	app:SetAttribute("SpecialAssetRegistryVersion", specialContentAssets.version)
+	app:SetAttribute("SpecialAssetJokerCount", #specialContentAssets.jokers)
+	app:SetAttribute("SpecialAssetArcanaCount", #specialContentAssets.arcana)
 	task.spawn(function()
 		local ok = pcall(function()
 			ContentProvider:PreloadAsync(preloadInstances)

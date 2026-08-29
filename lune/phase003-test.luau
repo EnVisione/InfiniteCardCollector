@@ -8,6 +8,7 @@ local LaunchCatalog = require("../src/shared/Catalogs/LaunchCatalog")
 local LaunchDeckSetAssets = require("../src/shared/Assets/LaunchDeckSetAssets")
 local PresentationResolver = require("../src/shared/Assets/PresentationResolver")
 local ComposedCardAssets = require("../src/shared/Assets/ComposedCardAssets")
+local SpecialContentAssets = require("../src/shared/Assets/SpecialContentAssets")
 local CardViewModel = require("../src/shared/Rendering/CardViewModel")
 local CardRenderer2D = require("../src/client/Rendering/CardRenderer2D")
 local CardRenderer3D = require("../src/client/Rendering/CardRenderer3D")
@@ -417,6 +418,40 @@ function Phase003Test.register(addTest: any, expectFailure: any)
 			#composedCard.layers.status == 1 and not composedCard.unavailable,
 			"P003-TEST-005 status composition"
 		)
+		local special = SpecialContentAssets.build(LaunchCatalog)
+		assert(table.isfrozen(special), "P003-TEST-005 special registry immutable")
+		assert(#special.jokers == 24, "P003-TEST-005 special joker count")
+		assert(#special.arcana == 12, "P003-TEST-005 special arcana count")
+		assert(#special.packs == 5, "P003-TEST-005 special pack count")
+		assert(#special.surfaces == 7, "P003-TEST-005 special surface count")
+		assert(#special.sounds == 8, "P003-TEST-005 special sound count")
+		assert(#special.effects == 9, "P003-TEST-005 special effect count")
+		assert(#special.icons == 41, "P003-TEST-005 special icon count")
+		assert(#special.thumbnails == 41, "P003-TEST-005 special thumbnail count")
+		assert(#special.metadata == 41, "P003-TEST-005 special metadata count")
+		local jokerAsset = special:get("joker", "packstorm")
+		assert(
+			jokerAsset ~= nil
+				and jokerAsset.assetId == "asset.joker.packstorm"
+				and jokerAsset.fallbackAssetId == "fallback.joker.packstorm",
+			"P003-TEST-005 special joker asset"
+		)
+		local arcanaAsset = special:get("arcana", "regrader")
+		assert(
+			arcanaAsset ~= nil
+				and arcanaAsset.assetId == "asset.arcana.regrader"
+				and arcanaAsset.fallbackAssetId == "fallback.arcana.regrader",
+			"P003-TEST-005 special arcana asset"
+		)
+		local packAsset = special:get("pack", "astral")
+		assert(
+			packAsset ~= nil
+				and packAsset.assetId == "asset.pack.astral"
+				and packAsset.fallbackAssetId == "fallback.pack.astral",
+			"P003-TEST-005 special pack asset"
+		)
+		assert(special:get("joker", "fifth_law") == nil, "P003-TEST-005 disabled joker hidden")
+		assert(special:get("joker", "missing") == nil, "P003-TEST-005 unknown joker hidden")
 		local viewModel = CardViewModel.build(LaunchCatalog, {
 			instanceId = "composed_card",
 			deckSetId = "classic",

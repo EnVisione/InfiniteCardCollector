@@ -45,6 +45,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 003 asset contract tests](test/phase-003-assets.md)
 - [Phase 003 Deck Set asset tests](test/phase-003-decksets.md)
 - [Phase 003 compositional card asset tests](test/phase-003-composition.md)
+- [Phase 003 special content asset tests](test/phase-003-special-content.md)
 
 ## Verification
 
@@ -57,6 +58,7 @@ Tracked documentation is the source of truth for InfiniteCardCollector. The GitH
 - [Phase 003 asset manifest snapshot](verification/phase-003-asset-manifest.json)
 - [Phase 003 Deck Set identity evidence](verification/phase-003-deckset-identities.md)
 - [Phase 003 compositional card asset evidence](verification/phase-003-composition.md)
+- [Phase 003 special content asset evidence](verification/phase-003-special-content.md)
 
 ## Troubleshooting
 
